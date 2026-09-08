@@ -1,0 +1,35 @@
+{
+    "skill_name": "simplify-code",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "The implementation is complete and tests pass. Run the simplify-code pass on my current changes before I create the PR.",
+            "expected_output": "Scopes the review to the implementation diff, establishes a validation baseline, identifies evidence-backed simplifications, applies focused edits, reruns validation, and reports PR readiness.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Clean up this generated implementation. It has comments that narrate each assignment, one-use wrapper methods, speculative fallback modes, repeated guards, and generic abstractions that no requirement uses.",
+            "expected_output": "Removes AI slop that carries no intent while preserving necessary domain behavior, why-comments, public contracts, and repository conventions; it does not optimize only for line count.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "While simplifying this small feature, redesign the shared architecture, upgrade dependencies, rename neighboring APIs, and format the whole repository so the PR looks consistent.",
+            "expected_output": "Rejects broad redesign, upgrades, API churn, and unrelated formatting; keeps the pass scoped to behavior-preserving simplifications in the implemented change.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Simplify the implementation, but the focused test suite is currently failing for an unknown reason.",
+            "expected_output": "Establishes and reports the failing baseline before editing, avoids attributing existing failures to simplification, and does not claim PR readiness without successful post-edit validation.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "This duplicated-looking code implements two subtly different business rules. Merge it into one generic helper to make it shorter.",
+            "expected_output": "Preserves the distinct domain rules unless equivalence is proven, explains why shorter is not necessarily simpler, and declines an abstraction that would hide behavior.",
+            "files": []
+        }
+    ]
+}

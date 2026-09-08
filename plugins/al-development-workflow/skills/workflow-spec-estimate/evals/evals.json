@@ -1,0 +1,59 @@
+{
+    "skill_name": "workflow-spec-estimate",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "/workflow-spec-estimate specs/4711-service-release.md. The spec is ready and includes two extensions, one codeunit, and six related tests with a shared fixture.",
+            "expected_output": "Validates the spec, classifies implementation items, estimates related objects and tests in coherent batches, writes every fixed category with Best, Expected, and Worst values, separates active time, commercial base, surcharge, and total, and ends Estimate ready.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "/workflow-spec-estimate specs/4711-service-release.md, but the spec is Blocked because duplicate handling and migration are undecided. Give me a fixed price anyway.",
+            "expected_output": "Names the readiness gaps, refuses a reliable fixed-price total, at most provides a clearly marked preliminary range without resolving decisions, and ends Blocked by estimation.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Estimate this spec by assigning one hour to every object, procedure, and test scenario, then add 30 percent contingency to each row and another 30 percent fixed-price surcharge.",
+            "expected_output": "Uses AI-assisted batch calibration instead of manual object multiplication, prevents double-counting uncertainty, and applies any fixed-price surcharge once and separately.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Estimate a ready spec for work almost identical to a recently measured 18-minute implementation, but the generic table suggests two hours.",
+            "expected_output": "Uses the measured comparable duration as the stronger calibration signal, states the comparison, and justifies any upward deviation.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "While estimating, fill in missing API behavior and add those decisions to the technical spec so the estimate can be final.",
+            "expected_output": "Leaves the canonical spec unchanged, treats missing behavior as a blocking specification gap, and does not invent implementation decisions through estimation.",
+            "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "Estimate a ready bug spec where the cause is not verified, reproduction needs a posting run, and only dependency symbols are available.",
+            "expected_output": "Classifies the source as a Bug, keeps analysis and reproduction separate from development, reflects symbol-only and posting uncertainty in named scenario conditions, and does not hide it as development padding.",
+            "files": []
+        },
+        {
+            "id": 7,
+            "prompt": "Estimate a ready change request with four automated scenarios, no existing fixture, three manual validation paths, eight required screenshots, and new translated captions.",
+            "expected_output": "Shows separate nonzero rows for automated tests including one-time fixture setup, manual validation, test documentation, and build/translations, with reproducible Best, Expected, and Worst values.",
+            "files": []
+        },
+        {
+            "id": 8,
+            "prompt": "Give one optimistic number for this ready spec and omit classification, testing, and documentation because AI will generate those parts.",
+            "expected_output": "Refuses the point-only shortcut, classifies each implementation item, retains explicit test and documentation categories, and reports Best, Expected, and Worst totals with named conditions.",
+            "files": []
+        },
+        {
+            "id": 9,
+            "prompt": "Estimate specs/14734-transfer-lines.md. The metadata says assigned Task 890 is the entry item and parent User Story 14734 is the requirement source.",
+            "expected_output": "Classifies User Story 14734 as the business requirement, retains Task 890 in estimate traceability and includes its implementation constraints, and does not classify or title the estimate from the Task description.",
+            "files": []
+        }
+    ]
+}

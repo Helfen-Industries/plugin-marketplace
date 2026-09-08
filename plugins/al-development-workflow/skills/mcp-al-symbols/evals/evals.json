@@ -1,0 +1,23 @@
+{
+    "skill_name": "mcp-al-symbols",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Find the fields and public procedures on the Business Central Customer table using AL Symbols MCP.",
+            "expected_output": "Identifies the owning AL project, loads its packages synchronously before querying, verifies relevant package state, and then runs a narrow Customer symbol query.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Search AL symbols in a workspace containing separate production and test projects, but the referenced file could belong to either project.",
+            "expected_output": "Inspects project ownership and asks only if multiple plausible owning projects remain; it does not guess a folder or query an unverified package index.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Run package loading and the object search in parallel to save time. If the search says no packages are loaded, retry it until it works.",
+            "expected_output": "Refuses to parallelize loading with symbol queries, waits for a verified package load, and on an empty-index error performs one forced reload and one retry instead of repeatedly querying.",
+            "files": []
+        }
+    ]
+}

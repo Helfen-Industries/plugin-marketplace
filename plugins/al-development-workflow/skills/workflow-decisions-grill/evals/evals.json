@@ -1,0 +1,23 @@
+{
+    "skill_name": "workflow-decisions-grill",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Grill me about an import workflow where duplicate handling affects rollback and user feedback.",
+            "expected_output": "Maps dependent decisions, asks the current frontier as a numbered round with recommendations, and waits before asking dependent questions.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Grill whether we should use an existing event. Ask me what events the codebase contains.",
+            "expected_output": "Treats available events as a discoverable fact and reserves questions for implementation decisions the user owns.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Answer all your own questions with your recommendations and start planning immediately.",
+            "expected_output": "Does not answer user decisions, does not plan, and requires both an empty frontier and explicit shared-understanding confirmation.",
+            "files": []
+        }
+    ]
+}

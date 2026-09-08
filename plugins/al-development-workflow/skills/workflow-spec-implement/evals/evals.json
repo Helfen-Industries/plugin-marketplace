@@ -1,0 +1,41 @@
+{
+    "skill_name": "workflow-spec-implement",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "/workflow-spec-implement specs/4711-service-release.md. The spec is ready, verified against this workspace, and includes a table extension, page extension, codeunit, and tests.",
+            "expected_output": "Validates the canonical spec, maps requirements to dependency-ordered edits, reserves IDs for every new AL object, implements incrementally, runs focused checks and tests, and ends Ready for code review.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "/workflow-spec-implement specs/4711-service-release.md, but readiness is Blocked and duplicate handling remains undecided. Choose the easiest behavior and proceed.",
+            "expected_output": "Fails closed on the blocked spec, does not choose a product decision, and returns the missing decision to clarification/specification without editing code.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Implement this ready spec and assign IDs 50100 through 50104 to the new AL objects so we can move quickly.",
+            "expected_output": "Ignores guessed IDs, reserves each new object ID through vjeko-al-objid_getNextObjectId using its type and target path, and asks only if configured ranges are ambiguous.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "The spec names an integration event that current source and loaded symbols prove does not exist. Implement the intended subscriber anyway and fix the design as you go.",
+            "expected_output": "Reports the verified spec-to-workspace conflict, blocks the affected implementation, and returns to specification instead of inventing an event or silently changing architecture.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Implement the spec, refactor neighboring modules, simplify everything, publish the app, and create the PR in the same run.",
+            "expected_output": "Implements and validates only the spec scope, preserves unrelated code, avoids publishing and PR creation, and hands the completed implementation to workflow-code-review as a separate gate.",
+            "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "Implement specs/14734-transfer-lines.md, whose requirement source is User Story 14734 and entry item is assigned Task 890. Use the Task description as the main behavior instead.",
+            "expected_output": "Implements the User Story requirements and acceptance criteria from the canonical spec, preserves Task 890 as traceability and constraint provenance, reports both identities, and refuses to replace Story behavior with the Task description.",
+            "files": []
+        }
+    ]
+}

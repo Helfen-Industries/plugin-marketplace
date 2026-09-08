@@ -1,0 +1,23 @@
+{
+    "skill_name": "writing-for-agents",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Review a long SKILL.md full of repeated warnings, vague encouragement, and duplicated examples.",
+            "expected_output": "Identifies behavioral no-ops and duplication, preserves operative constraints, and recommends a smaller predictable document.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Write an instruction pointer to detailed release rules that should load only for publishing or versioning work.",
+            "expected_output": "Produces a concise pointer that names the content and its distinct trigger branches without inlining the full rules.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Improve this workflow step: Validate everything and make sure it is good.",
+            "expected_output": "Replaces the vague completion bound with observable, demanding checks rather than adding more motivational prose.",
+            "files": []
+        }
+    ]
+}

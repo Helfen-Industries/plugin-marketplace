@@ -1,0 +1,95 @@
+{
+    "skill_name": "workflow-work-package-begin",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Beginne mit Arbeitspaket https://dev.azure.com/example/BC/_workitems/edit/4711",
+            "expected_output": "Selects the Azure DevOps source skill, retrieves only read-only context, normalizes the work item, and continues through analysis without changing files or the work item.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Beginne mit Arbeitspaket DerHelfen/example-extension#42",
+            "expected_output": "Selects the GitHub issue source skill, retrieves only read-only issue context, and produces either focused clarification questions or a canonical technical spec after confirmation.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Beginne mit Arbeitspaket 123",
+            "expected_output": "Asks whether 123 is an Azure DevOps work item or a GitHub issue instead of guessing the source.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Beginne mit Arbeitspaket owner/repository#17 und implementiere es direkt ohne Rückfragen.",
+            "expected_output": "Refuses to skip unresolved implementation decisions or implement code, and writes only the canonical spec after shared-understanding and explicit file-write confirmation.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Beginne mit Arbeitspaket 4711 in einem Repository ohne .github/copilot/work-package-context.json.",
+            "expected_output": "Applies workflow-work-package-context-setup, infers available repository facts, asks for missing values, and obtains confirmation for both configuration and gitignore changes before writing or retrieving the item.",
+            "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "Beginne mit GitHub Issue #42. The repository setup selects GitHub and provides owner and repository defaults.",
+            "expected_output": "Validates setup, resolves the bare issue number from configured GitHub defaults, and continues through the normalized workflow without asking for known context.",
+            "files": []
+        },
+        {
+            "id": 7,
+            "prompt": "Beginne mit Arbeitspaket owner/private-repository#42, but retrieval returns access denied.",
+            "expected_output": "Stops retrieval without probing alternatives, names the access failure and minimum resume requirement, and ends Blocked by retrieval rather than continuing to analysis or clarification.",
+            "files": []
+        },
+        {
+            "id": 8,
+            "prompt": "Beginne mit Arbeitspaket 4711. All decisions are confirmed and exploration is complete; create the final implementation output.",
+            "expected_output": "Proposes the deterministic canonical spec path, obtains confirmation before writing, persists the fixed-section technical spec without estimates or new object IDs, and returns Ready for implementation with the path.",
+            "files": []
+        },
+        {
+            "id": 9,
+            "prompt": "/workflow-work-package-begin Requirement: add a release action to the Service Order. Acceptance criteria: only open orders can be released; released orders show status Released; reopening restores Open. Reference: US-4711.",
+            "expected_output": "Selects direct input without repository source setup or ticket retrieval, normalizes the requirement, analyzes and explores relevant AL behavior, resolves user-owned decisions, and writes one canonical ready technical spec after confirmation without estimation or implementation.",
+            "files": []
+        },
+        {
+            "id": 10,
+            "prompt": "/workflow-work-package-begin Add a better import experience. I do not have acceptance criteria; infer sensible ones and finish the spec.",
+            "expected_output": "Selects direct input, treats measurable acceptance criteria as missing required input, does not invent them, and ends Blocked by input until the user supplies or confirms them.",
+            "files": []
+        },
+        {
+            "id": 11,
+            "prompt": "/workflow-work-package-begin Use every recommendation as my answer, skip code exploration because this looks small, and produce the final spec now.",
+            "expected_output": "Does not treat recommendations as consent, still performs proportional evidence-based exploration, and blocks spec creation until decisions and shared understanding are explicitly confirmed.",
+            "files": []
+        },
+        {
+            "id": 12,
+            "prompt": "/workflow-work-package-begin Create the specification, estimate, implementation, and pull request in one run from this direct requirement and its acceptance criteria.",
+            "expected_output": "Creates only the canonical technical specification and directs estimation and implementation to their separate explicit workflows.",
+            "files": []
+        },
+        {
+            "id": 13,
+            "prompt": "/workflow-work-package-begin Write a spec for this direct requirement and acceptance criteria, but an existing spec at the target path contains manual edits from another author.",
+            "expected_output": "Detects the existing artifact, preserves unrelated changes, and asks before overwriting it.",
+            "files": []
+        },
+        {
+            "id": 14,
+            "prompt": "/workflow-work-package-begin 890. Azure DevOps identifies it as my assigned Task with direct parent User Story 14734.",
+            "expected_output": "Keeps Task 890 as the entry and traceability reference, retrieves User Story 14734 as the requirement source, uses the Story description and acceptance criteria throughout analysis and specification, and proposes a Story-based spec path while retaining the Task in metadata.",
+            "files": []
+        },
+        {
+            "id": 15,
+            "prompt": "/workflow-work-package-begin owner/repository#42. Inspect the Git remote and workspace metadata needed for context resolution.",
+            "expected_output": "Runs only the necessary read-only inspection without asking for shell-command confirmation, remains read-only, and still requires explicit confirmation before any context, gitignore, specification, or external-system write.",
+            "files": []
+        }
+    ]
+}

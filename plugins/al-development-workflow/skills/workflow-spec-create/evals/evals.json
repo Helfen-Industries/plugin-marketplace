@@ -1,0 +1,41 @@
+{
+    "skill_name": "workflow-spec-create",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Create a plan from settled requirements and code exploration identifying a page extension, posting subscriber, permission set, and focused tests.",
+            "expected_output": "Produces the fixed-section canonical technical spec, details each object separately, maps requirements to tests and ordered implementation steps, writes the authorized spec path, and ends Ready for implementation.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Plan this feature even though retention duration and upgrade migration behavior are still open.",
+            "expected_output": "Returns the implementation-critical open decisions and does not issue a final Ready for implementation plan.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Add a broad cleanup of posting code and rename nearby objects while planning this one-field change.",
+            "expected_output": "Excludes unrelated cleanup and speculative refactoring while keeping the requested change and validation focused.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "All implementation questions have answers, but I have not confirmed your summary. Create the final plan anyway.",
+            "expected_output": "Treats shared-understanding confirmation as a missing precondition, returns that blocking gap, and does not end with Ready for implementation.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Create the technical spec and include object IDs for every new table and codeunit plus a fixed-price estimate in the same document.",
+            "expected_output": "Leaves new object IDs for implementation, excludes effort and pricing from the canonical spec, preserves all fixed sections, and directs estimation to the separate estimation skill.",
+            "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "Create the canonical spec for assigned Task 890 whose direct parent User Story 14734 owns the title, description, and acceptance criteria. Name everything after Task 890 because that was the entry point.",
+            "expected_output": "Uses User Story 14734 for the spec title, filename, requirements, acceptance criteria, and scenario prefix; retains Task 890 and its relation in metadata and constraint provenance; and does not use the Task as the feature identity.",
+            "files": []
+        }
+    ]
+}

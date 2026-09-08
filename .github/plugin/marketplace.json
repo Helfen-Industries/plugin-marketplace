@@ -1,0 +1,50 @@
+{
+    "name": "helfen-agent-marketplace",
+    "owner": {
+        "name": "DerHelfen"
+    },
+    "metadata": {
+        "description": "Private GitHub Copilot plugins maintained by DerHelfen",
+        "version": "0.9.0"
+    },
+    "plugins": [
+        {
+            "name": "al-development-workflow",
+            "source": "plugins/al-development-workflow",
+            "description": "Structured Business Central AL development workflows for GitHub Copilot",
+            "version": "0.9.0",
+            "author": {
+                "name": "DerHelfen",
+                "url": "https://github.com/DerHelfen"
+            },
+            "repository": "https://github.com/Helfen-Industries/plugin-marketplace",
+            "license": "MIT",
+            "keywords": [
+                "al",
+                "business-central",
+                "github-copilot",
+                "work-items"
+            ],
+            "category": "development"
+        },
+        {
+            "name": "agent-development",
+            "source": "plugins/agent-development",
+            "description": "Reusable workflows for creating and improving agent skills and instructions",
+            "version": "0.1.0",
+            "author": {
+                "name": "DerHelfen",
+                "url": "https://github.com/DerHelfen"
+            },
+            "repository": "https://github.com/Helfen-Industries/plugin-marketplace",
+            "license": "MIT",
+            "keywords": [
+                "agents",
+                "skills",
+                "instructions",
+                "github-copilot"
+            ],
+            "category": "development"
+        }
+    ]
+}

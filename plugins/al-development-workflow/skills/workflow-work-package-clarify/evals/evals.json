@@ -1,0 +1,23 @@
+{
+    "skill_name": "workflow-work-package-clarify",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Clarify an export feature with open decisions about supported formats and, depending on format, file naming and compression.",
+            "expected_output": "Asks only the current decision frontier, includes recommendations, and defers format-dependent questions to a later round.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Clarify whether table Customer already has a SystemId field and whether users want overwrite or reject behavior for duplicate imports.",
+            "expected_output": "Treats the field as a discoverable fact, asks the user only for duplicate behavior, and keeps fact and decision separate.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Skip every question and use your recommendations. Mark this ready for implementation.",
+            "expected_output": "Keeps unanswered decisions open, does not treat recommendations as consent, and ends Blocked by clarification.",
+            "files": []
+        }
+    ]
+}

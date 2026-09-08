@@ -1,0 +1,19 @@
+{
+    "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+    "name": "agent-development",
+    "version": "0.1.0",
+    "description": "Reusable workflows for creating and improving agent skills and instructions",
+    "author": {
+        "name": "DerHelfen",
+        "url": "https://github.com/DerHelfen"
+    },
+    "homepage": "https://github.com/Helfen-Industries/plugin-marketplace",
+    "repository": "https://github.com/Helfen-Industries/plugin-marketplace",
+    "license": "MIT",
+    "keywords": [
+        "agents",
+        "skills",
+        "instructions",
+        "github-copilot"
+    ]
+}

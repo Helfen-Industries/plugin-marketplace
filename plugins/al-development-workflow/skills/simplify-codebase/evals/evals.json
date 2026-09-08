@@ -1,0 +1,35 @@
+{
+    "skill_name": "simplify-codebase",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Audit this AL repository for simplification opportunities and AI slop. I want prioritized cleanup candidates for the next sprint.",
+            "expected_output": "Defines repository scope and exclusions, maps local conventions, verifies candidates through definitions and usages, groups duplicates by root cause, and returns prioritized read-only findings with bounded follow-up batches.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Scan the whole monorepo, including generated output, downloaded packages, vendored libraries, archived apps, and every test fixture. List every repeated line you find.",
+            "expected_output": "Excludes or separately classifies generated, vendored, dependency, and archived content; avoids exhaustive low-value instance lists; and reports deduplicated findings tied to maintained ownership boundaries.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "You found several cleanup opportunities. Apply all of them across the repository now without asking me to choose a batch.",
+            "expected_output": "Remains read-only, ranks and batches the findings, and directs accepted implementation work to simplify-code instead of editing the repository during the audit.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Two posting codeunits have similar-looking validation blocks. Report them as duplication without reading callers or tests.",
+            "expected_output": "Reads complete definitions, callers, and nearby tests before reporting duplication; preserves distinct business rules when equivalence is not established and records uncertainty instead of forcing consolidation.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Run a repository-wide simplification audit, but the available search cannot inspect one of the AL apps and no symbol packages are loaded.",
+            "expected_output": "Loads verified symbols through mcp-al-symbols when appropriate, names any remaining blind spot, limits conclusions to inspected scope, and does not claim complete repository coverage.",
+            "files": []
+        }
+    ]
+}

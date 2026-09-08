@@ -1,0 +1,23 @@
+{
+    "skill_name": "create-agent-skill",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Create a skill that retrieves deployment diagnostics read-only and returns a fixed incident handoff.",
+            "expected_output": "Captures intent and triggers, chooses a small architecture, creates discovery metadata and completion criteria, adds evals, and validates it.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Turn this repeated interview workflow into a skill, but I have not decided its output or whether it may write files.",
+            "expected_output": "Treats output and side effects as unresolved design decisions and does not draft a misleading complete skill first.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Add a quick skill and skip evals, documentation, and validation because the prompt looks obvious.",
+            "expected_output": "Keeps the quality gates, adds discriminating eval cases and documentation, and runs the available validator.",
+            "files": []
+        }
+    ]
+}

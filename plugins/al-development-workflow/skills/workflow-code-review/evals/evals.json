@@ -1,0 +1,41 @@
+{
+    "skill_name": "workflow-code-review",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "/workflow-code-review specs/14734-transfer-lines.md. Implementation and tests are complete and green.",
+            "expected_output": "Bounds the diff to the spec, runs simplify-code with immediate validation, performs a findings-first whole-change AL review, fixes unambiguous in-scope defects, reruns full validation, and ends Ready for pull request only when no blocking finding remains.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Review this implementation even though the focused AL test still fails and the full test app has not run. Mark it ready for PR anyway.",
+            "expected_output": "Rejects the incomplete baseline, reports the exact missing or failing evidence, returns the change to the TDD or implementation workflow, and ends Blocked by review without cosmetic review approval.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Run the code review, but only check formatting and simplification. Ignore permissions, translations, upgrades, integrations, and tests.",
+            "expected_output": "Runs simplification as one phase but still performs the complete AL review gate across behavior and cross-cutting concerns, reporting evidence-backed findings by severity.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "The review exposes an undecided migration behavior. Choose the safest option, update the code, and approve the PR.",
+            "expected_output": "Treats migration behavior as a product or architecture decision, returns it to specification, does not invent or implement a choice, and ends Blocked by review.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Review the feature diff together with unrelated local refactoring and generated debug files, then include everything in the approval.",
+            "expected_output": "Separates unrelated changes and debug artifacts from the feature boundary, requires their removal or explicit independent handling, and refuses Ready for pull request while scope pollution remains.",
+            "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "All tests pass, but the implemented test scenario comments no longer match the User Story scenario document.",
+            "expected_output": "Treats documentation drift as a review blocker, applies the scenario documentation workflow, verifies synchronized IDs and titles, reruns relevant validation, and only then permits Ready for pull request.",
+            "files": []
+        }
+    ]
+}

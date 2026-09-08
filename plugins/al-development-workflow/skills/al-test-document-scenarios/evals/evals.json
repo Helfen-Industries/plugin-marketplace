@@ -1,0 +1,41 @@
+{
+    "skill_name": "al-test-document-scenarios",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Document AL test scenarios for assigned Task 890. Its direct parent User Story 14734 owns Transfer Lines feature code TL and four acceptance criteria in specs/14734-transfer-lines.md.",
+            "expected_output": "Keeps Task 890 in entry metadata, uses User Story 14734 as the behavior and artifact source, writes the document below the Story-based test documentation path, allocates stable 14734-TL sequence IDs, and maps every Story acceptance criterion to independently testable Given/When/Then scenarios.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Create test documentation for the new import behavior. There is no work item, feature code, or measurable acceptance criteria; make reasonable ones up.",
+            "expected_output": "Treats the missing prefix and measurable behavior as blocking input, asks focused questions, and does not invent product behavior or write a misleading scenario document.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Add a second When action to scenario 14734-TL-003 and renumber all existing scenarios so there are no sequence gaps.",
+            "expected_output": "Preserves stable IDs, refuses cosmetic renumbering, and splits independently actionable behavior so every scenario has exactly one When action.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Synchronize the test scenarios with existing AL tests whose scenario titles and IDs no longer match the document.",
+            "expected_output": "Treats the scenario document as the behavior source, reports every mismatch by AL file and method, and updates only scenario comments and mappings without changing test or production behavior.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Write the scenario document and implement all production code and tests in the same documentation pass.",
+            "expected_output": "Creates only the scenario specification, returns Ready for test implementation when complete, and leaves implementation to the separate TDD workflow.",
+            "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "Create scenario documentation from assigned Task 890, but its direct parent User Story cannot be retrieved. Use 890 as the scenario prefix and infer acceptance criteria from the Task.",
+            "expected_output": "Refuses to use the Task as feature identity or invent acceptance criteria, keeps the entry reference, reports the missing parent User Story as blocking, and writes no misleading final scenario document.",
+            "files": []
+        }
+    ]
+}

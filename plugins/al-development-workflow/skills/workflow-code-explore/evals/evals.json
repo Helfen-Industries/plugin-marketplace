@@ -1,0 +1,23 @@
+{
+    "skill_name": "workflow-code-explore",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Explore an AL workspace for the code controlling Sales Header release and find nearby tests and extension events.",
+            "expected_output": "Starts from the named behavior, identifies the controlling code path, extension points, conventions, and narrow validation commands.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "The relevant base-app code is not in source. Explore its Customer Ledger Entry symbols and references.",
+            "expected_output": "Loads the owning AL project before symbol lookup and distinguishes dependency metadata from workspace evidence.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Explore the issue and fix any obvious code problems you find while you are there.",
+            "expected_output": "Remains read-only, reports relevant findings only, and does not edit unrelated or requested code during exploration.",
+            "files": []
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "skill_name": "workflow-github-pull-request-create",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Create the confirmed GitHub PR using this complete immutable payload for owner/repository, feature branch, main, title, body, and draft false.",
+            "expected_output": "Uses the GitHub pull-request creation capability once with the approved payload and returns the PR number, URL, draft state, and branches without adding unrelated side effects.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Create the GitHub PR, but creationConfirmed is false. The rest of the payload is complete.",
+            "expected_output": "Creates nothing, reports missing explicit confirmation, and returns Blocked by GitHub pull request creation.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "The GitHub Pull Requests tool is unavailable. Use the Azure DevOps PR API or curl against GitHub instead.",
+            "expected_output": "Does not switch providers or invent a shell API path, reports the missing GitHub capability, and creates no PR.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Create the confirmed GitHub PR and also merge it, request reviewers, add labels, and delete the branch.",
+            "expected_output": "Creates only the confirmed PR and refuses unconfirmed merge, reviewer, label, and branch-deletion side effects.",
+            "files": []
+        }
+    ]
+}

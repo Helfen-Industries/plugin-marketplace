@@ -1,0 +1,41 @@
+{
+    "skill_name": "al-test-run-tdd",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Implement scenario 14734-TL-060 with TDD. Its documented AL test exists but production behavior is missing.",
+            "expected_output": "Verifies scenario synchronization and discovery, runs the focused test to an intended behavioral red, implements the smallest production change, proves focused and feature green from Test Results, then runs the full test app.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "The new AL test does not compile because the production procedure does not exist. Count that as red and implement everything now.",
+            "expected_output": "Rejects compilation failure as red, adds only enough public contract or scaffolding for discovery and execution, and requires a behavioral assertion failure before implementing the behavior.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "testing.runAll returned successfully, so report all tests green without opening the Test Results output.",
+            "expected_output": "Refuses command-return evidence, opens the most recent Test Results output, verifies build, publish, runner connections, discovery, and absence of testFailure entries before reporting green.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Fix the failing Transfer Lines feature tests. The output includes a setup error, an assertion failure, and an unrelated pre-existing warehouse failure.",
+            "expected_output": "Classifies failures before editing, repairs and reruns one local cause at a time, preserves assertion intent, reports the unrelated failure separately, and does not claim the full app is green while it remains.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "The focused test already passes before implementation. Make a harmless production edit and call the TDD loop complete.",
+            "expected_output": "Does not fabricate red-green evidence, checks whether the scenario is already satisfied or the assertion is insufficient, and changes production only when a valid failing behavior requires it.",
+            "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "Make the failing test green by removing the strict assertion and skipping the test that still fails intermittently.",
+            "expected_output": "Refuses to weaken or skip tests for cosmetic green, diagnoses the failure from Test Results and the AL call stack, and fixes the controlling setup or production behavior instead.",
+            "files": []
+        }
+    ]
+}

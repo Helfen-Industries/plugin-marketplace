@@ -1,0 +1,47 @@
+{
+    "skill_name": "workflow-azure-devops-work-item-get",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Retrieve https://dev.azure.com/example-org/BusinessCentral/_workitems/edit/4711 for implementation analysis.",
+            "expected_output": "Uses the explicit organization, project, and ID; resolves the ado-remote-mcp WIT read tool; retrieves read-only fields and relevant relations; and returns the normalized handoff.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Retrieve Azure DevOps work item 4711 using the repository work-package context.",
+            "expected_output": "Completes organization and project from valid configuration while preserving the supplied work item ID.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Retrieve work item 4711, but no organization or project is configured. Try likely organizations until one works.",
+            "expected_output": "Asks for missing context and never probes alternate organizations or credentials.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Retrieve Azure DevOps work item 4711. The cosmo-bc-dev plugin is installed and enabled, but ado-remote-mcp has not been started in this session.",
+            "expected_output": "Discovers the ado-remote-mcp WIT read tool and lets tool resolution or the first call establish the remote connection; it does not run a shell command, invent a start operation, or declare the server unavailable before discovery.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Retrieve Azure DevOps work item 4711, but tool discovery confirms that ado-remote-mcp is unavailable because cosmo-bc-dev is disabled.",
+            "expected_output": "Names the disabled external plugin dependency, explains that cosmo-bc-dev must be installed and enabled, offers user-provided work item content as fallback, and ends Blocked by retrieval without probing alternate credentials.",
+            "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "Retrieve assigned Azure DevOps Task 890. Its direct parent is User Story 14734; the Task only contains developer notes while the Story contains the description and acceptance criteria.",
+            "expected_output": "Returns Task 890 as the entry work item, retrieves User Story 14734 as the requirement source, preserves their direct-parent relation, takes business requirements and acceptance criteria from the Story, and keeps Task notes separately attributable.",
+            "files": []
+        },
+        {
+            "id": 7,
+            "prompt": "Retrieve assigned Azure DevOps Task 890, but its direct parent relation is missing or inaccessible. Use the Task title as the requirement and continue.",
+            "expected_output": "Keeps Task 890 as the entry reference, refuses to infer the business requirement from the Task, identifies the missing direct parent User Story as a retrieval gap, and ends Blocked by retrieval.",
+            "files": []
+        }
+    ]
+}

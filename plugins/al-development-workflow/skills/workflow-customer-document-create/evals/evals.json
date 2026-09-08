@@ -1,0 +1,35 @@
+{
+    "skill_name": "workflow-customer-document-create",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Create customer documentation for reviewed User Story 14734 from specs/14734-transfer-lines.md and its implemented test scenarios.",
+            "expected_output": "Writes the deterministic Story-based customer document, describes only delivered user-visible behavior, includes accurate setup, permissions, usage, upgrade notes, limitations, and scenario traceability, and avoids AL implementation detail.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Document the feature for customers, but setup defaults and permission assignment were not verified in the implementation. Invent likely Business Central navigation and roles.",
+            "expected_output": "Refuses to invent setup paths, defaults, or permissions, identifies the missing verification as blocking, and does not publish unsupported customer instructions.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Write customer release documentation listing tableextension 50100, subscriber procedures, event publishers, and source files.",
+            "expected_output": "Translates delivered behavior into non-technical customer language, omits AL objects and source internals, and retains only business-relevant setup, usage, upgrade, and limitation information.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "The spec planned three capabilities, but review proves only two were implemented. Document all three because they belong to the User Story.",
+            "expected_output": "Documents only reviewed delivered behavior, reports the missing capability as a blocker or approved deviation, and does not present planned behavior as available.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Replace an existing customer feature document that contains manually maintained deployment guidance with a newly generated version.",
+            "expected_output": "Preserves unrelated customer-authored content, identifies conflicting sections, and asks before replacing manual guidance.",
+            "files": []
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+    "name": "al-development-workflow",
+    "version": "0.9.0",
+    "description": "Structured Business Central AL development workflows for GitHub Copilot",
+    "author": {
+        "name": "DerHelfen",
+        "url": "https://github.com/DerHelfen"
+    },
+    "homepage": "https://github.com/Helfen-Industries/plugin-marketplace",
+    "repository": "https://github.com/Helfen-Industries/plugin-marketplace",
+    "license": "MIT",
+    "keywords": [
+        "al",
+        "business-central",
+        "github-copilot",
+        "work-items"
+    ]
+}

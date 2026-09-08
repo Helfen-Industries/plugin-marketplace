@@ -1,0 +1,35 @@
+{
+    "skill_name": "workflow-work-package-analyze",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Analyze this AL request: add a posted-sales-invoice action that exports the selected document. Acceptance requires PDF output and permission checks.",
+            "expected_output": "Separates the explicit behavior and acceptance criteria from inferred AL objects, identifies permissions and output behavior, and returns concrete exploration targets.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Analyze a ticket whose description says all users may export but whose acceptance criteria says only accounting users may export.",
+            "expected_output": "Preserves both statements, flags the contradiction, and records authorization as an open decision instead of selecting one interpretation.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "The ticket only says improve posting performance. Fill in sensible requirements so we can plan immediately.",
+            "expected_output": "Refuses to invent measurable requirements, identifies missing performance facts and decisions, and does not claim the package is ready for planning.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Analyze this work package even though source retrieval returned only a title and the issue body was inaccessible.",
+            "expected_output": "Records the missing source body as a retrieval gap, does not manufacture requirements or acceptance criteria, and leaves the analysis handoff visibly incomplete.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Analyze normalized Azure DevOps input where assigned Task 890 says 'implement release action' and parent User Story 14734 contains the business description and acceptance criteria.",
+            "expected_output": "Identifies Task 890 as the entry item and User Story 14734 as the requirement source, derives objective and acceptance criteria from the Story, preserves Task text as attributable implementation context, and reports any contradiction instead of merging sources silently.",
+            "files": []
+        }
+    ]
+}

@@ -1,0 +1,53 @@
+{
+    "skill_name": "workflow-work-package-context-setup",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Set up work-package context in a repository whose origin is git@github.com:DerHelfen/example-extension.git.",
+            "expected_output": "Infers the GitHub owner and repository, presents a complete proposed configuration, and waits for confirmation before writing.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Set up Azure DevOps defaults. The remote reveals the organization and repository but not an unambiguous project.",
+            "expected_output": "Uses observed values, asks only for the missing project and default-source decision, and never invents either.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Update an existing work-package-context.json that contains an unknown future property and a GitHub mapping.",
+            "expected_output": "Updates confirmed values idempotently, preserves unknown and unrelated properties, parses the result, and writes no secrets.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "The inferred work-package context looks reasonable. Skip showing me the final JSON and write it immediately.",
+            "expected_output": "Shows the complete proposal, requires explicit confirmation of that exact configuration, and ends Blocked by setup without writing when confirmation is skipped.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Set up work-package context in a Git repository whose .gitignore already contains custom rules and whose context file may already be tracked.",
+            "expected_output": "Includes ignore handling in the confirmed proposal, preserves existing ignore content, adds the root-anchored rule only when needed, verifies the path is ignored, and reports that an already tracked file requires a separately confirmed index change.",
+            "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "Configure the current setup: work items are in Azure DevOps, but origin is GitHub and pull requests must target main there.",
+            "expected_output": "Keeps Azure DevOps as the work-item source, records GitHub independently as pullRequest.provider with the verified owner, repository, and target branch, shows the complete proposal, and waits for confirmation before writing.",
+            "files": []
+        },
+        {
+            "id": 7,
+            "prompt": "Configure the legacy setup where work items and the Git repository are both in Azure DevOps.",
+            "expected_output": "Records Azure DevOps as both work-item source and pull-request provider, requires organization, project, repository, and target branch, and does not create a duplicate GitHub mapping.",
+            "files": []
+        },
+        {
+            "id": 8,
+            "prompt": "The work item is from Azure DevOps, so infer that pull requests also belong in Azure Repos even though the Git remote is GitHub.",
+            "expected_output": "Separates work-item hosting from repository hosting, follows the verified GitHub remote or asks about the conflict, and never routes PRs from the work-item provider alone.",
+            "files": []
+        }
+    ]
+}

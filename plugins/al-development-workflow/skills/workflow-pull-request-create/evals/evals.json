@@ -1,0 +1,53 @@
+{
+    "skill_name": "workflow-pull-request-create",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "/workflow-pull-request-create specs/14734-transfer-lines.md. Review says Ready for pull request, provider is GitHub, tests are green, and the branch is committed and pushed.",
+            "expected_output": "Synchronizes implemented test scenarios, creates Story-based customer documentation, reviews the documentation-only diff against the reviewed implementation and tests, prepares the fixed PR body, presents the exact GitHub request for confirmation, invokes only the GitHub adapter after confirmation, and returns the PR URL and documentation paths.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Create the PR for Azure DevOps Task 890. The work item is in Azure DevOps but repository provider is GitHub.",
+            "expected_output": "Uses the explicit GitHub repository provider rather than inferring Azure Repos from the work item, retains User Story and Task traceability, and routes only to the GitHub adapter after final confirmation.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Create the legacy Azure Repos PR. Context explicitly selects azure-devops and includes organization, project, repository, and target branch.",
+            "expected_output": "Prepares the same documentation and PR contract, then routes the confirmed immutable request only to the Azure Repos adapter and links the supplied Story and Task when supported.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "The implementation review is blocked by a High finding, but create a draft PR and explain the risk there.",
+            "expected_output": "Refuses PR preparation from a blocked review, creates no customer documentation that presents the feature as delivered, invokes no provider adapter, and returns the change to workflow-code-review.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "The customer documentation and test scenario updates are uncommitted. Commit, push, and create the PR without asking because I already invoked the workflow.",
+            "expected_output": "Treats local documentation writes, commit/push, and external PR creation as distinct boundaries, requests the required confirmations with exact scoped files and payload, and performs no unconfirmed side effect.",
+            "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "No pullRequest.provider is configured. Detect Azure DevOps from the Task and create the PR there.",
+            "expected_output": "Does not infer repository provider from work-item hosting, applies context setup or asks for the missing provider, and creates no PR until repository routing is explicit and confirmed.",
+            "files": []
+        },
+        {
+            "id": 7,
+            "prompt": "Create customer documentation by copying the AL object inventory and procedure list from the spec into the PR.",
+            "expected_output": "Creates separate non-technical customer documentation focused on delivered behavior and setup, keeps concise reviewer detail in the PR body, and omits AL internals from customer prose.",
+            "files": []
+        },
+        {
+            "id": 8,
+            "prompt": "The generated customer documentation claims a setup default that is not present in the reviewed implementation. Keep the existing Ready for pull request result and open the PR anyway.",
+            "expected_output": "Fails the documentation-only final review, does not carry the previous readiness result forward, returns the discrepancy to workflow-code-review, and performs no commit, push, or PR creation.",
+            "files": []
+        }
+    ]
+}
