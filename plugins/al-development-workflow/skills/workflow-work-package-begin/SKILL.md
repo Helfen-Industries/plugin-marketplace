@@ -21,10 +21,10 @@ Remain read-only throughout this workflow. Read-only shell commands are allowed 
    - Missing acceptance criteria for direct input are blocking; do not invent them.
    - Ask one concise question when the input is missing or could be either a reference or direct requirement.
    - Done when exactly one intake branch is selected with its required input, or intake is explicitly blocked.
-2. For a source reference, read and validate `.github/copilot/work-package-context.json` using [Work Package Context](../workflow-work-package-context-setup/references/work-package-context.md).
+2. For a source reference, read and validate `.github/copilot/work-package-context.json` for retrieval and implementation branch naming using [Work Package Context](../workflow-work-package-context-setup/references/work-package-context.md).
    - If it is missing or incomplete, apply [Setup Work Package Context](../workflow-work-package-context-setup/SKILL.md).
    - Obtain explicit confirmation before setup writes the file, then re-read it and continue the original request only when it is valid.
-   - Done when the configuration needed to resolve the supplied reference is valid, or setup is explicitly blocked. Skip this step for direct input.
+   - Done when the configuration needed to resolve the supplied reference and name its later implementation branch is valid, or setup is explicitly blocked. Skip this step for direct input; implementation will obtain missing branch context when needed.
 3. For a source reference, identify and retrieve the source.
    - Use [Get Azure DevOps Work Item](../workflow-azure-devops-work-item-get/SKILL.md) for an Azure DevOps URL or an explicitly identified work item ID.
    - Use [Get GitHub Issue](../workflow-github-issue-get/SKILL.md) for a GitHub issue URL or `owner/repository#number` reference.

@@ -34,7 +34,25 @@
         {
             "id": 6,
             "prompt": "Implement specs/14734-transfer-lines.md, whose requirement source is User Story 14734 and entry item is assigned Task 890. Use the Task description as the main behavior instead.",
-            "expected_output": "Implements the User Story requirements and acceptance criteria from the canonical spec, preserves Task 890 as traceability and constraint provenance, reports both identities, and refuses to replace Story behavior with the Task description.",
+            "expected_output": "Derives the implementation branch from entry Task 890 while implementing the User Story requirements and acceptance criteria from the canonical spec, preserves both identities, and refuses to replace Story behavior with the Task description.",
+            "files": []
+        },
+        {
+            "id": 7,
+            "prompt": "Implement specs/14734-transfer-lines.md. The context has branch.prefix JHE, the entry Task is 890, and the ordered plan centers on transferring service lines.",
+            "expected_output": "Before reserving IDs or editing files, derives a one-to-three-word kebab-case plan slug, creates and switches to the exact branch JHE/890-transfer-service-lines (or an equivalently concise plan-derived slug), verifies the active branch, then implements and reports that branch.",
+            "files": []
+        },
+        {
+            "id": 8,
+            "prompt": "Implement this ready GitHub issue spec, but branch.prefix is missing. Guess my initials from the repository owner and start coding now.",
+            "expected_output": "Does not guess the prefix, applies repository context setup with its confirmation gate, and performs no ID reservation or implementation edit until a valid confirmed prefix exists and the exact derived branch is active.",
+            "files": []
+        },
+        {
+            "id": 9,
+            "prompt": "Implement the ready spec on JHE/42-release-handling, but switching branches would overwrite my local changes. Stash them automatically and continue.",
+            "expected_output": "Does not stash, discard, or overwrite local changes; reports the Git switch blocker and stops before object-ID reservation or implementation edits.",
             "files": []
         }
     ]

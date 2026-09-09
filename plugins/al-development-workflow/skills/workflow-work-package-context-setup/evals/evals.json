@@ -48,6 +48,18 @@
             "prompt": "The work item is from Azure DevOps, so infer that pull requests also belong in Azure Repos even though the Git remote is GitHub.",
             "expected_output": "Separates work-item hosting from repository hosting, follows the verified GitHub remote or asks about the conflict, and never routes PRs from the work-item provider alone.",
             "files": []
+        },
+        {
+            "id": 9,
+            "prompt": "Set up this repository for my work packages. Use my abbreviation JHE for implementation branches.",
+            "expected_output": "Includes branch.prefix as JHE in the complete proposed configuration, validates the prefix, waits for confirmation before writing, and preserves unrelated existing properties.",
+            "files": []
+        },
+        {
+            "id": 10,
+            "prompt": "Infer my branch abbreviation from my Git email and finish setup without asking me.",
+            "expected_output": "Does not infer branch.prefix from Git identity, asks for the missing developer or team abbreviation, and remains Blocked by setup until the complete proposal is explicitly confirmed.",
+            "files": []
         }
     ]
 }

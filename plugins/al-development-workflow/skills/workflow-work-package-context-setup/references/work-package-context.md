@@ -10,6 +10,9 @@ This is repository-local configuration. When Git ignore configuration is availab
 {
   "version": 1,
   "defaultSource": "azure-devops",
+  "branch": {
+    "prefix": "JHE"
+  },
   "pullRequest": {
     "provider": "github",
     "targetBranch": "main"
@@ -28,6 +31,8 @@ This is repository-local configuration. When Git ignore configuration is availab
 
 `azureDevOps` and `github` are optional, but the object selected by `defaultSource` must exist and be complete. Azure DevOps requires `organization` and `project`; GitHub requires `owner` and `repository`.
 
+`branch.prefix` is required before implementation. It stores the developer or team abbreviation used for implementation branches and must match `^[A-Za-z0-9][A-Za-z0-9._-]*$`. The implementation branch name is `{prefix}/{entry-reference-number-or-NOID}-{plan-slug}`. Build `plan-slug` from one to three meaningful words in the ordered implementation plan, convert it to lowercase kebab-case, transliterate non-ASCII letters, and remove punctuation and filler words. Use the entry work item or issue number, not a parent requirement-source number; use `NOID` only when the direct requirement has no reference.
+
 `pullRequest` is optional until pull-request preparation. Its `provider` is `azure-devops` or `github`; `targetBranch` is optional and otherwise comes from the verified remote default branch. For Azure Repos, `azureDevOps.repository` is required. For GitHub, the `github` object must be complete. The work-item source and pull-request provider are independent: a repository may use Azure DevOps work items with either Azure Repos or GitHub.
 
 ## Resolution rules
@@ -38,9 +43,10 @@ This is repository-local configuration. When Git ignore configuration is availab
 4. Report a conflict between explicit input and configuration, but follow the explicit input for the current request. Do not rewrite configuration implicitly.
 5. Never read credentials, tokens, or authentication material from this file.
 6. Use `pullRequest.provider` for PR routing. Do not infer the provider merely because the work item came from Azure DevOps.
+7. Use `branch.prefix` only for local implementation branch naming. Do not infer it from Git identity, repository ownership, or work-item assignment.
 
 ## Validation
 
-The configuration is valid for work-package retrieval when it is a JSON object with `version` equal to `1`, `defaultSource` equal to `azure-devops` or `github`, and a complete object for the selected source. It is valid for pull-request creation when `pullRequest.provider` is supported and its matching repository identity is complete. Ignore unknown properties so the format can evolve compatibly.
+The configuration is valid for work-package retrieval when it is a JSON object with `version` equal to `1`, `defaultSource` equal to `azure-devops` or `github`, and a complete object for the selected source. It is valid for implementation when `branch.prefix` is present and matches the required pattern. It is valid for pull-request creation when `pullRequest.provider` is supported and its matching repository identity is complete. Ignore unknown properties so the format can evolve compatibly.
 
 The ignore rule affects untracked files only. If the configuration is already tracked, report that adding `.gitignore` does not remove it from the Git index; removing it from the index is a separate side effect that requires explicit confirmation.

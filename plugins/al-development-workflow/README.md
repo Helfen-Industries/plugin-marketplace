@@ -28,7 +28,7 @@ Examples:
 
 Azure DevOps retrieval and Azure Repos PR creation require the enabled `cosmo-bc-dev@agent-plugin-marketplace` plugin and its `ado-remote-mcp` server. Implementation also requires the repository's normal AL build and test tooling. New AL objects require the configured object-ID reservation tool.
 
-On the first source-reference or pull-request use, the workflow proposes `.github/copilot/work-package-context.json` and a matching `.gitignore` rule. Direct requirements do not require repository context.
+On the first source-reference, implementation, or pull-request use, the workflow proposes `.github/copilot/work-package-context.json` and a matching `.gitignore` rule. The setup records a confirmed branch prefix such as `JHE`; direct requirements defer this repository context until implementation when necessary.
 
 ## Contents
 
@@ -79,6 +79,7 @@ For an assigned Azure DevOps Task, the Task remains the entry and traceability r
 
 The workflow creates these artifacts when applicable:
 
+- `{branch.prefix}/{entry-reference-number-or-NOID}-{1-to-3-word-plan-slug}`
 - `specs/{requirement-source-id-or-NOID}-{short-slug}.md`
 - `estimates/{spec-basename}.md`
 - test-project scenario documentation with stable `{requirement-source-id}-{feature-code}-{sequence}` IDs
@@ -86,7 +87,7 @@ The workflow creates these artifacts when applicable:
 
 ### Repository And PR Routing
 
-Work-item hosting and pull-request hosting are independent. Configure `defaultSource` for short work-item references and `pullRequest.provider` as either `github` or `azure-devops`. The workflow never chooses a PR provider merely because the requirement came from Azure DevOps.
+Work-item hosting and pull-request hosting are independent. Configure `defaultSource` for short work-item references, `branch.prefix` for local implementation branches, and `pullRequest.provider` as either `github` or `azure-devops`. The workflow never chooses a PR provider merely because the requirement came from Azure DevOps.
 
 PR preparation synchronizes implemented-test documentation, creates non-technical customer documentation, reviews the documentation-only diff, and prepares a fixed PR description. It requests separate confirmation before commit, push, and external PR creation.
 
