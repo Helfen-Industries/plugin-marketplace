@@ -7,6 +7,7 @@ All notable changes to this plugin are documented here.
 ### Added
 
 - Plugin README with installation, command catalog, end-to-end usage, artifact paths, provider routing, and safety gates.
+- Repository-configured implementation branch prefixes and deterministic `{prefix}/{entry-number}-{plan-slug}` branch creation before implementation edits.
 - Final findings-first AL code-review gate that includes focused simplification, complete diff review, defect repair, test-document synchronization, and full validation.
 - Provider-neutral pull-request workflow with separate GitHub and Azure Repos write adapters.
 - Story-based non-technical customer documentation covering delivered behavior, setup, permissions, usage, upgrade impact, and limitations.
