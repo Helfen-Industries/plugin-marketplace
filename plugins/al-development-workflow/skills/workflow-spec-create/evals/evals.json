@@ -4,7 +4,7 @@
         {
             "id": 1,
             "prompt": "Create a plan from settled requirements and code exploration identifying a page extension, posting subscriber, permission set, and focused tests.",
-            "expected_output": "Produces the fixed-section canonical technical spec, details each object separately, maps requirements to tests and ordered implementation steps, writes the authorized spec path, and ends Ready for implementation.",
+            "expected_output": "Creates plans/{requirement-source-id-or-NOID}-{short-slug} when absent, writes technical-spec.md there, produces the fixed-section canonical technical spec, details each object separately, maps requirements to tests and ordered implementation steps, and ends Ready for implementation.",
             "files": []
         },
         {
@@ -34,7 +34,7 @@
         {
             "id": 6,
             "prompt": "Create the canonical spec for assigned Task 890 whose direct parent User Story 14734 owns the title, description, and acceptance criteria. Name everything after Task 890 because that was the entry point.",
-            "expected_output": "Uses User Story 14734 for the spec title, filename, requirements, acceptance criteria, and scenario prefix; retains Task 890 and its relation in metadata and constraint provenance; and does not use the Task as the feature identity.",
+            "expected_output": "Uses User Story 14734 for the plan-folder name, spec title, requirements, acceptance criteria, and scenario prefix; writes plans/14734-{short-slug}/technical-spec.md; retains Task 890 and its relation in metadata and constraint provenance; and does not use the Task as the feature identity.",
             "files": []
         }
     ]

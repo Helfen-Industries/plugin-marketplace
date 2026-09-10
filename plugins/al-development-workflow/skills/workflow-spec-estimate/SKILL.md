@@ -12,7 +12,7 @@ Estimate from the canonical spec without changing it. Read its [Technical Specif
 
 ## Input
 
-Require the path to one canonical technical spec. The explicit invocation authorizes creation or update of its derived estimate at `estimates/{spec-basename}.md`; ask before overwriting unrelated manual changes.
+Require the path to one canonical technical spec at `plans/{requirement-source-id-or-NOID}-{short-slug}/technical-spec.md`. The explicit invocation authorizes creation or update of `estimate.md` in that same plan folder; ask before overwriting unrelated manual changes. If the spec uses a legacy location, return the required canonical path and route migration through `workflow-spec-create`; do not create a split artifact set.
 
 ## Process
 
@@ -22,7 +22,7 @@ Require the path to one canonical technical spec. The explicit invocation author
 4. Estimate all fixed categories in Best, Expected, and Worst scenarios. Keep analysis, dependent-app work, automated tests, manual validation, test documentation, and solution documentation visible; use explicit zeroes instead of omitting categories. Estimate related code and tests in coherent batches rather than multiplying every procedure or scenario as independent manual work. Done when every row has three values and a one-line basis.
 5. Reconcile active implementation time, commercial base effort, and scenario totals. Treat waiting for feedback, releases, or test data as elapsed time rather than effort. Keep token consumption informational and outside hour totals. Done when all totals can be reproduced from the rows without double-counted uncertainty.
 6. Determine whether a fixed-price scenario is supportable from scope stability and residual uncertainty. Apply the risk surcharge once when requested and supportable; never add both hidden contingency and a surcharge. Done when eligibility, surcharge, and commercial total are visibly distinct.
-7. Write the fixed estimate artifact without modifying the spec. Done when every template section, classification, scenario value, assumption, and arithmetic check is present.
+7. Ensure the repository-root `plans` directory and target plan folder exist, then write `estimate.md` there without modifying the spec. Do not create separate `specs` or `estimates` directories. Done when the estimate is colocated with the canonical spec for current-layout inputs, and every template section, classification, scenario value, assumption, and arithmetic check is present.
 
 Do not add implementation detail missing from the spec and do not resolve open decisions through estimation. A blocked spec may receive only a preliminary range clearly marked unreliable; it must not receive a fixed-price total.
 

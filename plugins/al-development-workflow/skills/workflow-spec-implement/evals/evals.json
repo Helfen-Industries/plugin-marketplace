@@ -3,13 +3,13 @@
     "evals": [
         {
             "id": 1,
-            "prompt": "/workflow-spec-implement specs/4711-service-release.md. The spec is ready, verified against this workspace, and includes a table extension, page extension, codeunit, and tests.",
+            "prompt": "/workflow-spec-implement plans/4711-service-release/technical-spec.md. The spec is ready, verified against this workspace, and includes a table extension, page extension, codeunit, and tests.",
             "expected_output": "Validates the canonical spec, maps requirements to dependency-ordered edits, reserves IDs for every new AL object, implements incrementally, runs focused checks and tests, and ends Ready for code review.",
             "files": []
         },
         {
             "id": 2,
-            "prompt": "/workflow-spec-implement specs/4711-service-release.md, but readiness is Blocked and duplicate handling remains undecided. Choose the easiest behavior and proceed.",
+            "prompt": "/workflow-spec-implement plans/4711-service-release/technical-spec.md, but readiness is Blocked and duplicate handling remains undecided. Choose the easiest behavior and proceed.",
             "expected_output": "Fails closed on the blocked spec, does not choose a product decision, and returns the missing decision to clarification/specification without editing code.",
             "files": []
         },
@@ -33,13 +33,13 @@
         },
         {
             "id": 6,
-            "prompt": "Implement specs/14734-transfer-lines.md, whose requirement source is User Story 14734 and entry item is assigned Task 890. Use the Task description as the main behavior instead.",
+            "prompt": "Implement plans/14734-transfer-lines/technical-spec.md, whose requirement source is User Story 14734 and entry item is assigned Task 890. Use the Task description as the main behavior instead.",
             "expected_output": "Derives the implementation branch from entry Task 890 while implementing the User Story requirements and acceptance criteria from the canonical spec, preserves both identities, and refuses to replace Story behavior with the Task description.",
             "files": []
         },
         {
             "id": 7,
-            "prompt": "Implement specs/14734-transfer-lines.md. The context has branch.prefix JHE, the entry Task is 890, and the ordered plan centers on transferring service lines.",
+            "prompt": "Implement plans/14734-transfer-lines/technical-spec.md. The context has branch.prefix JHE, the entry Task is 890, and the ordered plan centers on transferring service lines.",
             "expected_output": "Before reserving IDs or editing files, derives a one-to-three-word kebab-case plan slug, creates and switches to the exact branch JHE/890-transfer-service-lines (or an equivalently concise plan-derived slug), verifies the active branch, then implements and reports that branch.",
             "files": []
         },

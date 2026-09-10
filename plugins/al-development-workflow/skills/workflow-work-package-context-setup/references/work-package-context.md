@@ -2,7 +2,7 @@
 
 Repository-specific source defaults live in `.github/copilot/work-package-context.json`.
 
-This is repository-local configuration. When Git ignore configuration is available and no existing rule ignores the path, the setup workflow adds the root-anchored rule `/.github/copilot/work-package-context.json` to the repository root `.gitignore`. It preserves existing content and does not add a redundant rule when the path is already ignored.
+This is repository-local configuration. When Git ignore configuration is available, the setup workflow ensures the repository root `.gitignore` ignores both the context file and generated planning artifacts with the root-anchored rules `/.github/copilot/work-package-context.json` and `/plans/`. It preserves existing content and does not add a redundant rule when either path is already ignored.
 
 ## Format
 
@@ -49,4 +49,4 @@ This is repository-local configuration. When Git ignore configuration is availab
 
 The configuration is valid for work-package retrieval when it is a JSON object with `version` equal to `1`, `defaultSource` equal to `azure-devops` or `github`, and a complete object for the selected source. It is valid for implementation when `branch.prefix` is present and matches the required pattern. It is valid for pull-request creation when `pullRequest.provider` is supported and its matching repository identity is complete. Ignore unknown properties so the format can evolve compatibly.
 
-The ignore rule affects untracked files only. If the configuration is already tracked, report that adding `.gitignore` does not remove it from the Git index; removing it from the index is a separate side effect that requires explicit confirmation.
+Ignore rules affect untracked files only. If the configuration or `plans` content is already tracked, report that adding `.gitignore` does not remove it from the Git index; removing tracked paths from the index is a separate side effect that requires explicit confirmation.

@@ -3,7 +3,7 @@
     "evals": [
         {
             "id": 1,
-            "prompt": "Document AL test scenarios for assigned Task 890. Its direct parent User Story 14734 owns Transfer Lines feature code TL and four acceptance criteria in specs/14734-transfer-lines.md.",
+            "prompt": "Document AL test scenarios for assigned Task 890. Its direct parent User Story 14734 owns Transfer Lines feature code TL and four acceptance criteria in plans/14734-transfer-lines/technical-spec.md.",
             "expected_output": "Keeps Task 890 in entry metadata, uses User Story 14734 as the behavior and artifact source, writes the document below the Story-based test documentation path, allocates stable 14734-TL sequence IDs, and maps every Story acceptance criterion to independently testable Given/When/Then scenarios.",
             "files": []
         },

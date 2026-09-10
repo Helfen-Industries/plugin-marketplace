@@ -3,7 +3,7 @@
     "evals": [
         {
             "id": 1,
-            "prompt": "/workflow-pull-request-create specs/14734-transfer-lines.md. Review says Ready for pull request, provider is GitHub, tests are green, and the branch is committed and pushed.",
+            "prompt": "/workflow-pull-request-create plans/14734-transfer-lines/technical-spec.md. Review says Ready for pull request, provider is GitHub, tests are green, and the branch is committed and pushed.",
             "expected_output": "Synchronizes implemented test scenarios, creates Story-based customer documentation, reviews the documentation-only diff against the reviewed implementation and tests, prepares the fixed PR body, presents the exact GitHub request for confirmation, invokes only the GitHub adapter after confirmation, and returns the PR URL and documentation paths.",
             "files": []
         },

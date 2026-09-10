@@ -28,7 +28,7 @@
         {
             "id": 5,
             "prompt": "Set up work-package context in a Git repository whose .gitignore already contains custom rules and whose context file may already be tracked.",
-            "expected_output": "Includes ignore handling in the confirmed proposal, preserves existing ignore content, adds the root-anchored rule only when needed, verifies the path is ignored, and reports that an already tracked file requires a separately confirmed index change.",
+            "expected_output": "Includes ignore handling for both /.github/copilot/work-package-context.json and /plans/ in the confirmed proposal, preserves existing ignore content, adds each root-anchored rule only when needed, verifies both paths are ignored, and reports that already tracked content requires a separately confirmed index change.",
             "files": []
         },
         {

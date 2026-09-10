@@ -60,10 +60,10 @@ The two AL test skills are available both as slash commands and for agent-initia
 
 ```text
 /al-development-workflow:workflow-work-package-begin <requirement or source reference>
-/al-development-workflow:workflow-spec-estimate specs/<requirement-id>-<slug>.md
-/al-development-workflow:workflow-spec-implement specs/<requirement-id>-<slug>.md
-/al-development-workflow:workflow-code-review specs/<requirement-id>-<slug>.md
-/al-development-workflow:workflow-pull-request-create specs/<requirement-id>-<slug>.md
+/al-development-workflow:workflow-spec-estimate plans/<requirement-id>-<slug>/technical-spec.md
+/al-development-workflow:workflow-spec-implement plans/<requirement-id>-<slug>/technical-spec.md
+/al-development-workflow:workflow-code-review plans/<requirement-id>-<slug>/technical-spec.md
+/al-development-workflow:workflow-pull-request-create plans/<requirement-id>-<slug>/technical-spec.md
 ```
 
 Estimation is optional. Scenario documentation and TDD are invoked by implementation when needed, or can be run directly:
@@ -80,8 +80,8 @@ For an assigned Azure DevOps Task, the Task remains the entry and traceability r
 The workflow creates these artifacts when applicable:
 
 - `{branch.prefix}/{entry-reference-number-or-NOID}-{1-to-3-word-plan-slug}`
-- `specs/{requirement-source-id-or-NOID}-{short-slug}.md`
-- `estimates/{spec-basename}.md`
+- `plans/{requirement-source-id-or-NOID}-{short-slug}/technical-spec.md`
+- `plans/{requirement-source-id-or-NOID}-{short-slug}/estimate.md`
 - test-project scenario documentation with stable `{requirement-source-id}-{feature-code}-{sequence}` IDs
 - `docs/features/{requirement-source-id-or-NOID}-{short-slug}.md`
 

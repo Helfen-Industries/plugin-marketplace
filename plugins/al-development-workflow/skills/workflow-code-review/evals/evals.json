@@ -3,7 +3,7 @@
     "evals": [
         {
             "id": 1,
-            "prompt": "/workflow-code-review specs/14734-transfer-lines.md. Implementation and tests are complete and green.",
+            "prompt": "/workflow-code-review plans/14734-transfer-lines/technical-spec.md. Implementation and tests are complete and green.",
             "expected_output": "Bounds the diff to the spec, runs simplify-code with immediate validation, performs a findings-first whole-change AL review, fixes unambiguous in-scope defects, reruns full validation, and ends Ready for pull request only when no blocking finding remains.",
             "files": []
         },

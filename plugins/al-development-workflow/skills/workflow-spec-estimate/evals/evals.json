@@ -3,13 +3,13 @@
     "evals": [
         {
             "id": 1,
-            "prompt": "/workflow-spec-estimate specs/4711-service-release.md. The spec is ready and includes two extensions, one codeunit, and six related tests with a shared fixture.",
-            "expected_output": "Validates the spec, classifies implementation items, estimates related objects and tests in coherent batches, writes every fixed category with Best, Expected, and Worst values, separates active time, commercial base, surcharge, and total, and ends Estimate ready.",
+            "prompt": "/workflow-spec-estimate plans/4711-service-release/technical-spec.md. The spec is ready and includes two extensions, one codeunit, and six related tests with a shared fixture.",
+            "expected_output": "Validates the spec, classifies implementation items, estimates related objects and tests in coherent batches, writes estimate.md beside technical-spec.md with every fixed category and Best, Expected, and Worst values, separates active time, commercial base, surcharge, and total, and ends Estimate ready.",
             "files": []
         },
         {
             "id": 2,
-            "prompt": "/workflow-spec-estimate specs/4711-service-release.md, but the spec is Blocked because duplicate handling and migration are undecided. Give me a fixed price anyway.",
+            "prompt": "/workflow-spec-estimate plans/4711-service-release/technical-spec.md, but the spec is Blocked because duplicate handling and migration are undecided. Give me a fixed price anyway.",
             "expected_output": "Names the readiness gaps, refuses a reliable fixed-price total, at most provides a clearly marked preliminary range without resolving decisions, and ends Blocked by estimation.",
             "files": []
         },
@@ -51,8 +51,14 @@
         },
         {
             "id": 9,
-            "prompt": "Estimate specs/14734-transfer-lines.md. The metadata says assigned Task 890 is the entry item and parent User Story 14734 is the requirement source.",
+            "prompt": "Estimate plans/14734-transfer-lines/technical-spec.md. The metadata says assigned Task 890 is the entry item and parent User Story 14734 is the requirement source.",
             "expected_output": "Classifies User Story 14734 as the business requirement, retains Task 890 in estimate traceability and includes its implementation constraints, and does not classify or title the estimate from the Task description.",
+            "files": []
+        },
+        {
+            "id": 10,
+            "prompt": "Estimate the legacy spec at specs/4711-service-release.md and put the result in a new estimates folder.",
+            "expected_output": "Does not create separate specs or estimates artifact roots, reports the required plans/4711-service-release/technical-spec.md location, and routes spec migration through workflow-spec-create before estimation.",
             "files": []
         }
     ]

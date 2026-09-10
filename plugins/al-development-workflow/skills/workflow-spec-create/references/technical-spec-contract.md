@@ -1,6 +1,6 @@
 # Technical Specification Contract
 
-The canonical handoff between specification, estimation, and implementation is one Markdown document stored at `specs/{requirement-source-id-or-NOID}-{short-slug}.md`.
+The canonical handoff between specification, estimation, and implementation is one Markdown document stored at `plans/{requirement-source-id-or-NOID}-{short-slug}/technical-spec.md`. The plan folder name preserves the existing requirement-source identity and short-slug naming. Keep derived planning artifacts, including `estimate.md`, in the same plan folder; separate `specs` and `estimates` folders are not used.
 
 ## Identity
 

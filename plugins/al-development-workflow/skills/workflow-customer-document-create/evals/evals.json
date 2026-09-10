@@ -3,7 +3,7 @@
     "evals": [
         {
             "id": 1,
-            "prompt": "Create customer documentation for reviewed User Story 14734 from specs/14734-transfer-lines.md and its implemented test scenarios.",
+            "prompt": "Create customer documentation for reviewed User Story 14734 from plans/14734-transfer-lines/technical-spec.md and its implemented test scenarios.",
             "expected_output": "Writes the deterministic Story-based customer document, describes only delivered user-visible behavior, includes accurate setup, permissions, usage, upgrade notes, limitations, and scenario traceability, and avoids AL implementation detail.",
             "files": []
         },
