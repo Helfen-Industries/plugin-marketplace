@@ -22,6 +22,7 @@ All notable changes to this plugin are documented here.
 - Commit, push, and external PR creation are distinct confirmation boundaries.
 - Pull-request preparation now performs a documentation-only final review before commit or push and returns implementation discrepancies to code review.
 - Estimation now ends with the stable `Estimate ready` or `Blocked by estimation` workflow state.
+- Automated-test estimation now uses an Expected baseline of `0.25 h` per mapped test case and counts shared fixture or posting setup once per coherent batch.
 - Read-only shell inspection during work-package intake no longer requires confirmation; file and external-system writes remain confirmed boundaries.
 - AL test scenario documentation and TDD explicitly remain available for agent-initiated invocation.
 

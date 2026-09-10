@@ -28,8 +28,8 @@ Classification expresses delivery complexity, not object count. A related object
 | Focused existing-object change |              5-20 | discovery and wiring           |
 | Interface plus implementation  |             10-20 | dispatch complexity            |
 | Permission set                 |               2-5 | breadth of grants              |
-| First test batch and fixture   |              5-15 | environment setup              |
-| Additional similar scenario    |               1-3 | shared fixture reuse           |
+| Automated test case            |              5-15 | scenario complexity and reuse  |
+| Shared test fixture setup      |               1-3 | environment and data setup     |
 
 Complexity and validation cycles matter more than object count. Generate related objects and scenarios as batches where one coherent edit and test run can cover them.
 
@@ -70,13 +70,13 @@ External release lead time is waiting time, not effort.
 
 ### Automated tests
 
-| Situation                                    |             Expected effort |
-| -------------------------------------------- | --------------------------: |
-| Existing fixture for the business area       |              0.5 h per case |
-| Missing fixture                              | 2.0 h once + 0.5 h per case |
-| Posting run required in automated validation |                      +1.0 h |
+| Situation                                    |              Expected effort |
+| -------------------------------------------- | ---------------------------: |
+| Each mapped automated test case              |              0.25 h per case |
+| Missing fixture                              | 2.0 h once + 0.25 h per case |
+| Posting run required in automated validation |        +1.0 h per test batch |
 
-Count shared fixture setup once and identify it as reusable.
+Use `Expected automated tests = mapped test cases x 0.25 h + one-time setup additions`. Count each distinct test scenario from the spec's test mapping once, regardless of how many procedures, objects, assertions, or execution cycles implement it. Count shared fixture setup and posting additions once per coherent test batch, identify reusable setup explicitly, and justify any deviation from the per-case baseline with measured comparable work or named complexity.
 
 ### Manual validation
 

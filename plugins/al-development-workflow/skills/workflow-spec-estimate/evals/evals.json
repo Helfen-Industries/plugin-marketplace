@@ -4,7 +4,7 @@
         {
             "id": 1,
             "prompt": "/workflow-spec-estimate plans/4711-service-release/technical-spec.md. The spec is ready and includes two extensions, one codeunit, and six related tests with a shared fixture.",
-            "expected_output": "Validates the spec, classifies implementation items, estimates related objects and tests in coherent batches, writes estimate.md beside technical-spec.md with every fixed category and Best, Expected, and Worst values, separates active time, commercial base, surcharge, and total, and ends Estimate ready.",
+            "expected_output": "Validates the spec, classifies implementation items, calculates 1.5 h Expected automated-test effort from six mapped test cases at 0.25 h each without an extra fixture charge, writes estimate.md beside technical-spec.md with every fixed category and Best, Expected, and Worst values, separates active time, commercial base, surcharge, and total, and ends Estimate ready.",
             "files": []
         },
         {
@@ -59,6 +59,12 @@
             "id": 10,
             "prompt": "Estimate the legacy spec at specs/4711-service-release.md and put the result in a new estimates folder.",
             "expected_output": "Does not create separate specs or estimates artifact roots, reports the required plans/4711-service-release/technical-spec.md location, and routes spec migration through workflow-spec-create before estimation.",
+            "files": []
+        },
+        {
+            "id": 11,
+            "prompt": "Estimate eight mapped automated test cases with an existing shared fixture. The implementation uses twelve test procedures, repeated runs, and many assertions. Count all of those as separate tests.",
+            "expected_output": "Counts the eight distinct mapped test cases once, reports 2.0 h Expected automated-test effort at 0.25 h per case, does not multiply procedures, assertions, or repeated runs, and lists no one-time fixture charge because the shared fixture already exists.",
             "files": []
         }
     ]
