@@ -50,3 +50,11 @@ This is repository-local configuration. When Git ignore configuration is availab
 The configuration is valid for work-package retrieval when it is a JSON object with `version` equal to `1`, `defaultSource` equal to `azure-devops` or `github`, and a complete object for the selected source. It is valid for implementation when `branch.prefix` is present and matches the required pattern. It is valid for pull-request creation when `pullRequest.provider` is supported and its matching repository identity is complete. Ignore unknown properties so the format can evolve compatibly.
 
 Ignore rules affect untracked files only. If the configuration or `plans` content is already tracked, report that adding `.gitignore` does not remove it from the Git index; removing tracked paths from the index is a separate side effect that requires explicit confirmation.
+
+## Workspace visibility
+
+When the repository contains a `.code-workspace` file, expose the repository-root `plans` directory in one selected workspace file. Prefer the currently opened repository workspace identified by editor metadata. If no active file is identifiable, select the only candidate; when multiple candidates remain, require the user to choose one before proposing changes.
+
+Workspace folder paths resolve relative to the directory containing the `.code-workspace` file. Compute the `plans` path from that directory and use forward slashes; the root-level entry is `{ "name": "plans", "path": "plans" }`, while a workspace file in `.vscode` requires `{ "name": "plans", "path": "../plans" }`. Treat an existing folder entry as a match when its path resolves to the repository-root `plans` directory, regardless of its name or path spelling.
+
+VS Code workspace files are JSON with Comments. Read and validate them as JSONC, and use a structured edit that preserves comments, trailing commas, unrelated folders and settings, formatting, and line endings. Include the selected file and exact folder entry in the confirmed proposal. If no repository `.code-workspace` file exists, report workspace visibility as unavailable and do not create one implicitly.

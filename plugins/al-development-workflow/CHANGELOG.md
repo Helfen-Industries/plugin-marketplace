@@ -16,7 +16,7 @@ All notable changes to this plugin are documented here.
 ### Changed
 
 - Specification and estimation artifacts now share `plans/{requirement-source-id-or-NOID}-{short-slug}` as their work-package folder, replacing separate `specs` and `estimates` roots.
-- Work-package context setup now adds and verifies `/plans/` in the repository root `.gitignore` alongside its local context rule.
+- Work-package context setup now adds and verifies `/plans/` in the repository root `.gitignore` alongside its local context rule, and exposes the root `plans` directory in a confirmed repository `.code-workspace` file with JSONC-preserving edits.
 - Successful implementation now hands off as `Ready for code review`; only the review workflow may produce `Ready for pull request`.
 - Repository context now configures pull-request provider independently from work-item source, supporting Azure DevOps/Azure Repos legacy setups and Azure DevOps/GitHub current setups.
 - Commit, push, and external PR creation are distinct confirmation boundaries.

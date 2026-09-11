@@ -60,6 +60,24 @@
             "prompt": "Infer my branch abbreviation from my Git email and finish setup without asking me.",
             "expected_output": "Does not infer branch.prefix from Git identity, asks for the missing developer or team abbreviation, and remains Blocked by setup until the complete proposal is explicitly confirmed.",
             "files": []
+        },
+        {
+            "id": 11,
+            "prompt": "Set up this repository. Its only workspace file is .vscode/team.code-workspace, it contains comments and trailing commas, and it does not include the repository plans folder.",
+            "expected_output": "Selects .vscode/team.code-workspace, proposes a plans entry whose path is ../plans, includes that exact edit in the confirmation gate, and preserves valid JSONC comments, trailing commas, unrelated content, formatting, and line endings when writing.",
+            "files": []
+        },
+        {
+            "id": 12,
+            "prompt": "Set up work-package context. This repository contains desktop.code-workspace and team.code-workspace, but the current workspace metadata does not identify which one is active.",
+            "expected_output": "Does not choose a workspace file arbitrarily, asks the user to select one, and remains Blocked by setup without modifying either workspace file until the target and complete proposal are explicitly confirmed.",
+            "files": []
+        },
+        {
+            "id": 13,
+            "prompt": "Rerun setup for a repository whose workspace already has a differently named folder entry that resolves to the repository-root plans directory.",
+            "expected_output": "Recognizes the existing folder by its resolved path, does not add or rename a duplicate entry, and verifies that exactly one workspace folder resolves to the repository-root plans directory.",
+            "files": []
         }
     ]
 }
