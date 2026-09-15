@@ -78,6 +78,18 @@
             "prompt": "Rerun setup for a repository whose workspace already has a differently named folder entry that resolves to the repository-root plans directory.",
             "expected_output": "Recognizes the existing folder by its resolved path, does not add or rename a duplicate entry, and verifies that exactly one workspace folder resolves to the repository-root plans directory.",
             "files": []
+        },
+        {
+            "id": 14,
+            "prompt": "Set up the AL workflow for this existing Business Central repository.",
+            "expected_output": "Uses the work-package context setup directly, treats the request as repository metadata setup, and does not inspect AL manifests, launch profiles, source code, symbols, builds, deployments, or tests.",
+            "files": []
+        },
+        {
+            "id": 15,
+            "prompt": "Run AL workflow setup again. The current context already contains a complete source, branch prefix, pull-request provider, and target branch.",
+            "expected_output": "Uses persisted values as candidates, checks only ignore, tracking, and workspace integration state in one bundled inspection, does not query remotes or the default branch without a missing or conflicting value, and performs one bundled validation after any confirmed write.",
+            "files": []
         }
     ]
 }

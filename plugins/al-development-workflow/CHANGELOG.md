@@ -25,6 +25,7 @@ All notable changes to this plugin are documented here.
 - Automated-test estimation now uses an Expected baseline of `0.25 h` per mapped test case and counts shared fixture or posting setup once per coherent batch.
 - Read-only shell inspection during work-package intake no longer requires confirmation; file and external-system writes remain confirmed boundaries.
 - AL test scenario documentation and TDD explicitly remain available for agent-initiated invocation.
+- AL workflow setup now routes directly to repository-context configuration, skips unrelated AL project inspection, reuses complete persisted values, and bundles discovery and validation to avoid duplicate probes.
 
 ## [0.8.0] - Unreleased
 
