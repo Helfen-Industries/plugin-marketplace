@@ -12,9 +12,7 @@ Own the executable test loop; do not invent scenario behavior. Read [AL Test Exe
 
 ## Input
 
-Require one scenario ID, test method, feature suite, or test app plus its expected behavior. For new behavior, require a documented scenario with measurable Given/When/Then outcomes. For an existing failure, use the current test and Test Results output as evidence.
-
-The request authorizes focused test and implementation edits needed for the named behavior. Preserve unrelated changes and do not repair unrelated failures without user approval.
+Require one scenario ID, test method, feature suite, or test app plus its expected behavior. For new behavior, require a documented scenario with measurable Given/When/Then outcomes. For an existing failure, use the current test and the latest `runTests` output as evidence.
 
 ## Process
 
