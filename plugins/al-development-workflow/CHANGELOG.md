@@ -26,6 +26,8 @@ All notable changes to this plugin are documented here.
 - Read-only shell inspection during work-package intake no longer requires confirmation; file and external-system writes remain confirmed boundaries.
 - AL test scenario documentation and TDD explicitly remain available for agent-initiated invocation.
 - AL workflow setup now routes directly to repository-context configuration, skips unrelated AL project inspection, reuses complete persisted values, and bundles discovery and validation to avoid duplicate probes.
+- `mcp-al-symbols` now routes questions between AL Symbols, the optional BC Observatory and BC Code Atlas servers, and Microsoft Learn; AL Symbols remains the source of truth for compile-relevant facts, and BC Code Atlas use is limited to two calls per question without customer code.
+- Code exploration reads only the decisive Microsoft procedures on the controlling path and labels workspace, dependency, and Microsoft evidence separately with BC versions.
 
 ## [0.8.0] - Unreleased
 

@@ -18,6 +18,12 @@
             "prompt": "Explore the issue and fix any obvious code problems you find while you are there.",
             "expected_output": "Remains read-only, reports relevant findings only, and does not edit unrelated or requested code during exploration.",
             "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Explore why a custom field is not transferred to the posted sales invoice; the transfer happens somewhere inside the base-app posting codeunit.",
+            "expected_output": "Traces the workspace subscribers first, reads only the Microsoft procedure that raises the relevant transfer event through the routed source, and labels workspace, dependency, and Microsoft evidence separately with BC versions.",
+            "files": []
         }
     ]
 }

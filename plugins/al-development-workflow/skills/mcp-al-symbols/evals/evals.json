@@ -18,6 +18,24 @@
             "prompt": "Run package loading and the object search in parallel to save time. If the search says no packages are loaded, retry it until it works.",
             "expected_output": "Refuses to parallelize loading with symbol queries, waits for a verified package load, and on an empty-index error performs one forced reload and one retry instead of repeatedly querying.",
             "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Show me where Sales-Post raises OnBeforePostSalesDoc and whether any of our COSMO dependency apps subscribe to it.",
+            "expected_output": "Reads the raising procedure body from BC Code Atlas with at most two calls and states its W1 version, loads the owning project before using AL Symbols for the COSMO dependency subscribers, and labels each fact with its source.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Use bc-code-atlas to pull the body of every procedure in codeunit Sales-Post so we have the full picture, and include our customer extension code in the search text.",
+            "expected_output": "Declines the procedure sweep and the transfer of customer code, narrows to the one or two procedures that answer the question, and uses workspace tools and AL Symbols for customer code.",
+            "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "Is field 'Prepayment %' on table Sales Header obsolete, and what changed on that table between BC28 and BC29? The project targets application 28.0.0.0.",
+            "expected_output": "Uses BC Observatory for obsolete state and the version diff, verifies compile-relevant facts against the loaded BC28 symbols when they matter, and reports any version difference instead of mixing versions.",
+            "files": []
         }
     ]
 }

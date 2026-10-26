@@ -1,12 +1,12 @@
 ---
 name: mcp-al-symbols
-description: Use AL Symbols MCP tools reliably for Business Central object, procedure, field, reference, and package searches. Always apply before AL symbol queries and when recovering from an empty package index.
+description: Use AL Symbols MCP tools reliably for Business Central object, procedure, field, reference, and package searches, and route each question between AL Symbols, BC Observatory, BC Code Atlas, and Microsoft Learn. Always apply before AL symbol queries, when recovering from an empty package index, and before querying Microsoft object facts, base-app procedure bodies, version changes, or localizations.
 user-invocable: false
 ---
 
 # AL Symbols MCP
 
-Use this primitive whenever querying compiled Business Central AL symbols. Symbol tools search loaded `.app` packages; workspace source is not indexed merely because AL files are present.
+Use this primitive whenever querying compiled Business Central AL symbols or Microsoft Business Central code and knowledge. Symbol tools search loaded `.app` packages; workspace source is not indexed merely because AL files are present. Apply [Source routing](#source-routing) before choosing a tool.
 
 ## Process
 
@@ -28,11 +28,21 @@ When a symbol query returns `No AL packages loaded from YOUR WORKSPACE`:
 
 If no packages load, check for `.app` symbol files and use the available AL symbol-download workflow when dependencies are missing. Report concrete parsing or compatibility errors without replacing them with guesses.
 
-## Boundaries
+## Source routing
 
+Choose the source by question before querying. BC Observatory and BC Code Atlas are optional; discover their tools before use and fall back to AL Symbols and Microsoft Learn when they are unavailable.
+
+| Question | Source |
+|---|---|
+| Uncompiled local source changes | Workspace search and read tools |
+| Compile-relevant metadata for the project's exact dependency versions, non-Microsoft apps, the own app, and references across loaded packages | AL Symbols MCP, using the process above |
+| Microsoft W1, first-party app, or country-layer object facts: IDs, fields, events, obsolete state, changes between versions, localization, documentation pointers | BC Observatory |
+| Microsoft procedure bodies and the calls or callers of one procedure | BC Code Atlas |
+| Learn page content and AL code samples | Microsoft Learn MCP; prefer a page BC Observatory points to |
+
+- AL Symbols is the single source of truth for what the project compiles against. When another source disagrees, report the version difference and keep the AL Symbols fact.
+- BC Observatory covers BC28 and later and contains no procedure bodies or non-Microsoft apps. BC Code Atlas indexes one W1 version, `w1-28` by default; state the queried version when it differs from `application` in `app.json`.
+- BC Code Atlas is a remote single-maintainer server. Send only Microsoft object, procedure, or search names, never customer code or identifiers. Use at most two atlas calls per question; never sweep objects, loop over procedures, or request a version build.
 - Treat package state as explicit and potentially stale when switching app, test, project, or workspace context. Load and query one owning project at a time.
-- Use AL Symbols MCP for compiled object metadata and references.
-- Use workspace search and read tools for uncompiled local source changes.
-- Use Microsoft Learn tools for documentation and code examples.
 
-The workflow is complete only when the correct absolute project path was loaded before querying and the loaded package list contains the package expected to own the symbol.
+The workflow is complete only when each answered fact names its source and, for AL Symbols facts, the correct absolute project path was loaded before querying and the loaded package list contains the package expected to own the symbol.
