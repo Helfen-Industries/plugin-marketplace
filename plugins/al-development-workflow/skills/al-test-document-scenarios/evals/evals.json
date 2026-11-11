@@ -36,6 +36,12 @@
             "prompt": "Create scenario documentation from assigned Task 890, but its direct parent User Story cannot be retrieved. Use 890 as the scenario prefix and infer acceptance criteria from the Task.",
             "expected_output": "Refuses to use the Task as feature identity or invent acceptance criteria, keeps the entry reference, reports the missing parent User Story as blocking, and writes no misleading final scenario document.",
             "files": []
+        },
+        {
+            "id": 7,
+            "prompt": "Document test scenarios from plans/15347-tour-date/technical-spec.md. Its Test scenarios section defines 15347-TD-001 to 15347-TD-006; start fresh at 15347-TOUR-001 because the shorter code looks odd.",
+            "expected_output": "Adopts the spec's scenario IDs, titles, and acceptance-criterion mapping unchanged, does not reallocate or renumber them, and reports any mismatch between spec and existing documentation instead of silently diverging.",
+            "files": []
         }
     ]
 }

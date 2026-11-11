@@ -87,6 +87,18 @@ The workflow creates these artifacts when applicable:
 - test-project scenario documentation with stable `{requirement-source-id}-{feature-code}-{sequence}` IDs
 - `docs/features/{requirement-source-id-or-NOID}-{short-slug}.md`
 
+### Technical Specification
+
+`technical-spec.md` is organized in three parts:
+
+- **Part A - Concept** for consultants and reviewers: summary, initial situation, target process with a required Mermaid diagram, scope, and key decisions on about two pages.
+- **Part B - Technical design** for developers and agents: solution design, an Object catalog with one row per AL object of any type (including enum, report, and permission set extensions, API pages, install and upgrade codeunits, and test codeunits), object details in catalog order, affected cross-cutting concerns, test scenarios, and the ordered implementation plan.
+- **Part C - Appendix**: requirements with traceability, the full decision log, readiness self-review, and version history.
+
+A completeness gate requires every created or changed object, field, enum value, and other member to appear in the Object catalog and every catalog row to be covered by an implementation step. For the same requirement source, a change updates an unimplemented spec in place with a new version, while a change to an implemented spec creates a separate delta spec in its own plan folder that links its base specification. A change from a different requirement source, such as a later direct requirement, always gets its own spec and is never appended to another requirement's spec.
+
+Part A currently uses a generic concept structure; alignment with the Success by Design (SbD) concept template is still open.
+
 ### Repository And PR Routing
 
 Work-item hosting and pull-request hosting are independent. Configure `defaultSource` for short work-item references, `branch.prefix` for local implementation branches, and `pullRequest.provider` as either `github` or `azure-devops`. The workflow never chooses a PR provider merely because the requirement came from Azure DevOps.

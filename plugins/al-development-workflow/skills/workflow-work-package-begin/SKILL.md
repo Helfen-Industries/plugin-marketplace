@@ -39,7 +39,7 @@ Remain read-only throughout this workflow. Read-only shell commands are allowed 
 6. Apply [Explore Relevant Code](../workflow-code-explore/SKILL.md), regardless of apparent task size, with scope proportional to identified targets. Done when its exploration completion condition is satisfied.
 7. Apply [Clarify Work Package](../workflow-work-package-clarify/SKILL.md). Recommendations are not answers. Done when its decision ledger is current and its completion state is explicit.
 8. Stop while any implementation decision remains unresolved or shared understanding is unconfirmed. Done when the clarification completion gate is satisfied.
-9. Apply [Create Implementation Plan](../workflow-spec-create/SKILL.md). Present the canonical spec path and obtain explicit confirmation before writing it. Ask before overwriting an existing spec containing unrelated changes. Done when the persisted spec satisfies its readiness gate, every planned behavior has a validation method, and the workflow ends `Ready for implementation`.
+9. Apply [Create Implementation Plan](../workflow-spec-create/SKILL.md). Present the canonical spec path and its route (new spec, in-place update, or delta spec with its base) and obtain explicit confirmation before writing it. Ask before overwriting an existing spec containing unrelated changes. Done when the persisted spec satisfies its readiness gate, every planned behavior has a validation method, and the workflow ends `Ready for implementation`.
 
 ## Output
 

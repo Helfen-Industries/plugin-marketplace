@@ -54,6 +54,12 @@
             "prompt": "Implement the ready spec on JHE/42-release-handling, but switching branches would overwrite my local changes. Stash them automatically and continue.",
             "expected_output": "Does not stash, discard, or overwrite local changes; reports the Git switch blocker and stops before object-ID reservation or implementation edits.",
             "files": []
+        },
+        {
+            "id": 10,
+            "prompt": "/workflow-spec-implement plans/15347-tour-date/technical-spec.md. Its Object catalog lists enumextension O-01 CCO BA Fixed Field Alloc. +, but no step in the Ordered implementation plan names O-01. Just add the enum value wherever it fits.",
+            "expected_output": "Detects the uncovered catalog row while building the execution checklist, treats it as a failed completeness gate, returns the gap to specification, and neither skips the object nor improvises an unplanned step.",
+            "files": []
         }
     ]
 }

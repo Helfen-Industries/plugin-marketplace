@@ -1,192 +1,153 @@
 # Technical Specification - {Requirement source title} ({Requirement source reference})
 
-## 1. Metadata and readiness
+## Metadata and readiness
 
-- **Source system**: {Azure DevOps, GitHub, or direct requirement}
-- **Entry work item**: {type, ID, title, and canonical reference}
-- **Requirement source**: {type, ID, title, and canonical reference}
+- **Requirement source**: {system, type, ID, title, and canonical reference}
+- **Entry work item**: {system, type, ID, title, and canonical reference}
 - **Entry-to-requirement relation**: {direct parent / same item / direct input}
-- **Spec version**: 1
+- **Base specification**: {relative path of the implemented spec this delta changes; delta specs only}
+- **Version**: {n}
 - **Readiness**: Ready for implementation / Blocked
+- **Blocking gaps**: {exact gaps; blocked specs only}
 - **Language**: {language}
-- **Confirmed understanding**: {confirmation evidence}
-- **Blocking gaps**: {or - None}
+- **Confirmed understanding**: {who confirmed which summary, and when}
 
-## 2. Objective and business context
+## Part A - Concept
 
-- **Objective**: {desired outcome}
-- **Business context**: {actors, process, and reason}
-- **Current behavior**: {verified behavior}
-- **Target behavior**: {observable result}
+### 1. Summary
 
-## 3. Verified requirements and acceptance criteria
+{Intention: why the business needs the change. Benefit: what improves for whom. Solution: what the system does differently. 3-5 sentences.}
 
-### Requirements
+### 2. Initial situation and context
+
+{Actors and roles, affected business process, verified current behavior, the gap, and related prior work. At most 8 sentences or bullets.}
+
+### 3. Target process
+
+```mermaid
+flowchart TD
+    A[{Trigger}] --> B{"{Decision}"}
+    B -->|{Condition}| C[{New behavior}]
+    B -->|{Otherwise}| D[{Unchanged standard behavior}]
+```
+
+1. {Who does what, and how the system responds}
+2. {5-8 steps in business language}
+
+### 4. Scope
+
+**In scope**
+
+- {Business capability}
+
+**Out of scope**
+
+- {Explicit exclusion}
+
+### 5. Key decisions
+
+| Decision   | Answer             | Consequence       | Ref   |
+| ---------- | ------------------ | ----------------- | ----- |
+| {Question} | {Confirmed answer} | {Business effect} | D-001 |
+
+## Part B - Technical design
+
+### 6. Solution design
+
+- **Approach**: {How the catalog objects work together, as 3-6 sentences or an ordered chain of refs}
+- **Technical flow**: {Mermaid sequence diagram when three or more objects interact through events or triggers}
+- **Platform and dependencies**: {Application, platform, runtime, dependency apps with versions, and verified external objects}
+- **Repository conventions**: {Affix, namespace, folders, and ID ranges; new IDs are reserved during implementation}
+- **Verified assumptions**: {Fact the design relies on, with its evidence}
+- **Rejected alternatives**: {Alternative and reason}
+
+### 7. Object catalog
+
+| Ref  | Type         | Name     | Change        | Base object              | Purpose   | File     |
+| ---- | ------------ | -------- | ------------- | ------------------------ | --------- | -------- |
+| O-01 | {Fixed type} | `{Name}` | New / Changed | {ID "Name" (app)} or `-` | {Purpose} | `{Path}` |
+
+### 8. Object details
+
+#### O-01 {Type} `{Name}`
+
+{Type-specific content from the Object Details reference. For Changed objects, only the change.}
+
+### 9. Cross-cutting concerns
+
+#### 9.1 {Affected concern from the fixed list}
+
+- {Decision-relevant detail}
+
+### 10. Test scenarios
+
+| Scenario ID                       | Scenario | Given          | When     | Then     | Acceptance criteria |
+| --------------------------------- | -------- | -------------- | -------- | -------- | ------------------- |
+| {RequirementId}-{FeatureCode}-001 | {Title}  | {Precondition} | {Action} | {Result} | AC-001              |
+
+- **Manual validation**: {Scenario ID: reason it cannot be automated}
+
+### 11. Ordered implementation plan
+
+| Step | Objects / files             | Intended behavior | Validation                       |
+| ---- | --------------------------- | ----------------- | -------------------------------- |
+| 1    | O-01 `{Name}`; {Other file} | {Change}          | {Scenario IDs and focused check} |
+
+## Part C - Appendix
+
+### C1. Requirements and traceability
+
+#### Requirements
 
 | ID    | Requirement   | Source             |
 | ----- | ------------- | ------------------ |
-| R-001 | {requirement} | {source reference} |
+| R-001 | {Requirement} | {Source reference} |
 
-### Acceptance criteria
+#### Acceptance criteria
 
 | ID     | Acceptance criterion   | Requirement |
 | ------ | ---------------------- | ----------- |
-| AC-001 | {measurable criterion} | R-001       |
+| AC-001 | {Measurable criterion} | R-001       |
 
-### Entry-item implementation constraints
+#### Entry-item constraints
 
-| Constraint             | Entry source           | Relationship to requirement         |
-| ---------------------- | ---------------------- | ----------------------------------- |
-| {constraint or - None} | {entry Task reference} | {supports, narrows, or contradicts} |
+| Constraint   | Entry source           | Relationship to requirement         |
+| ------------ | ---------------------- | ----------------------------------- |
+| {Constraint} | {Entry Task reference} | {Supports, narrows, or contradicts} |
 
-## 4. In scope
+#### Traceability
 
-- {deliverable}
+| Acceptance criterion | Objects | Scenarios                         | Steps |
+| -------------------- | ------- | --------------------------------- | ----- |
+| AC-001               | O-01    | {RequirementId}-{FeatureCode}-001 | 1     |
 
-## 5. Out of scope
+### C2. Decision log
 
-- {explicit exclusion}
+| ID    | Decision   | Confirmed answer        | Implementation consequence |
+| ----- | ---------- | ----------------------- | -------------------------- |
+| D-001 | {Decision} | {User-confirmed answer} | {Effect on design}         |
 
-## 6. Confirmed decisions
+### C3. Readiness and self-review
 
-| Decision   | Confirmed answer        | Implementation consequence |
-| ---------- | ----------------------- | -------------------------- |
-| {decision} | {user-confirmed answer} | {effect on design}         |
+- **Requirement coverage**: {Result}
+- **Completeness gate**: {Result of the five catalog checks}
+- **Feasibility evidence**: {Workspace files and symbols checked, with versions}
+- **Remaining risks**: {Risk and the scenario or check that covers it}
 
-## 7. Assumptions and dependencies
+| Cross-cutting concern                   | Result                                                  |
+| --------------------------------------- | ------------------------------------------------------- |
+| Setup and initial data                  | Covered in {9.x or object ref} / Not affected: {reason} |
+| Upgrade, migration, and compatibility   | Covered in {9.x or object ref} / Not affected: {reason} |
+| Permissions and entitlements            | Covered in {9.x or object ref} / Not affected: {reason} |
+| Translations and labels                 | Covered in {9.x or object ref} / Not affected: {reason} |
+| Performance and data volume             | Covered in {9.x or object ref} / Not affected: {reason} |
+| Telemetry and diagnostics               | Covered in {9.x or object ref} / Not affected: {reason} |
+| Integrations and external interfaces    | Covered in {9.x or object ref} / Not affected: {reason} |
+| Data classification, privacy, and audit | Covered in {9.x or object ref} / Not affected: {reason} |
+| Extensibility and published contracts   | Covered in {9.x or object ref} / Not affected: {reason} |
 
-- **Verified assumptions**: {or - None}
-- **App and platform dependencies**: {app.json, BC version, modules}
-- **Repository conventions**: {namespace, affix, ID ranges; no reserved IDs}
-- **External dependencies**: {or - None}
+### C4. Version history
 
-## 8. Solution overview and architecture
-
-- **Design summary**: {how components fit together}
-- **Key design decisions**: {pattern and reason}
-- **Rejected alternatives**: {or - None}
-- **Flow**: {Mermaid diagram or - None}
-
-## 9. Data model
-
-### 9.1 Extension objects
-
-#### {Object type} - {proposed name}
-
-- **Base object**: {verified ID and name}
-- **Fields**:
-
-| Field   | Type   | Caption   | Properties and relation |
-| ------- | ------ | --------- | ----------------------- |
-| {field} | {type} | {caption} | {properties}            |
-
-- **Keys, FlowFields, and deletion behavior**: {or - None}
-- **Placement**: {or - None}
-
-### 9.2 New tables
-
-#### {Proposed table name}
-
-- **Object ID**: Reserved during implementation
-- **Fields**: {same detail as extension fields}
-- **Primary and secondary keys / SIFT**: {details}
-- **FlowFields / FlowFilters**: {or - None}
-- **Relations and deletion behavior**: {details}
-- **Properties**: {DataClassification and page links}
-
-### 9.3 Enums
-
-| Proposed enum | Extensible | Values and captions | Default   | Existing base enum |
-| ------------- | ---------- | ------------------- | --------- | ------------------ |
-| {name}        | {yes/no}   | {values}            | {default} | {or - None}        |
-
-## 10. UI and reports
-
-### Pages and page extensions
-
-| Proposed object | Type / base object | Source table | Placement and fields | Captions and tooltips |
-| --------------- | ------------------ | ------------ | -------------------- | --------------------- |
-| {name}          | {details}          | {table}      | {details}            | {details}             |
-
-### Actions
-
-| Action | Caption   | Image / promotion | Triggered behavior |
-| ------ | --------- | ----------------- | ------------------ |
-| {name} | {caption} | {details}         | {behavior}         |
-
-### Reports, notifications, and Role Center
-
-- {details or - None}
-
-## 11. Logic, events, and extensibility
-
-### Codeunits, interfaces, and procedures
-
-#### {Proposed object or procedure}
-
-- **Object ID**: Reserved during implementation when new
-- **Responsibility**: {single responsibility}
-- **Signature intent**: {parameters and return}
-- **Invocation point**: {trigger, event, or caller}
-- **Logic**: {ordered behavior}
-- **Errors and edge handling**: {details}
-
-### Events
-
-| Kind                   | Publisher / subscriber | Signature or event | Purpose and timing |
-| ---------------------- | ---------------------- | ------------------ | ------------------ |
-| {published/subscribed} | {object}               | {details}          | {reason}           |
-
-## 12. Setup, permissions, and translations
-
-- **Setup and defaults**: {or - None}
-- **Install / upgrade behavior**: {or - None}
-- **Permission sets and entitlements**: {required grants; do not create permission-only tests}
-- **Data classification**: {details}
-- **Labels, captions, and tooltips**: {catalog or - None}
-- **Target languages and XLIFF handling**: {languages}
-
-## 13. Integrations and APIs
-
-- **API pages / queries**: {or - None}
-- **External endpoints and payloads**: {or - None}
-- **Authentication and failure behavior**: {or - None}
-
-## 14. Non-functional and upgrade requirements
-
-- **Performance and data volume**: {keys, SIFT, SetLoadFields, batching}
-- **Telemetry and diagnostics**: {or - None}
-- **Upgrade and migration**: {compatibility and data steps}
-- **Compliance and audit**: {or - None}
-
-## 15. Test scenarios
-
-| Scenario ID                       | Scenario | Given          | When     | Then     | Source |
-| --------------------------------- | -------- | -------------- | -------- | -------- | ------ |
-| {RequirementId}-{FeatureCode}-001 | {title}  | {precondition} | {action} | {result} | AC-001 |
-
-## 16. Ordered implementation plan
-
-| Step | Objects / files     | Intended behavior | Validation      |
-| ---- | ------------------- | ----------------- | --------------- |
-| 1    | {concrete location} | {change}          | {focused check} |
-
-## 17. Object inventory
-
-| Type                   |  New | Extended / changed | Complexity driver               |
-| ---------------------- | ---: | -----------------: | ------------------------------- |
-| Tables                 |  {n} |                {n} | {reason}                        |
-| Enums                  |  {n} |                {n} | {reason}                        |
-| Pages                  |  {n} |                {n} | {reason}                        |
-| Reports                |  {n} |                {n} | {reason}                        |
-| Codeunits / interfaces |  {n} |                {n} | {reason}                        |
-| Permission sets        |  {n} |                {n} | {reason}                        |
-| Tests / scenarios      |  {n} |                {n} | {fixture or environment driver} |
-
-## 18. Self-review
-
-- **Requirement coverage**: {result}
-- **Developer readiness**: {result}
-- **Consistency and scope integrity**: {result}
-- **Feasibility evidence**: {source and symbols checked}
-- **Remaining risks**: {or - None}
+| Version | Date   | Change    | Decisions |
+| ------- | ------ | --------- | --------- |
+| 2       | {Date} | {Summary} | D-0xx     |
