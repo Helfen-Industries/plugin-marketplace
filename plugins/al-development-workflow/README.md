@@ -39,10 +39,11 @@ On the first source-reference, implementation, or pull-request use, the workflow
 | Command                        | Purpose                                                                                                     | Successful state           |
 | ------------------------------ | ----------------------------------------------------------------------------------------------------------- | -------------------------- |
 | `workflow-work-package-begin`  | Retrieve or normalize requirements, explore code, clarify decisions, and create the canonical specification | `Ready for implementation` |
-| `workflow-spec-estimate`       | Create a reproducible Best, Expected, and Worst estimate from a ready specification                         | `Estimate ready`           |
+| `workflow-spec-estimate`       | Estimate active human effort from a ready specification, calibrated by recorded actuals                     | `Estimate ready`           |
 | `workflow-spec-implement`      | Implement an approved specification with reserved object IDs, tests, and validation                         | `Ready for code review`    |
 | `workflow-code-review`         | Simplify and review the complete implementation, repair unambiguous defects, and rerun validation           | `Ready for pull request`   |
-| `workflow-pull-request-create` | Finalize documentation and create a confirmed GitHub or Azure Repos PR                                      | `Pull request created`     |
+| `workflow-pull-request-create` | Finalize documentation, create a confirmed GitHub or Azure Repos PR, and capture active time                | `Pull request created`     |
+| `workflow-actuals-record`      | Record or correct the developer's active time and compare it with the estimate                              | `Actuals recorded`         |
 
 ### Test And Maintenance Commands
 
@@ -75,6 +76,18 @@ Estimation is optional. Scenario documentation and TDD are invoked by implementa
 /al-development-workflow:al-test-run-tdd <scenario ID, test method, feature suite, or test app>
 ```
 
+### Estimation And Actuals
+
+Estimates report the developer's active human effort for AI-assisted delivery: classified implementation items, automated tests per test batch, one S, M, or L delivery allowance for alignment, review, BC validation, build, and PR, and only triggered additions. Best and Worst follow named, evidenced conditions. Agent runtime is informational.
+
+The class and allowance values are start values. After PR creation, the workflow asks one skippable question about your active time. You can also record or correct it later:
+
+```text
+/al-development-workflow:workflow-actuals-record plans/<requirement-id>-<slug> <hours>
+```
+
+Actuals are written to `actuals.md` and upserted into a JSON Lines calibration log outside every repository. Its absolute path is configured as `calibrationLog` in `~/.copilot/al-development-workflow/settings.json`; the first recording proposes a default and asks for confirmation. From three usable records onward, new estimates scale their start values by the measured median ratio. Commit and PR timestamps are never treated as effort.
+
 ### Identity And Artifacts
 
 For an assigned Azure DevOps Task, the Task remains the entry and traceability reference while its direct parent User Story owns the requirements and artifact identity. GitHub issues and direct requirements act as both entry and requirement source.
@@ -84,6 +97,7 @@ The workflow creates these artifacts when applicable:
 - `{branch.prefix}/{entry-reference-number-or-NOID}-{1-to-3-word-plan-slug}`
 - `plans/{requirement-source-id-or-NOID}-{short-slug}/technical-spec.md`
 - `plans/{requirement-source-id-or-NOID}-{short-slug}/estimate.md`
+- `plans/{requirement-source-id-or-NOID}-{short-slug}/actuals.md`
 - test-project scenario documentation with stable `{requirement-source-id}-{feature-code}-{sequence}` IDs
 - `docs/features/{requirement-source-id-or-NOID}-{short-slug}.md`
 

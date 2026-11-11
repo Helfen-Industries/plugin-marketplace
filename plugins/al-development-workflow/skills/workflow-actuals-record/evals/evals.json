@@ -1,0 +1,59 @@
+{
+    "skill_name": "workflow-actuals-record",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "/workflow-actuals-record plans/4711-service-release 3.5. The v2 estimate in that folder says Best 3.0 h, Expected 4.0 h, Worst 6.0 h, and the calibration log is configured.",
+            "expected_output": "Asks no question, writes actuals.md beside the spec with a total deviation of -0.5 h (-12.5%) within the range and every category marked not split, upserts one usable record keyed by repository, plan, and PR or manual with the estimate's uncalibrated start values, and ends Actuals recorded.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "workflow-pull-request-create just created PR 42 for plans/14734-transfer-lines and hands over to actuals capture. When asked, the developer answers: about 2.5 h, of that 0.5 h review.",
+            "expected_output": "Asks exactly one active-time question with an optional category split, records 2.5 h total and 0.5 h for delivery allowance while leaving the other categories null, asks no follow-up, compares against the estimate, writes actuals.md, and links the record to PR 42.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Don't ask me. Just take the time from the first commit on the branch to the PR creation as my actual effort and record it.",
+            "expected_output": "Refuses to derive effort from commit, branch, or PR timestamps because they include time spent on other tasks, asks the single active-time question instead, and writes nothing if the developer skips.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "/workflow-actuals-record plans/NOID-label-fix 0.75. There is no estimate.md in the plan folder.",
+            "expected_output": "Writes actuals.md with the reported total and no category comparison, upserts the record with estimate null and usable false because no v2 estimate exists, and ends Actuals recorded.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "/workflow-actuals-record plans/4711-service-release 2. No ~/.copilot/al-development-workflow/settings.json exists, and the developer declines the proposed path.",
+            "expected_output": "Asks one question that only proposes the default calibration log path because the hours were supplied, does not create the settings file after the decline, still writes actuals.md, reports that the record was not stored, and does not ask again.",
+            "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "/workflow-actuals-record plans/15347-warehouse-production-picking 12. The estimate was made for spec version 1, but version 3 with additional Tour Date requirements was delivered.",
+            "expected_output": "Records the 12 h and the comparison, marks the record not usable because the delivered spec version differs from the estimated one, and states that reason in actuals.md and the log record.",
+            "files": []
+        },
+        {
+            "id": 7,
+            "prompt": "Record 4 h for plans/4711-service-release, then commit actuals.md and push it to the PR branch so reviewers see it.",
+            "expected_output": "Writes actuals.md and the calibration record without staging, committing, or pushing as part of actuals capture, notes that plans/ is normally ignored by Git, and treats version control of the file as a separate request that requires its own confirmation.",
+            "files": []
+        },
+        {
+            "id": 8,
+            "prompt": "I recorded 3 h for plans/4711-service-release yesterday, but it was actually 4.5 h. Correct it.",
+            "expected_output": "Replaces the existing log line with the same key instead of appending a duplicate, rewrites actuals.md with 4.5 h, and verifies that every log line parses and exactly one line has that key.",
+            "files": []
+        },
+        {
+            "id": 9,
+            "prompt": "workflow-pull-request-create just created PR 7 for plans/NOID-label-fix. This is the first recording on this machine, so no calibration settings exist yet.",
+            "expected_output": "Asks one combined question for active time with optional split and for confirmation of the proposed default log path, creates the settings file only if that answer confirms a path, and asks no second question.",
+            "files": []
+        }
+    ]
+}

@@ -6,4 +6,4 @@ Prepare documentation and create a provider-routed pull request after the local 
 /al-development-workflow:workflow-pull-request-create <canonical spec path and reviewed implementation>
 ```
 
-The workflow synchronizes implemented test scenarios, creates non-technical customer documentation, prepares a fixed PR description, and routes the explicitly confirmed write to GitHub or Azure Repos according to repository context.
+The workflow synchronizes implemented test scenarios, creates non-technical customer documentation, prepares a fixed PR description, and routes the explicitly confirmed write to GitHub or Azure Repos according to repository context. After creation, it asks one skippable question about the developer's active time and records it with `workflow-actuals-record`.

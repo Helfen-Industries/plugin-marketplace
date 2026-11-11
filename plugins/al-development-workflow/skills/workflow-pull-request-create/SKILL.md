@@ -1,6 +1,6 @@
 ---
 name: workflow-pull-request-create
-description: Prepare documentation and create a pull request for a reviewed Business Central AL implementation. Synchronize implemented test scenarios, create non-technical customer documentation, build the PR description, and route the confirmed write to GitHub or Azure Repos from repository context. Use only after workflow-code-review ends Ready for pull request.
+description: Prepare documentation and create a pull request for a reviewed Business Central AL implementation. Synchronize implemented test scenarios, create non-technical customer documentation, build the PR description, route the confirmed write to GitHub or Azure Repos from repository context, and then capture the developer's active time for estimate calibration. Use only after workflow-code-review ends Ready for pull request.
 argument-hint: <canonical spec path and reviewed implementation>
 user-invocable: true
 disable-model-invocation: true
@@ -41,9 +41,10 @@ Do not create a PR from a blocked review, default branch, detached HEAD, empty b
    - For `azure-devops`, apply [Create Azure Repos Pull Request](../workflow-azure-devops-pull-request-create/SKILL.md).
    - Never choose from the work-item provider or silently fall back to another provider.
    - Done when the selected adapter returns a PR URL and identifier or a concrete provider blocker.
+10. After the provider confirms creation, apply [Record Delivery Actuals](../workflow-actuals-record/SKILL.md) with the plan folder and PR reference. It asks one skippable question for active time and, on first use, the calibration log path. Done when it returns `Actuals recorded` or `Actuals skipped`, or its blocker is reported without changing the PR result.
 
 ## Output
 
-Return provider, PR identifier and URL, source and target branches, draft state, requirement source, assigned Task, customer-document path, test-scenario document path, validation summary, and any provider warning.
+Return provider, PR identifier and URL, source and target branches, draft state, requirement source, assigned Task, customer-document path, test-scenario document path, validation summary, actuals path or skip, and any provider warning.
 
 End with `Pull request created` only after the provider confirms creation. Otherwise end `Blocked by pull request preparation` without claiming external success.
