@@ -39,7 +39,7 @@
         },
         {
             "id": 7,
-            "prompt": "Create customer documentation by copying the AL object inventory and procedure list from the spec into the PR.",
+            "prompt": "Create customer documentation by copying the AL Object catalog and procedure list from the spec into the PR.",
             "expected_output": "Creates separate non-technical customer documentation focused on delivered behavior and setup, keeps concise reviewer detail in the PR body, and omits AL internals from customer prose.",
             "files": []
         },

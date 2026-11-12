@@ -46,7 +46,7 @@
         {
             "id": 8,
             "prompt": "Beginne mit Arbeitspaket 4711. All decisions are confirmed and exploration is complete; create the final implementation output.",
-            "expected_output": "Proposes the deterministic canonical spec path, obtains confirmation before writing, persists the fixed-section technical spec without estimates or new object IDs, and returns Ready for implementation with the path.",
+            "expected_output": "Proposes the deterministic canonical spec path and its route, obtains confirmation before writing, persists the three-part technical spec in template order without estimates or new object IDs, and returns Ready for implementation with the path.",
             "files": []
         },
         {

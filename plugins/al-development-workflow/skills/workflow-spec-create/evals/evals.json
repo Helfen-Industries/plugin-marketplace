@@ -4,7 +4,7 @@
         {
             "id": 1,
             "prompt": "Create a plan from settled requirements and code exploration identifying a page extension, posting subscriber, permission set, and focused tests.",
-            "expected_output": "Creates plans/{requirement-source-id-or-NOID}-{short-slug} when absent, writes technical-spec.md there, produces the fixed-section canonical technical spec, details each object separately, maps requirements to tests and ordered implementation steps, and ends Ready for implementation.",
+            "expected_output": "Creates plans/{requirement-source-id-or-NOID}-{short-slug} when absent and writes technical-spec.md there in template order: a business-language Part A with a Mermaid target process, an Object catalog with one typed row each for the page extension, subscriber codeunit, permission set, and test codeunit, one details block per row in catalog order, test scenarios, an ordered implementation plan naming catalog refs, and a C1 matrix mapping every acceptance criterion to objects, scenarios, and steps; ends Ready for implementation.",
             "files": []
         },
         {
@@ -28,13 +28,43 @@
         {
             "id": 5,
             "prompt": "Create the technical spec and include object IDs for every new table and codeunit plus a fixed-price estimate in the same document.",
-            "expected_output": "Leaves new object IDs for implementation, excludes effort and pricing from the canonical spec, preserves all fixed sections, and directs estimation to the separate estimation skill.",
+            "expected_output": "Leaves IDs for new objects, fields, and enum values to implementation, excludes effort and pricing from the canonical spec, keeps the template's section order, and directs estimation to the separate estimation skill.",
             "files": []
         },
         {
             "id": 6,
             "prompt": "Create the canonical spec for assigned Task 890 whose direct parent User Story 14734 owns the title, description, and acceptance criteria. Name everything after Task 890 because that was the entry point.",
             "expected_output": "Uses User Story 14734 for the plan-folder name, spec title, requirements, acceptance criteria, and scenario prefix; writes plans/14734-{short-slug}/technical-spec.md; retains Task 890 and its relation in metadata and constraint provenance; and does not use the Task as the feature identity.",
+            "files": []
+        },
+        {
+            "id": 7,
+            "prompt": "The design adds the value 'Tour Date' to our existing enum extension and two request-page fields to the standard Create Pick report through a report extension. Just mention both inside the codeunit description; they are too small for their own entries.",
+            "expected_output": "Adds a Changed enumextension row and a reportextension row to the Object catalog with their own details blocks, defines the enum value and request-page fields only there, references them from the codeunit, and does not pass the completeness gate while either object is hidden in another object's description.",
+            "files": []
+        },
+        {
+            "id": 8,
+            "prompt": "User Story 15347 received an additional acceptance criterion after plans/15347-warehouse-production-picking/technical-spec.md was implemented: Warehouse Pick lines must also show the Work Center name. Append it to that spec as version 3.",
+            "expected_output": "Does not append to the implemented spec; proposes a delta spec in its own plan folder such as plans/15347-pick-work-center-name with Base specification linking the picking spec, continues the base's requirement, criterion, and decision numbering, catalogs only objects the change creates or modifies, leaves the base spec unchanged, and asks to confirm the path before writing.",
+            "files": []
+        },
+        {
+            "id": 9,
+            "prompt": "plans/4711-service-release/technical-spec.md is ready but nothing is implemented yet. The customer additionally wants the release date on the posted service invoice. Update the plan.",
+            "expected_output": "Updates the existing spec in place after confirmation, increments Version, adds a C4 version-history row, keeps existing object refs and requirement, criterion, decision, and scenario IDs stable while continuing their numbering, and does not create a delta spec.",
+            "files": []
+        },
+        {
+            "id": 10,
+            "prompt": "Skip the concept part and the flow diagram, the developers only need the object list. And write None into every section that does not apply so nothing looks forgotten.",
+            "expected_output": "Keeps a concise Part A with summary, context, a Mermaid target process with 5-8 steps, scope, and key decisions; omits non-applicable optional sections and attribute lines instead of writing None; and records each not-affected cross-cutting concern with its reason in C3.",
+            "files": []
+        },
+        {
+            "id": 11,
+            "prompt": "plans/15347-warehouse-production-picking/technical-spec.md is ready but not implemented yet. A separate direct requirement from today asks to carry the logistics Tour Date to sales lines and production order lines. Add it to the 15347 spec as version 3, it is the same customer anyway.",
+            "expected_output": "Treats the direct requirement as a different requirement source even though the picking spec is not implemented, proposes its own spec instead of appending (a new spec, because it does not change specified picking behavior), starts its numbering at 001, leaves the picking spec unchanged, and confirms the path before writing.",
             "files": []
         }
     ]

@@ -18,13 +18,13 @@ The explicit invocation authorizes behavior-preserving simplification and correc
 
 ## Process
 
-1. Establish the review boundary from the canonical spec, entry work item, requirement source, changed files, commits, and current diff. Separate implementation changes from unrelated user work. Done when every reviewed file maps to a requirement, test, documentation artifact, or necessary delivery metadata.
+1. Establish the review boundary from the canonical spec, entry work item, requirement source, changed files, commits, and current diff. Separate implementation changes from unrelated user work. Done when every reviewed file maps to an Object catalog row, a scenario or customer document, or necessary delivery metadata such as `app.json` or XLIFF.
 2. Reconfirm the baseline with the strongest focused test and build evidence already required by the implementation. If the baseline is red, report the failures and stop before simplification. Done when review begins from a known green baseline.
 3. Apply [Code Simplify](../simplify-code/SKILL.md) to the bounded implementation. Re-run the narrowest relevant validation immediately after its first edit. Done when accepted simplifications preserve behavior and focused validation is green.
 4. Review the complete resulting diff against the spec and AL review gate. Inspect full changed functions plus relevant call sites, tests, permissions, translations, upgrade paths, integration boundaries, and generated documentation. Report findings first, ordered Critical, High, Medium, Low, with file references, observed consequence, evidence, and smallest correction. Done when every changed behavior and cross-cutting concern has been reviewed or marked not applicable.
 5. Correct only unambiguous in-scope findings whose intended behavior is already established by the spec. After each correction, rerun the narrowest falsifying check. Return product decisions, architecture changes, or scope expansion to specification; do not guess. Done when no Critical, High, or unresolved Medium finding remains.
 6. Apply [Document AL Test Scenarios](../al-test-document-scenarios/SKILL.md) when implementation or test review exposes scenario-document drift. Run the focused tests, feature suite, full AL test app, build, analyzers, and diagnostics required by the repository. Inspect Test Results rather than command invocation alone. Done when all required validation is green and documentation matches implemented tests.
-7. Re-read the final diff for accidental churn, secrets, unrelated files, stale comments, debug code, and unsupported deviations. Done when the final change is explainable from the spec and every remaining Low finding or residual risk is explicit.
+7. Re-read the final diff for accidental churn, secrets, unrelated files, stale comments, debug code, and unsupported deviations. Report every AL object created or changed outside the Object catalog as a deviation finding unless it is explicitly approved. Done when the final change is explainable from the spec and every remaining Low finding or residual risk is explicit.
 
 ## Output
 

@@ -36,6 +36,12 @@
             "prompt": "All tests pass, but the implemented test scenario comments no longer match the User Story scenario document.",
             "expected_output": "Treats documentation drift as a review blocker, applies the scenario documentation workflow, verifies synchronized IDs and titles, reruns relevant validation, and only then permits Ready for pull request.",
             "files": []
+        },
+        {
+            "id": 7,
+            "prompt": "Tests are green. The diff also adds a permissionsetextension and a helper codeunit that the spec's Object catalog does not list. Approve it, they were obviously needed.",
+            "expected_output": "Reports each AL object outside the Object catalog as a deviation finding, requires explicit approval, removal, or a return to specification, and does not end Ready for pull request while the deviation is unresolved.",
+            "files": []
         }
     ]
 }
