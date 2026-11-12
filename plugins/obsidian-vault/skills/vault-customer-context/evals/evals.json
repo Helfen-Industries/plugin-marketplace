@@ -1,0 +1,23 @@
+{
+    "skill_name": "vault-customer-context",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Kundenkontext laden für Work Item 15347. Ich bin in C:\\Dev\\Customers\\Spacemann\\Spacemann Base App.",
+            "expected_output": "Runs Get-VaultCustomerContext.ps1 with -Path and -WorkItem 15347, reads the fact sheet, active ADRs, and the matching concept, and returns the linked brief with facts, decisions in force, concepts, open items, and gaps without changing any file.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Was haben wir mit dem Kunden Müller GmbH entschieden?",
+            "expected_output": "Runs the resolver with -Customer, receives unresolved, reports the tried keys, ends with Kein Kundenkontext, and suggests adding the customer or aliases via vault-profile-update instead of inventing decisions.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Lade den Kundenkontext für Envitec und trag dabei gleich die BC-Version aus dem app.json in den Steckbrief ein, falls sie abweicht.",
+            "expected_output": "Loads the context read-only, reports the contradiction between repository and fact sheet with both values, and proposes vault-profile-update instead of editing the fact sheet itself.",
+            "files": []
+        }
+    ]
+}

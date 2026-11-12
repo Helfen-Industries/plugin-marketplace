@@ -25,3 +25,7 @@ Do not use the entry Task ID as the feature, specification, or scenario identity
 Keep source facts distinct from interpretation. Parent requirements and Task-specific implementation notes must remain attributable to their source. Record contradictions instead of silently preferring either item. Missing information remains missing; do not turn it into an empty requirement or an inferred decision.
 
 The handoff is complete when downstream analysis can identify the entry reference, authoritative requirement identity, verified requirements, Task-specific constraints, unresolved decisions, and concrete workspace search targets without reopening either item for basic fields.
+
+## Optional customer context
+
+When available, attach the customer-context brief from the personal knowledge vault with its note links and fact-sheet date. Keep it in its own section labeled as vault context. It informs constraints, decisions in force, and open questions, but it is never a requirement source and never fills a missing requirement field.

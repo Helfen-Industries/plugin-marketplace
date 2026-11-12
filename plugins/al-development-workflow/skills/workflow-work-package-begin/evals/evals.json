@@ -90,6 +90,18 @@
             "prompt": "/workflow-work-package-begin owner/repository#42. Inspect the Git remote and workspace metadata needed for context resolution.",
             "expected_output": "Runs only the necessary read-only inspection without asking for shell-command confirmation, remains read-only, and still requires explicit confirmation before any context, gitignore, specification, or external-system write.",
             "files": []
+        },
+        {
+            "id": 16,
+            "prompt": "/workflow-work-package-begin 15347 in C:\\Dev\\Customers\\Spacemann\\Spacemann Base App. The obsidian-vault plugin is installed, and the customer's ADR says picking always uses the production location, while the User Story asks for the warehouse location.",
+            "expected_output": "Loads the customer context read-only through vault-customer-context for the repository and Story ID, attaches the brief as labeled vault context, keeps the Story as the only requirement source, and raises the ADR conflict as a clarification item instead of resolving it or editing the vault.",
+            "files": []
+        },
+        {
+            "id": 17,
+            "prompt": "/workflow-work-package-begin Add a release check to Service Orders. Acceptance criteria: orders without a technician cannot be released. No knowledge-vault plugin is installed.",
+            "expected_output": "Records that no customer context is available and continues analysis, exploration, and clarification without blocking, inventing customer facts, or asking to install the vault plugin.",
+            "files": []
         }
     ]
 }

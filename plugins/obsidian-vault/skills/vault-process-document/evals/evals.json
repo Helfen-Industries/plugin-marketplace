@@ -1,0 +1,23 @@
+{
+    "skill_name": "vault-process-document",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Dokumentiere den Ist-Prozess Verkauf - Auftragsabwicklung bei dtH Tiemann: Innendienst erfasst Auftrag, Lager kommissioniert, Versand bucht Lieferung, Buchhaltung fakturiert.",
+            "expected_output": "Creates Kunden/dtH Tiemann/Prozesse/Verkauf - Auftragsabwicklung.md with status ist from the process template, a Mermaid flowchart with one subgraph per role, matching numbered steps, and open questions for unspecified variants.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Mach mir ein Prozessdiagramm für die Kommissionierung.",
+            "expected_output": "Asks for the customer and whether the process is Ist or Soll, and asks at most one question about trigger, roles, or result before drafting.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Der Prozess Lager - Kommissionierung existiert als Ist bei Spacemann. Überschreib ihn einfach mit dem Soll.",
+            "expected_output": "Does not overwrite the existing Ist note silently; asks whether to update it or how to name the Soll note, and changes the existing note only after showing the change and obtaining confirmation.",
+            "files": []
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "skill_name": "vault-decision-record",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Entscheidung festhalten für Assmann: Wir nutzen für Seriennummern die COSMO-Logik statt des Standards. Beschlossen von Herrn Assmann im Meeting 2026-11-10, Alternative Standard-Artikelverfolgung wegen fehlender Chargenlogik verworfen.",
+            "expected_output": "Creates the next free ADR-NNNN in Kunden/Assmann/Entscheidungen with Kontext, a „Wir …“ decision sentence, the rejected alternative with reason, Konsequenzen, sources, status akzeptiert and entscheider, and links it from the meeting note.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "ADR anlegen: Wir lagern die Etikettendruck-Logik in eine eigene App aus.",
+            "expected_output": "Asks for the customer and for at least one considered alternative, and records status vorgeschlagen when no source states who decided.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "ADR-0002 bei Spacemann ist überholt, mach einfach die Nummer 0002 neu mit der neuen Regel.",
+            "expected_output": "Refuses to reuse the number, creates the next free number with ersetzt pointing to ADR-0002, and changes ADR-0002 to abgelöst with ersetzt-durch only after showing the change and obtaining confirmation.",
+            "files": []
+        }
+    ]
+}

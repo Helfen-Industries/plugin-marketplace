@@ -1,0 +1,20 @@
+{
+    "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+    "name": "obsidian-vault",
+    "version": "0.1.0",
+    "description": "Workflows for a personal Obsidian knowledge vault with customer fact sheets, decisions, concepts, processes, and meeting notes",
+    "author": {
+        "name": "DerHelfen",
+        "url": "https://github.com/DerHelfen"
+    },
+    "homepage": "https://github.com/Helfen-Industries/plugin-marketplace",
+    "repository": "https://github.com/Helfen-Industries/plugin-marketplace",
+    "license": "MIT",
+    "keywords": [
+        "obsidian",
+        "knowledge-base",
+        "business-central",
+        "adr",
+        "github-copilot"
+    ]
+}

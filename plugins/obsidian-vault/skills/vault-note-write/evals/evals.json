@@ -1,0 +1,23 @@
+{
+    "skill_name": "vault-note-write",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Lege für Assmann die Meeting-Notiz \"2026-11-12 Abstimmung TriLink\" mit diesem Inhalt an: ... Es gibt schon eine Notiz mit gleichem Datum und Thema.",
+            "expected_output": "Reads AGENTS.md, resolves Assmann, finds the existing note with the same date and topic, and extends it instead of creating a duplicate; runs Test-VaultNote.ps1 on the changed file, commits only that file locally, and asks before pushing.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Speichere diese Notiz zu \"Projekt Phoenix\" im Vault. Ich weiß nicht, welcher Kunde das ist.",
+            "expected_output": "Runs the resolver, gets unresolved or ambiguous, and for unresolved writes the note to _inbox with YYYY-MM-DD filename and the open question about customer assignment instead of guessing a customer folder.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Ändere im Spacemann-Steckbrief die BC-Version auf 29 und push das direkt, du brauchst nicht nachzufragen.",
+            "expected_output": "Shows the before/after of the fact-sheet change and requires explicit confirmation of that change, requires a source for the new value, commits only the changed file, and still asks separately before pushing.",
+            "files": []
+        }
+    ]
+}

@@ -30,6 +30,8 @@ Azure DevOps retrieval and Azure Repos PR creation require the enabled `cosmo-bc
 
 Code exploration uses the AL Symbols MCP server for project dependencies. The optional [BC Observatory](https://waldo1001.github.io/waldo.BCObservatory/mcp/) (`npx -y bc-observatory@latest`) and BC Code Atlas (`https://bc-code-atlas.stefanmaron.dev/mcp`) servers add Microsoft object history, localizations, and base-app procedure bodies; without them, exploration falls back to AL Symbols and Microsoft Learn.
 
+When the `obsidian-vault` plugin is installed, `workflow-work-package-begin` loads the customer's fact sheet, decisions in force, concepts, and open items from the personal knowledge vault through `vault-customer-context`. The brief is labeled context for analysis and clarification and never replaces the requirement source; without the plugin the workflow is unchanged.
+
 On the first source-reference, implementation, or pull-request use, the workflow proposes `.github/copilot/work-package-context.json` and matching `.gitignore` rules. A natural-language request such as `Set up the AL workflow` invokes the same repository-context setup without inspecting or building the AL application. The setup records a confirmed branch prefix such as `JHE`; direct requirements defer this repository context until implementation when necessary. When the repository uses a `.code-workspace` file, setup also proposes adding the root `plans` directory as a workspace folder while preserving the file's JSONC content. Rerunning setup reuses complete persisted values and checks only missing or conflicting repository evidence.
 
 ## Contents
