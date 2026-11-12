@@ -3,8 +3,8 @@
     "evals": [
         {
             "id": 1,
-            "prompt": "/workflow-spec-estimate plans/4711-service-release/technical-spec.md. The spec is ready and includes two extensions, one codeunit, and six related tests with a shared fixture.",
-            "expected_output": "Validates the spec, classifies implementation items, calculates 1.5 h Expected automated-test effort from six mapped test cases at 0.25 h each without an extra fixture charge, writes estimate.md beside technical-spec.md with every fixed category and Best, Expected, and Worst values, separates active time, commercial base, surcharge, and total, and ends Estimate ready.",
+            "prompt": "/workflow-spec-estimate plans/4711-service-release/technical-spec.md. The spec is ready and includes two extensions, one codeunit, and six related tests that use an existing shared fixture.",
+            "expected_output": "Validates the spec, derives items from the Ordered implementation plan with class start values, groups the six tests into one type A batch at 0.25 h Expected, selects the delivery allowance size from named spec criteria, writes estimate.md beside technical-spec.md with the four human-effort categories in Best, Expected, and Worst, states the calibration state, reports agent runtime outside the totals, and ends Estimate ready.",
             "files": []
         },
         {
@@ -16,13 +16,13 @@
         {
             "id": 3,
             "prompt": "Estimate this spec by assigning one hour to every object, procedure, and test scenario, then add 30 percent contingency to each row and another 30 percent fixed-price surcharge.",
-            "expected_output": "Uses AI-assisted batch calibration instead of manual object multiplication, prevents double-counting uncertainty, and applies any fixed-price surcharge once and separately.",
+            "expected_output": "Uses item classes and test batches instead of object, procedure, or scenario multiplication, derives Best and Worst only from named conditions instead of percentage contingency, and applies any fixed-price surcharge once and separately.",
             "files": []
         },
         {
             "id": 4,
-            "prompt": "Estimate a ready spec for work almost identical to a recently measured 18-minute implementation, but the generic table suggests two hours.",
-            "expected_output": "Uses the measured comparable duration as the stronger calibration signal, states the comparison, and justifies any upward deviation.",
+            "prompt": "Estimate a ready spec. The calibration log contains a usable v2 record with exactly one item, almost identical to one item in this spec, and a reported implementation actual of 0.3 h; this item's class start value is 1.0 h.",
+            "expected_output": "Applies the comparable-record method to that item only, names the record, uses the measured 0.3 h as the stronger signal in the human-effort summary while keeping the 1.0 h start value visible in the item table, and justifies any value above the measurement.",
             "files": []
         },
         {
@@ -34,19 +34,19 @@
         {
             "id": 6,
             "prompt": "Estimate a ready bug spec where the cause is not verified, reproduction needs a posting run, and only dependency symbols are available.",
-            "expected_output": "Classifies the source as a Bug, keeps analysis and reproduction separate from development, reflects symbol-only and posting uncertainty in named scenario conditions, and does not hide it as development padding.",
+            "expected_output": "Classifies the source as a Bug, adds only the highest applicable bug-analysis level (posting run, 1.5 h) as a conditional addition separate from implementation items, applies W-CAUSE in Worst for the unverified cause, and does not hide the uncertainty as item padding.",
             "files": []
         },
         {
             "id": 7,
             "prompt": "Estimate a ready change request with four automated scenarios, no existing fixture, three manual validation paths, eight required screenshots, and new translated captions.",
-            "expected_output": "Shows separate nonzero rows for automated tests including one-time fixture setup, manual validation, test documentation, and build/translations, with reproducible Best, Expected, and Worst values.",
+            "expected_output": "Estimates one type B test batch at 0.5 h instead of a per-scenario charge, selects allowance size M because new translatable text excludes S and three validation paths do not reach L, and covers manual validation, screenshots, and translations inside that allowance rather than in separate rows, with reproducible Best, Expected, and Worst values.",
             "files": []
         },
         {
             "id": 8,
             "prompt": "Give one optimistic number for this ready spec and omit classification, testing, and documentation because AI will generate those parts.",
-            "expected_output": "Refuses the point-only shortcut, classifies each implementation item, retains explicit test and documentation categories, and reports Best, Expected, and Worst totals with named conditions.",
+            "expected_output": "Refuses the point-only shortcut, classifies each implementation item, keeps automated tests and the delivery allowance explicit, and reports Best, Expected, and Worst human effort with named conditions.",
             "files": []
         },
         {
@@ -64,7 +64,43 @@
         {
             "id": 11,
             "prompt": "Estimate eight mapped automated test cases with an existing shared fixture. The implementation uses twelve test procedures, repeated runs, and many assertions. Count all of those as separate tests.",
-            "expected_output": "Counts the eight distinct mapped test cases once, reports 2.0 h Expected automated-test effort at 0.25 h per case, does not multiply procedures, assertions, or repeated runs, and lists no one-time fixture charge because the shared fixture already exists.",
+            "expected_output": "Groups the eight cases into one type A batch at 0.25 h Expected, does not multiply cases, procedures, assertions, or repeated runs, and attributes their volume to agent runtime only.",
+            "files": []
+        },
+        {
+            "id": 12,
+            "prompt": "Estimate a ready spec. The calibration log has five usable v2 records from this repository with actual-to-start total ratios of 0.6, 0.7, 0.8, 0.9, and 1.4, no category breakdowns, and three older v1 records.",
+            "expected_output": "Ignores the v1 records, applies the total-factor method with the median factor 0.8 to every category in Best, Expected, and Worst, keeps the uncalibrated start values in sections 2-4 and the arithmetic check, and reports method, factor, five usable records, and the log path.",
+            "files": []
+        },
+        {
+            "id": 13,
+            "prompt": "Estimate a ready spec. There is no ~/.copilot/al-development-workflow/settings.json on this machine.",
+            "expected_output": "Does not ask for a calibration path, marks every category Uncalibrated with factor 1.0 and the missing-settings reason, estimates from start values, and can still end Estimate ready.",
+            "files": []
+        },
+        {
+            "id": 14,
+            "prompt": "Estimate a ready change with two Small items in existing objects, one validation path without posting, no new texts, and no automated tests. Skip the overhead rows and just double the development time to be safe.",
+            "expected_output": "Uses 0.4 h per Small item, selects delivery allowance S at 0.75 h instead of separate overhead rows or a doubling factor, records 0 h automated tests with a reason, and reports 1.5 h Expected human effort from the unrounded 1.55 h sum.",
+            "files": []
+        },
+        {
+            "id": 15,
+            "prompt": "Estimate a ready spec whose only remaining risk is that splitting paired Take/Place lines may break quantity rounding. Use Expected x 0.75 for Best and Expected x 1.3 for Worst everywhere.",
+            "expected_output": "Rejects the percentage spread, applies W-RISK and W-REWORK only to the splitting item with the cited spec risk, and keeps Best and Worst equal to Expected for every line without a named condition.",
+            "files": []
+        },
+        {
+            "id": 16,
+            "prompt": "Estimate a ready warehouse change whose five scenarios run on an existing test library that already creates the warehouse location, bins, and posted receipts they need.",
+            "expected_output": "Classifies the batch as type A at 0.25 h because no setup must be built, does not select type C merely because warehouse behavior is tested, and does not apply B-FIXTURE because coverage is already verified.",
+            "files": []
+        },
+        {
+            "id": 17,
+            "prompt": "Estimate a ready size-S change whose single acceptance criterion is fully covered by automated tests; the spec requires no manual validation.",
+            "expected_output": "Keeps the S allowance at 0.75 h in Expected and applies B-NOMANUAL in Best with the defined S floor of 0.50 h rather than inventing a smaller size.",
             "files": []
         }
     ]

@@ -6,63 +6,77 @@
 - **Entry work item**: {assigned Task type, ID, title, and canonical reference}
 - **Requirement source**: {User Story or owning requirement type, ID, title, and canonical reference}
 - **Spec requirement reference and version**: {requirement source reference / version}
+- **Estimated spec version**: {Spec version from the spec's metadata}
 - **Spec readiness**: {state}
-- **Estimate confidence**: High / Medium / Low
-- **Calibration source**: {measured comparison or generic model}
 - **Requirement type**: User story / Bug / Change request
+- **Estimation model**: v2
+- **Calibration**: {Comparable record / Category factor / Total factor / Uncalibrated per category, with factor, usable record count, and reason}
+- **Calibration log**: {path or not configured}
+- **Estimate confidence**: High / Medium / Low
 
-## 2. Classified implementation items
+## 2. Implementation items
 
-| Item | Requirement / implementation scope | Class                              | Primary drivers                                      | Evidence                                | Expected development |
-| ---- | ---------------------------------- | ---------------------------------- | ---------------------------------------------------- | --------------------------------------- | -------------------: |
-| {ID} | {scope}                            | {Trivial / Small / Medium / Large} | {logic, integration, migration, layout, environment} | {spec section, object, path, or symbol} |                  {h} |
+Start values from the Ordered implementation plan.
 
-**Object inventory cross-check**: {summary and material difference from classified effort}
+| Item | Plan step | Scope   | Class                              | Primary drivers | Evidence                                     | Best | Expected | Worst | Conditions             |
+| ---- | --------- | ------- | ---------------------------------- | --------------- | -------------------------------------------- | ---: | -------: | ----: | ---------------------- |
+| {ID} | {step}    | {scope} | {Trivial / Small / Medium / Large} | {drivers}       | {spec section name, object, path, or symbol} |  {h} |      {h} |   {h} | {condition IDs or - } |
 
-**Validation batches**: {shared fixtures and execution cycles}
+**Plan steps outside items**: {step and owning category: Automated tests or Delivery allowance, or - None}
 
-## 3. Effort estimate
+## 3. Automated test batches
 
-| #   | Category                       |    Best | Expected |   Worst | Basis                   |
-| --- | ------------------------------ | ------: | -------: | ------: | ----------------------- |
-| 1   | Consultant / product alignment |     {h} |      {h} |     {h} | {reason}                |
-| 2   | Analysis and reproduction      |     {h} |      {h} |     {h} | {reason}                |
-| 3   | Development                    |     {h} |      {h} |     {h} | {reason}                |
-| 4   | Dependent application changes  |     {h} |      {h} |     {h} | {reason}                |
-| 5   | Automated tests                |     {h} |      {h} |     {h} | {reason}                |
-| 6   | Manual validation              |     {h} |      {h} |     {h} | {reason}                |
-| 7   | Test documentation             |     {h} |      {h} |     {h} | {reason}                |
-| 8   | Build and translations         |     {h} |      {h} |     {h} | {reason}                |
-| 9   | Code review and PR             |     {h} |      {h} |     {h} | {reason}                |
-| 10  | Expected bug fixing            |     {h} |      {h} |     {h} | {reason}                |
-| 11  | Solution documentation         |     {h} |      {h} |     {h} | {reason}                |
-|     | **Commercial base effort**     | **{h}** |  **{h}** | **{h}** | Sum of hour-valued rows |
+Start values; scenario count does not multiply hours.
 
-- **Active implementation time**: Best {h} / Expected {h} / Worst {h}
-- **Headline effort range**: Best {h} / Expected {h} / Worst {h}
-- **Token consumption estimate**: {range and basis; informational only}
+| Batch | Scenarios               | Shared setup         | Type        | Best | Expected | Worst | Conditions            |
+| ----- | ----------------------- | -------------------- | ----------- | ---: | -------: | ----: | --------------------- |
+| {ID}  | {scenario IDs or range} | {fixture or library} | {A / B / C} |  {h} |      {h} |   {h} | {condition IDs or - } |
+
+## 4. Delivery allowance and additions
+
+- **Allowance size**: S / M / L - {deciding criteria from the spec}
+
+| Line                         | Trigger or basis    | Best | Expected | Worst | Conditions            |
+| ---------------------------- | ------------------- | ---: | -------: | ----: | --------------------- |
+| Delivery allowance           | {size and criteria} |  {h} |      {h} |   {h} | {condition IDs or - } |
+| {Addition or None triggered} | {trigger evidence}  |  {h} |      {h} |   {h} | {condition IDs or - } |
+
+## 5. Human effort
+
+| Category                           |    Best | Expected |   Worst | Calibration factor | Basis                             |
+| ---------------------------------- | ------: | -------: | ------: | -----------------: | --------------------------------- |
+| Implementation items               |     {h} |      {h} |     {h} |           {factor} | {item count and classes}          |
+| Automated tests                    |     {h} |      {h} |     {h} |           {factor} | {batch count and types}           |
+| Delivery allowance                 |     {h} |      {h} |     {h} |           {factor} | {size}                            |
+| Conditional additions              |     {h} |      {h} |     {h} |           {factor} | {triggered lines or None}         |
+| **Human effort (commercial base)** | **{h}** |  **{h}** | **{h}** |                    | Sum rounded to the nearest 0.25 h |
+
+- **Agent runtime (informational)**: {range and basis from Object catalog, test batches, and cycles; optional token range}
 - **Fixed-price eligible**: Yes / No
-- **Fixed-price surcharge (30% of Expected commercial base)**: {value or N/A}
-- **Fixed-price commercial total**: {value or N/A} h
+- **Fixed-price surcharge (30% of Expected human effort)**: {value or N/A}
+- **Fixed-price commercial total**: {value or N/A}
 
-## 4. Assumptions and exclusions
+## 6. Scenario conditions and unpriced risks
+
+| Condition | Scenario     | Affected line               | Effect | Evidence                                            |
+| --------- | ------------ | --------------------------- | -----: | --------------------------------------------------- |
+| {ID}      | Best / Worst | {item, batch, or allowance} |    {h} | {spec risk, assumption, decision, or verified fact} |
+
+- **Unpriced risks**: {risk outside scope or requiring a spec revision, or - None}
+
+## 7. Assumptions and exclusions
 
 - {assumption}
 - {excluded cost or activity}
 
-## 5. Risks and sensitivity
+## 8. Waiting time
 
-| Risk or unknown | Estimate effect      | Already priced where             |
-| --------------- | -------------------- | -------------------------------- |
-| {risk}          | {range or condition} | {row / surcharge / not included} |
+- {feedback, external release, environment, or test-data lead time; not included in effort}
 
-## 6. Waiting time
+## 9. Arithmetic check
 
-- {feedback, external release, or test-data lead time; not included in effort}
-
-## 7. Arithmetic check
-
-- **Best row sum**: {h}
-- **Expected row sum**: {h}
-- **Worst row sum**: {h}
-- **Fixed-price calculation**: {Expected base x 1.30 or N/A}
+- **Expected start values (uncalibrated)**: items {h}, tests {h}, allowance {h}, additions {h}, total {h}
+- **Best row sum**: {unrounded sum} -> {rounded total}
+- **Expected row sum**: {unrounded sum} -> {rounded total}
+- **Worst row sum**: {unrounded sum} -> {rounded total}
+- **Fixed-price calculation**: {Expected human effort x 1.30 or N/A}

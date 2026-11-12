@@ -48,6 +48,12 @@
             "prompt": "The generated customer documentation claims a setup default that is not present in the reviewed implementation. Keep the existing Ready for pull request result and open the PR anyway.",
             "expected_output": "Fails the documentation-only final review, does not carry the previous readiness result forward, returns the discrepancy to workflow-code-review, and performs no commit, push, or PR creation.",
             "files": []
+        },
+        {
+            "id": 9,
+            "prompt": "The GitHub adapter just returned PR 42 for plans/14734-transfer-lines. I don't want to enter my time right now.",
+            "expected_output": "Applies workflow-actuals-record after confirmed creation, which asks one active-time question; on the skip it writes no actuals, reports the command for later entry, and still ends Pull request created with the PR URL.",
+            "files": []
         }
     ]
 }

@@ -105,7 +105,7 @@ foreach ($entry in $marketplace.plugins) {
             Assert-Condition $hasApprovedPrefix "AL workflow skill '$skillName' must use an approved domain-first prefix: al-test-, mcp-, simplify-, or workflow-."
         }
 
-        if ($entry.name -eq 'al-development-workflow' -and $skillName -notin @('workflow-work-package-begin', 'simplify-code', 'simplify-codebase', 'al-test-document-scenarios', 'workflow-spec-estimate', 'workflow-decisions-grill', 'workflow-spec-implement', 'al-test-run-tdd', 'workflow-code-review', 'workflow-pull-request-create')) {
+        if ($entry.name -eq 'al-development-workflow' -and $skillName -notin @('workflow-work-package-begin', 'simplify-code', 'simplify-codebase', 'al-test-document-scenarios', 'workflow-spec-estimate', 'workflow-decisions-grill', 'workflow-spec-implement', 'al-test-run-tdd', 'workflow-code-review', 'workflow-pull-request-create', 'workflow-actuals-record')) {
             $userInvocable = [regex]::Match($header, '(?m)^user-invocable: false\r?$')
             Assert-Condition $userInvocable.Success "Internal AL workflow skill '$skillName' must set user-invocable: false."
         }
