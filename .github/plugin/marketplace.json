@@ -45,6 +45,26 @@
                 "github-copilot"
             ],
             "category": "development"
+        },
+        {
+            "name": "obsidian-vault",
+            "source": "plugins/obsidian-vault",
+            "description": "Workflows for a personal Obsidian knowledge vault with customer fact sheets, decisions, concepts, processes, and meeting notes",
+            "version": "0.1.0",
+            "author": {
+                "name": "DerHelfen",
+                "url": "https://github.com/DerHelfen"
+            },
+            "repository": "https://github.com/Helfen-Industries/plugin-marketplace",
+            "license": "MIT",
+            "keywords": [
+                "obsidian",
+                "knowledge-base",
+                "business-central",
+                "adr",
+                "github-copilot"
+            ],
+            "category": "productivity"
         }
     ]
 }

@@ -34,7 +34,8 @@ Remain read-only throughout this workflow. Read-only shell commands are allowed 
    - Skip retrieval for direct input.
 4. Normalize the package using [Normalized Work Package](references/normalized-work-package.md).
    - For direct input, set source type `direct` and preserve exact wording, attachments, links, and missing information.
-   - Done when analysis can distinguish source facts, gaps, and concrete search targets without reopening the source.
+   - When the `vault-customer-context` skill from the `obsidian-vault` plugin is available, apply it read-only with the current repository path and the requirement-source ID, and attach its brief as customer context. Analysis, exploration, and clarification use it for decisions in force, constraints, and open questions; it never supplies requirements or acceptance criteria, and a conflict with the requirement source becomes a clarification item. When the skill is unavailable or reports `Kein Kundenkontext`, record that and continue.
+   - Done when analysis can distinguish source facts, gaps, and concrete search targets without reopening the source, and customer context is attached or its absence is recorded.
 5. Apply [Analyze Work Package](../workflow-work-package-analyze/SKILL.md). Done when its handoff completion condition is satisfied.
 6. Apply [Explore Relevant Code](../workflow-code-explore/SKILL.md), regardless of apparent task size, with scope proportional to identified targets. Done when its exploration completion condition is satisfied.
 7. Apply [Clarify Work Package](../workflow-work-package-clarify/SKILL.md). Recommendations are not answers. Done when its decision ledger is current and its completion state is explicit.

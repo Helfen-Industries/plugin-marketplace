@@ -10,6 +10,7 @@ Authenticate Git for the private repository, then register the marketplace and i
 copilot plugin marketplace add Helfen-Industries/plugin-marketplace
 copilot plugin install al-development-workflow@helfen-agent-marketplace
 copilot plugin install agent-development@helfen-agent-marketplace
+copilot plugin install obsidian-vault@helfen-agent-marketplace
 ```
 
 List the installed plugin:
@@ -59,6 +60,18 @@ The Agent Development plugin provides reusable disciplines and workflows for aut
 ```
 
 It includes skill creation and writing-for-agents guidance and is the home for future agent, prompt, instruction, and workflow-development skills.
+
+## Obsidian Vault
+
+See the [Obsidian Vault guide](plugins/obsidian-vault/README.md) for the working concept, contents, and examples.
+
+The plugin maintains a personal Obsidian knowledge vault with one folder per customer: fact sheets, ADRs, concepts in technical-spec Part A structure, processes, and meeting notes. Its read-only `vault-customer-context` brief is used by `workflow-work-package-begin` when installed:
+
+```text
+/obsidian-vault:vault-customer-context <customer or repository> [work item ID]
+/obsidian-vault:vault-meeting-note <customer> <date> <title> and notes
+/obsidian-vault:vault-concept-create <customer> <work item or topic>
+```
 
 ## Validate
 

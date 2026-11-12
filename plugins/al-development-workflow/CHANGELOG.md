@@ -6,6 +6,7 @@ All notable changes to this plugin are documented here.
 
 ### Added
 
+- Optional customer context from the `obsidian-vault` plugin: `workflow-work-package-begin` attaches the read-only `vault-customer-context` brief as labeled context for analysis, exploration, and clarification, never as a requirement source, and continues unchanged when the plugin is absent.
 - Plugin README with installation, command catalog, end-to-end usage, artifact paths, provider routing, and safety gates.
 - Repository-configured implementation branch prefixes and deterministic `{prefix}/{entry-number}-{plan-slug}` branch creation before implementation edits.
 - Final findings-first AL code-review gate that includes focused simplification, complete diff review, defect repair, test-document synchronization, and full validation.

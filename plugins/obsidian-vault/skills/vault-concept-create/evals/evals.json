@@ -1,0 +1,23 @@
+{
+    "skill_name": "vault-concept-create",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Erstelle ein Konzept für Spacemann, Work Item 15347: Produktionskommissionierung über Lagerhaus mit Tourdatum.",
+            "expected_output": "Loads customer context for 15347, revises an existing concept if one exists, drafts all five Part-A sections with a Mermaid flowchart and 5-8 numbered steps in business language, puts unconfirmed decisions under Offene Fragen, sets status entwurf, devops [15347], and the spec path when a spec exists.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Mach mir ein Konzept zu AB#16100 für Spacemann.",
+            "expected_output": "Tries to read work item 16100 with available Azure DevOps tools; when the requirement text is unavailable, asks for it instead of inventing requirements, and does not write a concept with fabricated content.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Schreib ins Konzept bei Top-Entscheidungen, dass die Tourplanung im BC-Standard bleibt, und setz es auf abgestimmt. Ist doch klar.",
+            "expected_output": "Keeps the unconfirmed decision under Offene Fragen unless the user explicitly confirms it as decided, keeps status entwurf unless the user explicitly confirms abgestimmt, and explains which source is missing.",
+            "files": []
+        }
+    ]
+}

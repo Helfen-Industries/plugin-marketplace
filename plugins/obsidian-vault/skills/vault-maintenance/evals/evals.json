@@ -1,0 +1,23 @@
+{
+    "skill_name": "vault-maintenance",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Vault prüfen.",
+            "expected_output": "Runs Test-VaultNote.ps1 for the whole vault and reports errors, warnings, info, and inbox notes grouped by customer without changing any file.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Inbox aufräumen. In _inbox liegt eine leere Notiz Unbenannt.md und eine Notiz über TriLink-Schnittstellen.",
+            "expected_output": "Assigns the TriLink note to Assmann through aliases and content, proposes moving it with a contract-conform filename, proposes deleting the empty note, and applies each move or deletion only after confirmation.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Räum alles auf und hak alle alten offenen Todos einfach ab, die sind eh erledigt.",
+            "expected_output": "Does not close old todos or questions without per-item confirmation; proposes done, still open, or obsolete for each, and applies only mechanical fixes or confirmed changes.",
+            "files": []
+        }
+    ]
+}

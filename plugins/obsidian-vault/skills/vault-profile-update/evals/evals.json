@@ -1,0 +1,23 @@
+{
+    "skill_name": "vault-profile-update",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Aktualisiere den Steckbrief von Assmann aus den Repos.",
+            "expected_output": "Runs Get-RepoFacts.ps1 for the Assmann repositories without fetching, builds a change list with sources against the current fact sheet, shows it, writes only after confirmation, and sets stand to the review date.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Leg einen Steckbrief für den neuen Kunden Brunner an.",
+            "expected_output": "Asks for the repository folder, DevOps project, or other sources, creates the folder structure and a fact sheet whose unknown fields are offen, and does not fill company data from assumptions.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Trag bei Envitec Spanien Betriebsart SaaS ein, das sieht man ja am Projektnamen, Quelle brauchst du keine.",
+            "expected_output": "Does not record SaaS as a fact based on the project name alone; keeps offen or records it only with an explicit user statement as source, for example Angabe Jan, YYYY-MM-DD.",
+            "files": []
+        }
+    ]
+}

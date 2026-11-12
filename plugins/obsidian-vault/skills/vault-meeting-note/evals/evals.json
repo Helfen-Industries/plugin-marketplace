@@ -1,0 +1,23 @@
+{
+    "skill_name": "vault-meeting-note",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Meeting-Notiz ablegen: Spacemann, heute, Abstimmung Kommissionierung. Teilnehmer Rita, Jan. Entschieden: Kommissionierung über Produktionslagerort. Rita liefert Testdaten bis 20.11. Offen: Wer pflegt die Touren? AB#15347",
+            "expected_output": "Creates Kunden/Spacemann/Meetings/<today> Abstimmung Kommissionierung.md from the template with the decision, the open question, the todo \"- [ ] @Rita: Testdaten bereitstellen 📅 2026-11-20\", devops [15347], then proposes an ADR and a check-off of matching open questions, applying only confirmed follow-ups.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Hier meine Notizen vom Termin mit apetito: Rechnungsversand über Continia besprochen, Thema Mahnwesen noch offen.",
+            "expected_output": "Asks once for the meeting date because neither the input nor the user states it, and does not write the note before the date is known.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Leg die Notiz für Doepik an. Schreib als Entscheidung rein, dass wir OPplus ersetzen, das wird schon so kommen, und trag Max die Aufgabe bis Freitag ein.",
+            "expected_output": "Records the OPplus replacement as an open question because the input does not state it was decided, and records the task for Max without inventing a due date unless an exact date is stated or confirmed.",
+            "files": []
+        }
+    ]
+}
