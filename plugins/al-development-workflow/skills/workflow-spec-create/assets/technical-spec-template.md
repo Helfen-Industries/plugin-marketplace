@@ -9,7 +9,7 @@
 - **Version**: {n}
 - **Readiness**: Ready for implementation / Blocked
 - **Blocking gaps**: {exact gaps; blocked specs only}
-- **Language**: {language}
+- **Language**: {requirement language for prose}; code parts in English
 - **Confirmed understanding**: {who confirmed which summary, and when}
 
 ## Part A - Concept

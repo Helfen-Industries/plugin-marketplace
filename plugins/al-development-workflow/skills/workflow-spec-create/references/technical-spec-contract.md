@@ -20,7 +20,7 @@ Treat an existing spec as **implemented** when its `New` catalog objects (for ol
 
 ## Structure
 
-Keep these English headings in this order as stable anchors for consumers. Write all content in the requirement's language.
+Keep these English headings in this order as stable anchors for consumers. Write descriptions, context, process, and rationale in the requirement's language; write code parts in English as the invariants require.
 
 | Heading                           | Content                                                                                                             |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
@@ -98,6 +98,7 @@ Evaluate every concern in this order. Write a `9.x` subsection only for affected
 
 ## Invariants
 
+- Write every code part in English regardless of the requirement's language: object, field, enum value, procedure, parameter, variable, event, label, and test names; file names; code snippets and code comments; and source-language captions, tooltips, and label texts. Give non-English UI texts only as translations of the English source text.
 - Preserve source requirements, acceptance criteria, confirmed decisions, and explicit exclusions without weakening them.
 - Keep requirement-source content and entry-item implementation constraints separately attributable; never merge contradictory statements silently.
 - Distinguish verified workspace or dependency facts from user decisions.

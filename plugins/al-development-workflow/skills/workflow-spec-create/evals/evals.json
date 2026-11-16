@@ -66,6 +66,12 @@
             "prompt": "plans/15347-warehouse-production-picking/technical-spec.md is ready but not implemented yet. A separate direct requirement from today asks to carry the logistics Tour Date to sales lines and production order lines. Add it to the 15347 spec as version 3, it is the same customer anyway.",
             "expected_output": "Treats the direct requirement as a different requirement source even though the picking spec is not implemented, proposes its own spec instead of appending (a new spec, because it does not change specified picking behavior), starts its numbering at 001, leaves the picking spec unchanged, and confirms the path before writing.",
             "files": []
+        },
+        {
+            "id": 12,
+            "prompt": "Die User Story ist auf Deutsch. Erstelle die Spec und benenne neue Felder, Prozeduren und Variablen deutsch, z. B. 'Lieferdatum Bis' und PruefeFixtermin.",
+            "expected_output": "Writes descriptions and process in German but keeps every code part in English, including object, field, procedure, variable, label, and test names, code snippets, comments, and source captions; German UI texts appear only as translations.",
+            "files": []
         }
     ]
 }
