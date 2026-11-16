@@ -1,12 +1,16 @@
 ﻿<#
 .SYNOPSIS
-    Resolves the vault customer for a name, alias, or repository path and lists that customer's context notes.
+    Resolves the vault customer or project for a name, alias, or repository path and lists its context notes.
 
 .DESCRIPTION
-    Read-only. Resolution order: -Customer (folder, kunde, aliases; exact before partial), otherwise -Path
-    (local repository path listed in a fact sheet, then Git remote URL, then DevOps project or repository
-    name listed in aliases). Writes one JSON object to stdout:
-    status = resolved | ambiguous | unresolved | vault-not-found.
+    Read-only. Searches the fact sheets under 10-Kunden/ and 20-Projekte/. Resolution order: -Customer (folder,
+    kunde or projekt, aliases; exact before partial), otherwise -Path (local repository path listed in a fact
+    sheet, then Git remote URL, then DevOps project or repository name listed in aliases). Writes one JSON object
+    to stdout: status = resolved | ambiguous | unresolved | vault-not-found.
+    For a resolved customer or project it lists decisions, concepts, processes, recent meetings, open tasks
+    (typ: aufgabe, status not archiv), and the appointments of the next -AppointmentDays days from the generated
+    Outlook calendar 99-System/Kalender/outlook/outlook.ics whose subject or location names the folder or an alias.
+    Appointments carry only subject and time; attendees, organizer, location, and description are never emitted.
 
 .EXAMPLE
     powershell -NoProfile -File Get-VaultCustomerContext.ps1 -Path "C:\Dev\Customers\Spacemann\Spacemann Base App" -WorkItem 15347
@@ -18,6 +22,7 @@ param(
     [string] $Path,
     [string] $WorkItem,
     [int] $Days = 30,
+    [int] $AppointmentDays = 7,
     [switch] $ResolveOnly
 )
 
@@ -92,6 +97,9 @@ function New-Result {
         concepts   = @()
         processes  = @()
         meetings   = @()
+        tasks      = @()
+        calendar   = $null
+        appointments = @()
     }
 }
 
@@ -115,21 +123,27 @@ if ($null -eq $vault) {
 }
 
 $result = New-Result 'unresolved'
-$customersRoot = Join-Path $vault 'Kunden'
 
-$profiles = foreach ($folder in Get-ChildItem -LiteralPath $customersRoot -Directory) {
-    $profilePath = Join-Path $folder.FullName '00-Steckbrief.md'
-    $note = if (Test-Path -LiteralPath $profilePath -PathType Leaf) { Read-VaultNote $profilePath } else { $null }
-    $frontmatter = if ($note) { $note.Frontmatter } else { $null }
-    $names = @($folder.Name) + @(Get-VaultText $frontmatter 'kunde') + @(Get-VaultList $frontmatter 'aliases') | Where-Object { $_ -ne '' } | Select-Object -Unique
-    $urls = @()
-    $localPaths = @()
-    if ($note) {
-        $urls = @([regex]::Matches($note.Text, 'https?://[^\s<>()|\]`]+') | ForEach-Object { ConvertTo-NormalizedUrl $_.Value } | Select-Object -Unique)
-        $localPaths = @([regex]::Matches($note.Text, '`([A-Za-z]:\\[^`]+)`') | ForEach-Object { ConvertTo-NormalizedPath $_.Groups[1].Value } | Select-Object -Unique)
+$profiles = foreach ($area in $script:VaultAreas) {
+    $areaRoot = Join-Path $vault $area.Folder
+    if (-not (Test-Path -LiteralPath $areaRoot -PathType Container)) {
+        continue
     }
 
-    [pscustomobject]@{ Folder = $folder.Name; FullName = $folder.FullName; Note = $note; Names = [string[]] $names; Urls = [string[]] $urls; LocalPaths = [string[]] $localPaths }
+    foreach ($folder in Get-ChildItem -LiteralPath $areaRoot -Directory) {
+        $profilePath = Join-Path $folder.FullName '00-Steckbrief.md'
+        $note = if (Test-Path -LiteralPath $profilePath -PathType Leaf) { Read-VaultNote $profilePath } else { $null }
+        $frontmatter = if ($note) { $note.Frontmatter } else { $null }
+        $names = @($folder.Name) + @(Get-VaultText $frontmatter $area.Field) + @(Get-VaultList $frontmatter 'aliases') | Where-Object { $_ -ne '' } | Select-Object -Unique
+        $urls = @()
+        $localPaths = @()
+        if ($note) {
+            $urls = @([regex]::Matches($note.Text, 'https?://[^\s<>()|\]`]+') | ForEach-Object { ConvertTo-NormalizedUrl $_.Value } | Select-Object -Unique)
+            $localPaths = @([regex]::Matches($note.Text, '`([A-Za-z]:\\[^`]+)`') | ForEach-Object { ConvertTo-NormalizedPath $_.Groups[1].Value } | Select-Object -Unique)
+        }
+
+        [pscustomobject]@{ Folder = $folder.Name; Field = $area.Field; Place = "$($area.Folder)/$($folder.Name)"; FullName = $folder.FullName; Note = $note; Names = [string[]] $names; Urls = [string[]] $urls; LocalPaths = [string[]] $localPaths }
+    }
 }
 
 $candidates = @()
@@ -173,7 +187,7 @@ elseif (-not [string]::IsNullOrWhiteSpace($Path)) {
     }
 }
 
-$result.candidates = @($candidates | ForEach-Object { [ordered]@{ kunde = $_.Profile.Folder; matchedBy = $_.MatchedBy } })
+$result.candidates = @($candidates | ForEach-Object { [ordered]@{ name = $_.Profile.Folder; bereich = $_.Profile.Field; ort = $_.Profile.Place; matchedBy = $_.MatchedBy } })
 if ($candidates.Count -gt 1) {
     $result.status = 'ambiguous'
 }
@@ -188,7 +202,7 @@ $result.status = 'resolved'
 $result.matchedBy = $candidates[0].MatchedBy
 $today = (Get-Date).Date
 
-$profileInfo = [ordered]@{ kunde = $selected.Folder; folder = $selected.FullName; steckbrief = $null }
+$profileInfo = [ordered]@{ name = $selected.Folder; bereich = $selected.Field; ort = $selected.Place; folder = $selected.FullName; steckbrief = $null }
 if ($selected.Note) {
     $stand = Get-VaultText $selected.Note.Frontmatter 'stand'
     $standDate = ConvertTo-VaultDate $stand
@@ -283,5 +297,144 @@ $meetings = @(foreach ($file in Get-FolderNotes 'Meetings') {
         }
     })
 $result.meetings = @($meetings | Sort-Object { $_.datum } -Descending)
+
+$taskStatus = @('inbox', 'geplant', 'heute', 'archiv')
+$tasks = @(foreach ($file in Get-FolderNotes 'Aufgaben') {
+        $note = Read-VaultNote $file.FullName
+        if ((Get-VaultText $note.Frontmatter 'typ') -ne 'aufgabe') {
+            continue
+        }
+
+        $status = Get-VaultText $note.Frontmatter 'status'
+        if ($status -ceq 'archiv') {
+            continue
+        }
+
+        [ordered]@{
+            path            = $file.FullName
+            title           = ($file.BaseName -replace '^\d{4}-\d{2}-\d{2}\s+', '')
+            status          = $status
+            statusValid     = $taskStatus -ccontains $status
+            datum           = Get-VaultText $note.Frontmatter 'datum'
+            faellig         = Get-VaultText $note.Frontmatter 'faellig'
+            start           = Get-VaultText $note.Frontmatter 'start'
+            quelle          = Get-VaultText $note.Frontmatter 'quelle'
+            devops          = @(Get-VaultList $note.Frontmatter 'devops')
+            matchesWorkItem = Test-WorkItemMatch $note $file.BaseName
+        }
+    })
+# Due tasks first by due date, then the rest by creation date.
+$result.tasks = @($tasks | Sort-Object @{ Expression = { if ($_.faellig) { 0 } else { 1 } } }, @{ Expression = { $_.faellig } }, @{ Expression = { $_.datum } })
+
+function ConvertFrom-IcsText {
+    param([string] $Value)
+
+    return ($Value -replace '\\[nN]', ' ' -replace '\\([,;\\])', '$1').Trim()
+}
+
+function ConvertFrom-IcsTime {
+    # Returns local time and whether the value is a date without time (all-day).
+    param([string] $Parameters, [string] $Value)
+
+    $culture = [System.Globalization.CultureInfo]::InvariantCulture
+    if ($Parameters -match 'VALUE=DATE(;|$)' -or $Value -match '^\d{8}$') {
+        return [pscustomobject]@{ Time = [datetime]::ParseExact($Value.Substring(0, 8), 'yyyyMMdd', $culture); AllDay = $true }
+    }
+
+    if ($Value -match '^(\d{8}T\d{6})Z$') {
+        $utc = [datetime]::ParseExact($Matches[1], 'yyyyMMddTHHmmss', $culture, [System.Globalization.DateTimeStyles]::AssumeUniversal -bor [System.Globalization.DateTimeStyles]::AdjustToUniversal)
+        return [pscustomobject]@{ Time = $utc.ToLocalTime(); AllDay = $false }
+    }
+
+    if ($Value -match '^(\d{8}T\d{6})$') {
+        return [pscustomobject]@{ Time = [datetime]::ParseExact($Matches[1], 'yyyyMMddTHHmmss', $culture); AllDay = $false }
+    }
+
+    return $null
+}
+
+$calendarPath = Join-Path $vault '99-System\Kalender\outlook\outlook.ics'
+if ($AppointmentDays -gt 0) {
+    $result.calendar = [ordered]@{ path = $calendarPath; state = 'nicht vorhanden'; updated = $null; days = $AppointmentDays }
+    if (Test-Path -LiteralPath $calendarPath -PathType Leaf) {
+        $result.calendar.state = 'gelesen'
+        $result.calendar.updated = (Get-Item -LiteralPath $calendarPath).LastWriteTime.ToString('yyyy-MM-ddTHH:mm')
+
+        # RFC 5545 folds long lines; a continuation line starts with a space or tab.
+        $lines = New-Object System.Collections.Generic.List[string]
+        foreach ($line in [System.IO.File]::ReadAllLines($calendarPath, [System.Text.Encoding]::UTF8)) {
+            if ($line -match '^[ \t]' -and $lines.Count -gt 0) {
+                $lines[$lines.Count - 1] += $line.Substring(1)
+            }
+            else {
+                $lines.Add($line)
+            }
+        }
+
+        $events = New-Object System.Collections.Generic.List[object]
+        $current = $null
+        foreach ($line in $lines) {
+            if ($line -eq 'BEGIN:VEVENT') {
+                $current = @{}
+                continue
+            }
+
+            if ($line -eq 'END:VEVENT') {
+                if ($null -ne $current) { $events.Add($current) }
+                $current = $null
+                continue
+            }
+
+            if ($null -ne $current -and $line -match '^(SUMMARY|LOCATION|DTSTART|DTEND)((?:;[^:]*)?):(.*)$') {
+                $current[$Matches[1]] = [pscustomobject]@{ Parameters = $Matches[2]; Value = $Matches[3] }
+            }
+        }
+
+        $windowStart = $today
+        $windowEnd = $today.AddDays($AppointmentDays + 1)
+        $otherNames = @($profiles | Where-Object { $_.Place -ne $selected.Place } | ForEach-Object { $_.Names })
+        $appointments = @(foreach ($event in $events) {
+                if (-not $event.ContainsKey('DTSTART') -or -not $event.ContainsKey('SUMMARY')) {
+                    continue
+                }
+
+                $start = ConvertFrom-IcsTime $event['DTSTART'].Parameters $event['DTSTART'].Value
+                if ($null -eq $start -or $start.Time -lt $windowStart -or $start.Time -ge $windowEnd) {
+                    continue
+                }
+
+                $summary = ConvertFrom-IcsText $event['SUMMARY'].Value
+                $location = if ($event.ContainsKey('LOCATION')) { ConvertFrom-IcsText $event['LOCATION'].Value } else { '' }
+                $text = "$summary $location"
+                $hits = @(Get-VaultTermMatches $selected.Names $text)
+                # A hit that is part of a longer matching name of another entry (Envitec in "Envitec Spanien") does not count.
+                $longer = @(Get-VaultTermMatches $otherNames $text)
+                $hits = @($hits | Where-Object {
+                        $hit = $_
+                        @($longer | Where-Object { $_.Length -gt $hit.Length -and $_.IndexOf($hit, [System.StringComparison]::OrdinalIgnoreCase) -ge 0 }).Count -eq 0
+                    })
+                if ($hits.Count -eq 0) {
+                    continue
+                }
+
+                $end = if ($event.ContainsKey('DTEND')) { ConvertFrom-IcsTime $event['DTEND'].Parameters $event['DTEND'].Value } else { $null }
+                $format = if ($start.AllDay) { 'yyyy-MM-dd' } else { 'yyyy-MM-ddTHH:mm' }
+                $endTime = $null
+                if ($null -ne $end) {
+                    # The DTEND of an all-day event is exclusive.
+                    $endTime = if ($end.AllDay) { $end.Time.AddDays(-1) } else { $end.Time }
+                }
+
+                [ordered]@{
+                    betreff    = $summary
+                    beginn     = $start.Time.ToString($format)
+                    ende       = if ($null -ne $endTime) { $endTime.ToString($format) } else { $null }
+                    ganztaegig = $start.AllDay
+                    sortKey    = $start.Time
+                }
+            })
+        $result.appointments = @($appointments | Sort-Object { $_.sortKey } | ForEach-Object { $_.Remove('sortKey'); $_ })
+    }
+}
 
 $result | ConvertTo-Json -Depth 8

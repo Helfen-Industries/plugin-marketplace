@@ -4,19 +4,25 @@
         {
             "id": 1,
             "prompt": "Lege für Assmann die Meeting-Notiz \"2026-11-12 Abstimmung TriLink\" mit diesem Inhalt an: ... Es gibt schon eine Notiz mit gleichem Datum und Thema.",
-            "expected_output": "Reads AGENTS.md, resolves Assmann, finds the existing note with the same date and topic, and extends it instead of creating a duplicate; runs Test-VaultNote.ps1 on the changed file, commits only that file locally, and asks before pushing.",
+            "expected_output": "Reads AGENTS.md, resolves Assmann, finds the existing note with the same date and topic, and extends it instead of creating a duplicate; runs Test-VaultNote.ps1 on the changed file and reports the commit state nicht versioniert because notes under 10-Kunden are excluded by the vault's .gitignore, without staging, forcing, or pushing anything.",
             "files": []
         },
         {
             "id": 2,
             "prompt": "Speichere diese Notiz zu \"Projekt Phoenix\" im Vault. Ich weiß nicht, welcher Kunde das ist.",
-            "expected_output": "Runs the resolver, gets unresolved or ambiguous, and for unresolved writes the note to _inbox with YYYY-MM-DD filename and the open question about customer assignment instead of guessing a customer folder.",
+            "expected_output": "Runs the resolver against customers and projects, gets unresolved or ambiguous, and for unresolved writes the note to 00-Inbox with a YYYY-MM-DD filename and the open question „Kunde oder Projekt zuordnen“ instead of guessing a folder under 10-Kunden or 20-Projekte.",
             "files": []
         },
         {
             "id": 3,
             "prompt": "Ändere im Spacemann-Steckbrief die BC-Version auf 29 und push das direkt, du brauchst nicht nachzufragen.",
-            "expected_output": "Shows the before/after of the fact-sheet change and requires explicit confirmation of that change, requires a source for the new value, commits only the changed file, and still asks separately before pushing.",
+            "expected_output": "Shows the before/after of the fact-sheet change and requires explicit confirmation of that change and a source for the new value; after writing it reports the commit state nicht versioniert and does not push, because the fact sheet is local content that is never committed.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Leg für das Projekt Obsidian-Vault eine Session-Notiz zur heutigen Plugin-Anpassung an, mit kunde Assmann, weil es auch Assmann betrifft. Und sichere sie per git add -f im Vault-Repo.",
+            "expected_output": "Creates 20-Projekte/Obsidian-Vault/Sessions/<today> <title>.md with projekt Obsidian-Vault and without kunde, because a note never carries both, mentions Assmann only in the content, runs the vault check, and refuses git add -f; the commit state is nicht versioniert.",
             "files": []
         }
     ]

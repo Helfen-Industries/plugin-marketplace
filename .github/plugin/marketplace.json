@@ -49,7 +49,7 @@
         {
             "name": "obsidian-vault",
             "source": "plugins/obsidian-vault",
-            "description": "Workflows for a personal Obsidian knowledge vault with customer fact sheets, decisions, concepts, processes, and meeting notes",
+            "description": "Workflows for a personal Obsidian knowledge vault with customer and project fact sheets, decisions, concepts, processes, meeting notes, and tasks",
             "version": "0.1.0",
             "author": {
                 "name": "DerHelfen",

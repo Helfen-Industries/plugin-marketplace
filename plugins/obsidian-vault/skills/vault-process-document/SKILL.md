@@ -7,7 +7,7 @@ user-invocable: true
 
 # Document Process
 
-A process note describes how the customer works independent of one requirement. The target process of a single requirement belongs in its concept's `Soll-Ablauf`.
+A process note describes how the customer works independent of one requirement. The target process of a single requirement belongs in its concept's `Soll-Ablauf`. `AGENTS.md` places processes only under `10-Kunden/<Kunde>/Prozesse/`; for an internal project, document the flow in a concept instead.
 
 Apply [Write Vault Note](../vault-note-write/SKILL.md) for every file change.
 
@@ -15,7 +15,7 @@ Apply [Write Vault Note](../vault-note-write/SKILL.md) for every file change.
 
 1. Establish customer, area, process, and state `ist` or `soll`; the file name is `<Bereich> - <Prozess>.md`. When that note exists with another state, ask whether to update it or how to name the second note, because the contract has one name per process. Done when the target path and state are known.
 2. Gather the user's description and related meetings, concepts, and processes through [Load Customer Context](../vault-customer-context/SKILL.md). Ask at most one question, and only when trigger, roles, or result are missing so that the flow cannot be drawn; record every other gap as an open question. Done when trigger, roles, steps, and result each have a source or an open question.
-3. Fill `_templates/Prozess.md`:
+3. Fill `90-Templates/Prozess.md`:
    - **Ablauf:** Mermaid `flowchart LR` with one `subgraph` per role as swimlane and at most about 15 nodes; split larger processes into linked sub-processes.
    - **Schritte:** numbered as „Rolle: Tätigkeit → Ergebnis oder Beleg“, matching the diagram.
    - An `ist` note states observed behavior with sources only; a `soll` note marks every change against the current process.
