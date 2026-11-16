@@ -2,6 +2,12 @@
 
 All notable changes to this plugin are documented here.
 
+## [0.2.0] - Unreleased
+
+### Added
+
+- Appointment workflow (`vault-appointment-create`): creates an appointment in the user's Outlook calendar from a vault note or a direct request through the vault's `99-System/Skripte/Export-Termin.ps1` and the Power Automate flow `Vault-Terminexport`. It shows a `-WhatIf` preview first, sends invitations only after explicit confirmation of the listed attendees, never invents dates, durations, or attendee addresses, adds the `obsidian://` note link only to appointments without attendees, checks the flow result with `-Status`, and after confirmation appends the returned line under `## Termine` of the source note.
+
 ## [0.1.0] - Unreleased
 
 ### Added

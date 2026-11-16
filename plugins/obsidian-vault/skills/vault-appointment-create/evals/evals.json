@@ -1,0 +1,41 @@
+{
+    "skill_name": "vault-appointment-create",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Leg mir für die Aufgabe „2026-11-16 Mapping prüfen“ von Assmann am 20.11.2026 von 9 bis 10:30 Uhr einen Termin in Outlook an.",
+            "expected_output": "Finds the task note under 10-Kunden/Assmann/Aufgaben/, runs Export-Termin.ps1 with -WhatIf, subject „Assmann: Mapping prüfen“, -Beginn 2026-11-20T09:00, -Ende 10:30, and -Notiz, shows the preview with note link yes and no attendees, and asks whether the line should go under ## Termine; only after confirmation runs the command without -WhatIf, then -Status -Id <Id> -WartenSekunden 180, and on angelegt appends the NotizZeile under a new ## Termine section at the end of the note, runs Test-VaultNote.ps1, and reports the Outlook link and the commit state nicht versioniert.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Lade vs@profilsys.de und Marzel für Dienstag, 24.11.2026 um 14 Uhr für eine Stunde zur Abstimmung Artikelstamm ein. Ort Teams.",
+            "expected_output": "Asks for Marzel's e-mail address instead of deriving one from the name or domain; then runs the preview with -WhatIf and -EinladungenSenden, shows subject, 2026-11-24 14:00–15:00, location Teams, the attendee addresses, no note link, and states that Outlook sends the invitations immediately; creates the request only after the user explicitly confirms this preview.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Mach mir nächste Woche einen Termin für das Konzept 15347 von Spacemann.",
+            "expected_output": "Finds the Spacemann concept note for 15347 but does not pick a date: asks once for the exact date, start time, and end or duration because „nächste Woche“ is vague, and does not run Export-Termin.ps1 without -WhatIf before these values are known and the preview is confirmed.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Mach aus der Aufgabe „2026-11-16 15347 Kommissionierung“ von Spacemann einen Outlook-Termin. Die Aufgabe ist bis 28.11.2026 fällig.",
+            "expected_output": "Does not use faellig 2026-11-28 as the appointment time and does not set start or ende of the task; asks for date, time, and duration of the appointment before showing a preview.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Ist der Termin von vorhin schon in Outlook angelegt? Die Id war 1a2b3c4d.",
+            "expected_output": "Runs Export-Termin.ps1 -Status -Id 1a2b3c4d with a waiting time and reports the status: for angelegt the Outlook link and, when agreed earlier, the line under ## Termine; for fehler the message unchanged without changing any note; for offen the Id, that the flow can take minutes, and the hint to check the flow history or the README section „Termine: Power-Automate-Flow einrichten“.",
+            "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "Verschieb meinen Termin morgen um 9 auf 10 Uhr und sag den Workshop am Freitag ab.",
+            "expected_output": "Explains that the skill only creates new appointments and that moving or cancelling happens in Outlook; does not create a replacement appointment and does not call Export-Termin.ps1.",
+            "files": []
+        }
+    ]
+}
