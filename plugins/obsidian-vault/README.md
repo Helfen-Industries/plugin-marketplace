@@ -18,6 +18,7 @@ Prerequisites:
 - Windows PowerShell 5.1 or PowerShell 7 and Git for the bundled scripts.
 - Optional: Azure DevOps tools (`ado-remote-mcp`) to read work items and projects; alternatively the vault's `99-System/Skripte/Import-DevOpsAufgabe.ps1` with `az login`.
 - Optional: the generated Outlook calendar `99-System/Kalender/outlook/outlook.ics` for upcoming appointments.
+- Optional: the vault's `99-System/Skripte/Export-Termin.ps1` and the Power Automate flow `Vault-Terminexport` (setup in the vault's `99-System/Skripte/README.md`) to create Outlook appointments.
 
 Load the context of the customer or project whose repository is open:
 
@@ -57,6 +58,8 @@ Task notes (`typ: aufgabe`) in `<Ort>/Aufgaben/` feed the vault's task board. `v
 
 `vault-customer-context` lists open tasks and the appointments of the next 7 days whose subject or location names the customer or project. It reads the generated calendar only through its script and reports subject and time, never attendees, organizer, location, or description.
 
+`vault-appointment-create` works in the other direction: it creates an appointment in the user's Outlook calendar from a note or a direct request. Because the new Outlook has no COM and Microsoft Graph needs admin consent, the vault's `Export-Termin.ps1` writes a request file to OneDrive and the Power Automate flow `Vault-Terminexport` creates the event and writes back its Outlook link. Every appointment is previewed first; attendees receive invitations immediately, so requests with attendees need explicit confirmation of the preview. A link to the note appears only in appointments without attendees, and after confirmation the source note gets a line under `## Termine`.
+
 ### Safety and gates
 
 - Customer repositories and everything outside the vault are read-only; `Get-RepoFacts.ps1` never fetches or checks out.
@@ -88,6 +91,7 @@ The concept is the agreed business view; the specification adds the technical de
 | --- | --- | --- |
 | `vault-customer-context` | Public, read-only | Resolve the customer or project and return a linked brief of facts, decisions in force, concepts, processes, open tasks, appointments of the next 7 days, and open items |
 | `vault-task-create` | Public driver | Create a task with status `inbox` from a mail in chat or an Azure DevOps work item, or convert an imported inbox mail into a task |
+| `vault-appointment-create` | Public driver | Create an Outlook appointment from a note or request through the vault's Power Automate flow, with preview, confirmed invitations, status check, and a `## Termine` line in the note |
 | `vault-meeting-note` | Public driver | Turn raw notes or transcripts into a meeting note with decisions, questions, and todos, then propose follow-ups |
 | `vault-concept-create` | Public driver | Create or revise a concept in Part A structure with a Mermaid target process |
 | `vault-decision-record` | Public driver | Create, supersede, accept, or reject ADRs |
@@ -108,6 +112,8 @@ The concept is the agreed business view; the specification adds the technical de
 /obsidian-vault:vault-task-create Aufgabe für Assmann aus dieser Mail: <Mailtext>
 /obsidian-vault:vault-task-create AB#15347 für Spacemann
 /obsidian-vault:vault-task-create Inbox-Mail "2026-11-13 Assmann Artikelstamm von BC an FLS" als Aufgabe
+/obsidian-vault:vault-appointment-create Termin für Aufgabe "2026-11-16 Mapping prüfen" (Assmann) am 20.11.2026 9–10:30 Uhr
+/obsidian-vault:vault-appointment-create Terminstatus prüfen
 /obsidian-vault:vault-meeting-note Spacemann, heute, Abstimmung Kommissionierung: <Notizen>
 /obsidian-vault:vault-concept-create Spacemann 15347 Produktionskommissionierung mit Tourdatum
 /obsidian-vault:vault-decision-record Assmann: Wir nutzen die COSMO-Seriennummernlogik (Meeting 2026-11-10)
