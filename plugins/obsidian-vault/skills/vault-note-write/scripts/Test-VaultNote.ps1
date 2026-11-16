@@ -3,13 +3,16 @@
     Checks vault notes against the conventions in the vault's AGENTS.md.
 
 .DESCRIPTION
-    Read-only. Implements the AGENTS.md sections "Dateinamen", "Frontmatter", "Todos und offene Fragen",
-    and "Verknüpfungen". When AGENTS.md changes, update this script; AGENTS.md wins on any disagreement.
-    Without -Path, checks every note under Kunden/, daily/, and _inbox/. Separate several -Path values with ';'.
-    Writes one JSON object to stdout and exits with 1 when errors exist.
+    Read-only. Implements the AGENTS.md sections "Struktur", "Dateinamen", "Frontmatter", "Todos und offene Fragen",
+    "Aufgaben", and "Verknüpfungen". When AGENTS.md changes, update this script; AGENTS.md wins on any disagreement.
+    Without -Path, checks every note under 00-Inbox/, 10-Kunden/, 20-Projekte/, 30-Agents/, and 80-Daily/.
+    System files are never checked and are listed under "skipped" when passed explicitly: the root files
+    AGENTS.md, Dashboard.md, and Task Board.base, every non-Markdown file, Excalidraw drawings, and everything under
+    90-Templates/, 99-System/ (including the generated calendar), and Excalidraw/.
+    Separate several -Path values with ';'. Writes one JSON object to stdout and exits with 1 when errors exist.
 
 .EXAMPLE
-    powershell -NoProfile -File Test-VaultNote.ps1 -Path "C:\Dev\Knowledge\Kunden\Assmann\Meetings\2026-11-12 Abstimmung.md"
+    powershell -NoProfile -File Test-VaultNote.ps1 -Path "C:\Dev\Knowledge\10-Kunden\Assmann\Meetings\2026-11-12 Abstimmung.md"
 #>
 [CmdletBinding()]
 param(
@@ -33,31 +36,95 @@ if ($null -eq $vault) {
 $errors = New-Object System.Collections.Generic.List[object]
 $warnings = New-Object System.Collections.Generic.List[object]
 $info = New-Object System.Collections.Generic.List[object]
+$skipped = New-Object System.Collections.Generic.List[string]
 
 function Add-Finding {
     param($List, [string] $File, [string] $Rule, [string] $Message)
     $List.Add([ordered]@{ path = (Get-VaultRelativePath $vault $File); rule = $Rule; message = $Message })
 }
 
-$allowedTypes = @('steckbrief', 'meeting', 'konzept', 'entscheidung', 'prozess', 'daily', 'notiz')
+$contentRoots = @('00-Inbox', '10-Kunden', '20-Projekte', '30-Agents', '80-Daily')
+$hiddenRoots = @('.git', '.obsidian', '.trash')
+$systemRoots = @('90-Templates', '99-System', 'Excalidraw')
+$rootSystemFiles = @('AGENTS.md', 'Dashboard.md', 'Task Board.base')
+
+$allowedTypes = @('steckbrief', 'meeting', 'konzept', 'entscheidung', 'prozess', 'aufgabe', 'problem', 'session', 'katalog', 'anweisung', 'learning', 'daily', 'notiz')
 $allowedStatus = @{
     steckbrief   = @('aktiv', 'ruhend', 'abgeschlossen')
     konzept      = @('entwurf', 'abgestimmt', 'umgesetzt', 'verworfen')
     entscheidung = @('vorgeschlagen', 'akzeptiert', 'abgelöst', 'verworfen')
     prozess      = @('ist', 'soll')
+    problem      = @('offen', 'in-analyse', 'zurückgestellt', 'gelöst')
+    aufgabe      = @('inbox', 'geplant', 'heute', 'archiv')
 }
-$expectedTypeByFolder = @{ Meetings = 'meeting'; Konzepte = 'konzept'; Entscheidungen = 'entscheidung'; Prozesse = 'prozess' }
+$placeFolderTypes = @{ Meetings = 'meeting'; Konzepte = 'konzept'; Entscheidungen = 'entscheidung'; Aufgaben = 'aufgabe'; Probleme = 'problem'; Sessions = 'session' }
+$customerOnlyFolderTypes = @{ Prozesse = 'prozess' }
+$agentFolderTypes = @{ Anweisungen = 'anweisung'; Learnings = 'learning'; Sessions = 'session' }
+$datedFileTypes = @('meeting', 'aufgabe', 'problem', 'session')
+$taskSources = @('mail', 'devops', 'meeting', 'manuell')
+$mailFields = @('mail-von', 'mail-datum', 'mail-betreff', 'mail-id')
+$unknownValue = 'offen'
 $today = (Get-Date).Date
 
-$excludedRoots = @('.git', '.obsidian', '.trash', '_templates', 'Excalidraw')
-$vaultFiles = @(Get-ChildItem -LiteralPath $vault -File -Recurse | Where-Object {
-        $relative = Get-VaultRelativePath $vault $_.FullName
-        $top = ($relative -split '/')[0]
-        $excludedRoots -notcontains $top
+function Test-SystemFile {
+    param([string] $Relative, [string] $Extension, [string] $Name)
+
+    $parts = $Relative -split '/'
+    if ($parts.Count -eq 1 -and $rootSystemFiles -contains $parts[0]) { return $true }
+    if ($hiddenRoots -contains $parts[0] -or $systemRoots -contains $parts[0]) { return $true }
+    return $Extension -ne '.md' -or $Name -like '*.excalidraw.md'
+}
+
+function Get-NoteLocation {
+    # Type the folder implies, plus the owning customer or project for notes under 10-Kunden/ or 20-Projekte/.
+    param([string[]] $Parts, [string] $Name)
+
+    $location = [ordered]@{ Type = 'other'; Area = $null; Owner = $null; Place = $null }
+    $area = @($script:VaultAreas | Where-Object { $_.Folder -eq $Parts[0] })
+    if ($area.Count -eq 1) {
+        $location.Area = $area[0].Field
+        if ($Parts.Count -ge 3) {
+            $location.Owner = $Parts[1]
+            $location.Place = "$($Parts[0])/$($Parts[1])"
+        }
+
+        if ($Parts.Count -eq 3 -and $Name -eq '00-Steckbrief.md') {
+            $location.Type = 'steckbrief'
+        }
+        elseif ($Parts.Count -eq 4 -and $placeFolderTypes.ContainsKey($Parts[2])) {
+            $location.Type = $placeFolderTypes[$Parts[2]]
+        }
+        elseif ($Parts.Count -eq 4 -and $area[0].Field -eq 'kunde' -and $customerOnlyFolderTypes.ContainsKey($Parts[2])) {
+            $location.Type = $customerOnlyFolderTypes[$Parts[2]]
+        }
+    }
+    elseif ($Parts[0] -eq '30-Agents') {
+        $location.Area = 'agents'
+        if ($Parts.Count -eq 2 -and $Name -eq '00-Katalog.md') {
+            $location.Type = 'katalog'
+        }
+        elseif ($Parts.Count -eq 3 -and $agentFolderTypes.ContainsKey($Parts[1])) {
+            $location.Type = $agentFolderTypes[$Parts[1]]
+        }
+    }
+    elseif ($Parts[0] -eq '80-Daily' -and $Parts.Count -eq 2) {
+        $location.Type = 'daily'
+        $location.Area = 'daily'
+    }
+    elseif ($Parts[0] -eq '00-Inbox' -and $Parts.Count -eq 2) {
+        $location.Type = 'inbox'
+        $location.Area = 'inbox'
+    }
+
+    return [pscustomobject] $location
+}
+
+$linkFiles = @(Get-ChildItem -LiteralPath $vault -File -Recurse | Where-Object {
+        $hiddenRoots -notcontains ((Get-VaultRelativePath $vault $_.FullName) -split '/')[0]
     })
 
 $linkIndex = @{}
-foreach ($file in $vaultFiles) {
+foreach ($file in $linkFiles) {
     $relative = Get-VaultRelativePath $vault $file.FullName
     $keys = @($relative.ToLowerInvariant(), $file.Name.ToLowerInvariant())
     if ($file.Extension -eq '.md') {
@@ -72,10 +139,10 @@ foreach ($file in $vaultFiles) {
 if ($Path) {
     # powershell -File passes a list as one string; multiple paths are separated with ';'.
     $paths = @($Path | ForEach-Object { $_ -split ';' } | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' })
-    $targets = @(foreach ($entry in $paths) {
+    $candidates = @(foreach ($entry in $paths) {
             $item = Get-Item -LiteralPath $entry
             if ($item.PSIsContainer) {
-                Get-ChildItem -LiteralPath $item.FullName -Filter '*.md' -File -Recurse
+                Get-ChildItem -LiteralPath $item.FullName -File -Recurse
             }
             else {
                 $item
@@ -83,13 +150,26 @@ if ($Path) {
         })
 }
 else {
-    $targets = @($vaultFiles | Where-Object {
-            $top = ((Get-VaultRelativePath $vault $_.FullName) -split '/')[0]
-            $_.Extension -eq '.md' -and $top -in @('Kunden', 'daily', '_inbox')
+    $candidates = @(foreach ($root in $contentRoots) {
+            $rootPath = Join-Path $vault $root
+            if (Test-Path -LiteralPath $rootPath -PathType Container) {
+                Get-ChildItem -LiteralPath $rootPath -File -Recurse
+            }
         })
 }
 
-$targets = @($targets | Where-Object { $_.Name -notlike '*.excalidraw.md' })
+$targets = @(foreach ($file in $candidates) {
+        $relative = Get-VaultRelativePath $vault $file.FullName
+        if (Test-SystemFile $relative $file.Extension $file.Name) {
+            if ($Path -and $file.Name -ne '.gitkeep') {
+                $skipped.Add($relative)
+            }
+
+            continue
+        }
+
+        $file
+    })
 $adrNumbers = @{}
 
 foreach ($file in $targets) {
@@ -97,25 +177,9 @@ foreach ($file in $targets) {
     $parts = $relative -split '/'
     $name = $file.Name
     $base = $file.BaseName
+    $location = Get-NoteLocation $parts $name
 
-    $location = 'other'
-    $customerFolder = $null
-    if ($parts[0] -eq 'Kunden' -and $parts.Count -eq 3 -and $name -eq '00-Steckbrief.md') {
-        $location = 'steckbrief'
-        $customerFolder = $parts[1]
-    }
-    elseif ($parts[0] -eq 'Kunden' -and $parts.Count -eq 4 -and $expectedTypeByFolder.ContainsKey($parts[2])) {
-        $location = $expectedTypeByFolder[$parts[2]]
-        $customerFolder = $parts[1]
-    }
-    elseif ($parts[0] -eq 'daily' -and $parts.Count -eq 2) {
-        $location = 'daily'
-    }
-    elseif ($parts[0] -eq '_inbox' -and $parts.Count -eq 2) {
-        $location = 'inbox'
-    }
-
-    if ($location -eq 'other') {
+    if ($location.Type -eq 'other') {
         Add-Finding $warnings $file.FullName 'location' 'Ablageort entspricht keiner Struktur aus AGENTS.md.'
     }
 
@@ -134,22 +198,46 @@ foreach ($file in $targets) {
     if ($allowedTypes -notcontains $type) {
         Add-Finding $errors $file.FullName 'typ' "typ '$type' ist nicht erlaubt."
     }
-    elseif ($location -notin @('inbox', 'other') -and $type -ne $location) {
-        Add-Finding $errors $file.FullName 'typ' "typ '$type' passt nicht zum Ablageort ($location)."
+    elseif ($location.Type -notin @('inbox', 'other') -and $type -ne $location.Type) {
+        Add-Finding $errors $file.FullName 'typ' "typ '$type' passt nicht zum Ablageort ($($location.Type))."
     }
 
-    $effectiveType = if ($allowedTypes -contains $type) { $type } else { $location }
+    $effectiveType = if ($allowedTypes -contains $type) { $type } else { $location.Type }
+
     $customer = Get-VaultText $frontmatter 'kunde'
-    if ($effectiveType -ne 'daily') {
-        if ($customer -eq '') {
-            $list = if ($location -eq 'inbox') { $warnings } else { $errors }
-            Add-Finding $list $file.FullName 'kunde' 'kunde fehlt.'
+    $project = Get-VaultText $frontmatter 'projekt'
+    if ($customer -ne '' -and $project -ne '') {
+        Add-Finding $errors $file.FullName 'zuordnung' 'kunde und projekt sind beide gesetzt; erlaubt ist genau eines.'
+    }
+
+    switch ($location.Area) {
+        { $_ -in @('kunde', 'projekt') } {
+            $field = $location.Area
+            $other = if ($field -eq 'kunde') { 'projekt' } else { 'kunde' }
+            $value = if ($field -eq 'kunde') { $customer } else { $project }
+            $otherValue = if ($field -eq 'kunde') { $project } else { $customer }
+            if ($otherValue -ne '' -and $value -eq '') {
+                Add-Finding $errors $file.FullName $field "$other ist unter $($parts[0])/ nicht erlaubt; dort gilt $field."
+            }
+            elseif ($value -eq '') {
+                Add-Finding $errors $file.FullName $field "$field fehlt."
+            }
+            elseif ($null -ne $location.Owner -and $value -cne $location.Owner) {
+                Add-Finding $errors $file.FullName $field "$field '$value' entspricht nicht dem Ordnernamen '$($location.Owner)'."
+            }
         }
-        elseif ($null -ne $customerFolder -and $customer -cne $customerFolder) {
-            Add-Finding $errors $file.FullName 'kunde' "kunde '$customer' entspricht nicht dem Ordnernamen '$customerFolder'."
-        }
-        elseif ($location -eq 'inbox' -and -not (Test-Path -LiteralPath (Join-Path $vault "Kunden\$customer") -PathType Container)) {
-            Add-Finding $warnings $file.FullName 'kunde' "kunde '$customer' hat keinen Ordner unter Kunden/."
+        { $_ -in @('inbox', 'agents') } {
+            if ($location.Area -eq 'inbox' -and $customer -eq '' -and $project -eq '') {
+                Add-Finding $warnings $file.FullName 'zuordnung' 'kunde bzw. projekt fehlt.'
+            }
+
+            if ($customer -ne '' -and -not (Test-Path -LiteralPath (Join-Path $vault "10-Kunden\$customer") -PathType Container)) {
+                Add-Finding $warnings $file.FullName 'kunde' "kunde '$customer' hat keinen Ordner unter 10-Kunden/."
+            }
+
+            if ($project -ne '' -and -not (Test-Path -LiteralPath (Join-Path $vault "20-Projekte\$project") -PathType Container)) {
+                Add-Finding $warnings $file.FullName 'projekt' "projekt '$project' hat keinen Ordner unter 20-Projekte/."
+            }
         }
     }
 
@@ -169,13 +257,13 @@ foreach ($file in $targets) {
         }
 
         if (@(Get-VaultList $frontmatter 'aliases').Count -eq 0) {
-            Add-Finding $warnings $file.FullName 'aliases' 'aliases ist leer; die Kundenzuordnung nutzt aliases.'
+            Add-Finding $warnings $file.FullName 'aliases' 'aliases ist leer; die Zuordnung zu Kunde bzw. Projekt nutzt aliases.'
         }
     }
 
     if ($allowedStatus.ContainsKey($effectiveType)) {
         $status = Get-VaultText $frontmatter 'status'
-        if ($allowedStatus[$effectiveType] -notcontains $status) {
+        if ($allowedStatus[$effectiveType] -cnotcontains $status) {
             Add-Finding $errors $file.FullName 'status' "status '$status' ist für $effectiveType nicht erlaubt ($($allowedStatus[$effectiveType] -join ', '))."
         }
     }
@@ -188,20 +276,79 @@ foreach ($file in $targets) {
         Add-Finding $warnings $file.FullName 'tags' "tags enthält den typ '$effectiveType' nicht."
     }
 
-    foreach ($id in @(Get-VaultList $frontmatter 'devops')) {
-        if ($id -notmatch '^\d+$') {
+    $devopsIds = @(Get-VaultList $frontmatter 'devops')
+    foreach ($id in $devopsIds) {
+        if ($id -notmatch '^\d+$' -and $id -ne $unknownValue) {
             Add-Finding $warnings $file.FullName 'devops' "devops-Eintrag '$id' ist keine Work-Item-ID."
         }
     }
 
-    switch ($location) {
-        'meeting' {
-            if ($name -notmatch '^(\d{4}-\d{2}-\d{2}) .+\.md$') { Add-Finding $errors $file.FullName 'filename' 'Muster: YYYY-MM-DD <Titel>.md' }
-            elseif ($Matches[1] -ne $datum) { Add-Finding $warnings $file.FullName 'filename-date' "Datum im Dateinamen ($($Matches[1])) weicht von datum ($datum) ab." }
+    $source = Get-VaultText $frontmatter 'quelle'
+    if ($effectiveType -eq 'aufgabe') {
+        if ($taskSources -cnotcontains $source) {
+            Add-Finding $errors $file.FullName 'quelle' "quelle '$source' ist für aufgabe nicht erlaubt ($($taskSources -join ', '))."
         }
-        'inbox' {
-            if ($name -notmatch '^(\d{4}-\d{2}-\d{2}) .+\.md$') { Add-Finding $errors $file.FullName 'filename' 'Muster: YYYY-MM-DD <Titel>.md' }
+
+        foreach ($field in 'faellig', 'erledigt') {
+            $value = Get-VaultText $frontmatter $field
+            if ($value -ne '' -and $null -eq (ConvertTo-VaultDate $value)) {
+                Add-Finding $errors $file.FullName $field "$field '$value' ist nicht YYYY-MM-DD."
+            }
         }
+
+        $blockStart = $null
+        foreach ($field in 'start', 'ende') {
+            $value = Get-VaultText $frontmatter $field
+            $parsed = ConvertTo-VaultDateTime $value
+            if ($value -ne '' -and $null -eq $parsed) {
+                Add-Finding $errors $file.FullName $field "$field '$value' ist nicht YYYY-MM-DDTHH:mm."
+            }
+            elseif ($field -eq 'start') {
+                $blockStart = $parsed
+            }
+            elseif ($null -ne $parsed -and $null -ne $blockStart -and $parsed -le $blockStart) {
+                Add-Finding $warnings $file.FullName 'ende' 'ende liegt nicht nach start.'
+            }
+        }
+
+        if ($source -eq 'devops') {
+            if ($devopsIds.Count -eq 0) {
+                Add-Finding $errors $file.FullName 'devops' 'devops fehlt bei quelle: devops.'
+            }
+
+            if ((Get-VaultText $frontmatter 'devops-link') -eq '') {
+                Add-Finding $errors $file.FullName 'devops-link' 'devops-link fehlt bei quelle: devops.'
+            }
+        }
+
+        if (-not $note.Sections.Contains('Auftrag')) {
+            Add-Finding $warnings $file.FullName 'auftrag' "Abschnitt '## Auftrag' fehlt."
+        }
+    }
+
+    if ($source -eq 'mail') {
+        foreach ($field in $mailFields) {
+            if ((Get-VaultText $frontmatter $field) -eq '') {
+                Add-Finding $errors $file.FullName 'mail' "$field fehlt bei quelle: mail (unbekannt: '$unknownValue')."
+            }
+        }
+
+        $mailDate = Get-VaultText $frontmatter 'mail-datum'
+        if ($mailDate -notin @('', $unknownValue) -and $null -eq (ConvertTo-VaultDateTime $mailDate)) {
+            Add-Finding $errors $file.FullName 'mail-datum' "mail-datum '$mailDate' ist nicht YYYY-MM-DDTHH:mm."
+        }
+    }
+
+    if ($location.Type -in $datedFileTypes -or $location.Type -eq 'inbox') {
+        if ($name -notmatch '^(\d{4}-\d{2}-\d{2}) .+\.md$') {
+            Add-Finding $errors $file.FullName 'filename' 'Muster: YYYY-MM-DD <Titel>.md'
+        }
+        elseif ($location.Type -ne 'inbox' -and $Matches[1] -ne $datum) {
+            Add-Finding $warnings $file.FullName 'filename-date' "Datum im Dateinamen ($($Matches[1])) weicht von datum ($datum) ab."
+        }
+    }
+
+    switch ($location.Type) {
         'daily' {
             if ($name -notmatch '^(\d{4}-\d{2}-\d{2})\.md$') { Add-Finding $errors $file.FullName 'filename' 'Muster: YYYY-MM-DD.md' }
             elseif ($Matches[1] -ne $datum) { Add-Finding $warnings $file.FullName 'filename-date' "Datum im Dateinamen ($($Matches[1])) weicht von datum ($datum) ab." }
@@ -220,9 +367,9 @@ foreach ($file in $targets) {
                     Add-Finding $errors $file.FullName 'adr' "adr '$adr' entspricht nicht der Nummer im Dateinamen ($fileNumber)."
                 }
 
-                $key = "$customerFolder|$fileNumber"
+                $key = "$($location.Place)|$fileNumber"
                 if ($adrNumbers.ContainsKey($key)) {
-                    Add-Finding $errors $file.FullName 'adr-duplicate' "ADR-$fileNumber ist bei $customerFolder doppelt vergeben ($($adrNumbers[$key]))."
+                    Add-Finding $errors $file.FullName 'adr-duplicate' "ADR-$fileNumber ist bei $($location.Place) doppelt vergeben ($($adrNumbers[$key]))."
                 }
                 else {
                     $adrNumbers[$key] = $name
@@ -279,6 +426,7 @@ $result = [ordered]@{
     status    = if ($errors.Count -gt 0) { 'failed' } else { 'passed' }
     vaultRoot = $vault
     checked   = $targets.Count
+    skipped   = $skipped.ToArray()
     errors    = $errors.ToArray()
     warnings  = $warnings.ToArray()
     info      = $info.ToArray()

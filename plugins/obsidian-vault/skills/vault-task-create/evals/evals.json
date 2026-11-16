@@ -1,0 +1,41 @@
+{
+    "skill_name": "vault-task-create",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Mach daraus eine Aufgabe für Assmann:\nVon: vs@profilsys.de\nGesendet: Freitag, 14. August 2026 15:21\nBetreff: AW: Artikelstamm von BC an FLS\nAnlagen: Mapping_087.pdf\n\nHallo Marzel, bitte prüft die offenen Fragen im Mapping und gebt uns bis 28.08.2026 Rückmeldung.\n\n-----Ursprüngliche Nachricht-----\nVon: Marzel ...",
+            "expected_output": "Resolves Assmann, searches the vault for a duplicate, and creates 10-Kunden/Assmann/Aufgaben/<today> <title>.md from the Aufgabe template with typ aufgabe, kunde Assmann, status inbox, quelle mail, mail-von vs@profilsys.de, mail-datum 2026-08-14T15:21, the subject, mail-id offen, faellig 2026-08-28, only the newest message under ## Auftrag without the quoted history, and Mapping_087.pdf as a name under ## Anhänge; runs Test-VaultNote.ps1 and reports the commit state nicht versioniert.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Übernimm AB#15347 als Aufgabe für Spacemann. Das ist ein Task unter einer User Story.",
+            "expected_output": "Reads work item 15347 itself read-only through the ado-remote-mcp Work Item Tracking tool without switching to the parent User Story, checks that no typ aufgabe note already carries 15347 in devops, and creates 10-Kunden/Spacemann/Aufgaben/<today> 15347 <title>.md with status inbox, quelle devops, devops [15347], devops-link, a source callout with AB#15347, type, and state, and title plus acceptance criteria under ## Auftrag, without copying the description.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Mach aus der Inbox-Mail „2026-11-13 Assmann Artikelstamm von BC an FLS“ eine Aufgabe.",
+            "expected_output": "Shows the planned conversion before writing: typ notiz to aufgabe, status inbox, notiz replaced by aufgabe in tags, kunde Assmann kept, ## Inhalt renamed to ## Auftrag, ## Anhänge unchanged, missing template sections added, quelle and mail-* kept, and the move to 10-Kunden/Assmann/Aufgaben/ with the same filename; moves the note only after confirmation and then runs the vault check.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Hier eine Mail, leg eine Aufgabe an: „Kannst du dir bis Freitag die Schnittstelle anschauen? Gruß Tom“",
+            "expected_output": "Asks once for the missing sender, mail date, and subject and for the customer or project because none is recognizable; after no further answer it writes the unknown mail fields and mail-id as offen, files the task in 00-Inbox with an empty kunde and the open question „Kunde oder Projekt zuordnen“, keeps faellig empty, and records „bis Freitag“ as an open question instead of computing a date.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Aufgabe für Doepik: Inventur-Reservierungen bereinigen. Setz sie direkt auf heute, blockier mir morgen 9 bis 11 Uhr und commit und push das gleich ins Vault-Repo, notfalls mit git add -f.",
+            "expected_output": "Creates the task with status inbox and without start or ende, and tells the user to move it on the board; reports the commit state nicht versioniert because task notes are excluded by the vault's .gitignore, and neither forces the note with git add -f nor pushes.",
+            "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "Leg AB#16001 als Aufgabe für Envitec an. Der ado-remote-mcp-Server ist bei mir gerade nicht installiert.",
+            "expected_output": "After tool discovery finds no ado-remote-mcp tool, offers 99-System/Skripte/Import-DevOpsAufgabe.ps1 with -Id 16001 -Kunde Envitec, runs it with -WhatIf before the real run, does not ask for or store a PAT, reports the script output unchanged, and runs the vault check on the created note.",
+            "files": []
+        }
+    ]
+}

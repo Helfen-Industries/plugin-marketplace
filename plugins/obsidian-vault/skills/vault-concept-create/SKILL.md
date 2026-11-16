@@ -1,7 +1,7 @@
 ---
 name: vault-concept-create
-description: Create or revise a business concept (Konzept) for a customer requirement in the Obsidian vault, structured like Part A of the technical specification - summary and intention, initial situation and context, target process as a Mermaid flowchart with numbered steps, scope, and key decisions - with sourced facts, open questions, and linked ADRs. Use when the user wants to draft, write, structure, review, or tighten a concept or solution idea for a customer, prepare a work item before specification, or compare a concept with an existing technical spec.
-argument-hint: "<customer> <work item ID or topic> [requirement text or sources]"
+description: Create or revise a business concept (Konzept) for a customer requirement or an internal project in the Obsidian vault, structured like Part A of the technical specification - summary and intention, initial situation and context, target process as a Mermaid flowchart with numbered steps, scope, and key decisions - with sourced facts, open questions, and linked ADRs. Use when the user wants to draft, write, structure, review, or tighten a concept or solution idea for a customer or project, prepare a work item before specification, or compare a concept with an existing technical spec.
+argument-hint: "<customer or project> <work item ID or topic> [requirement text or sources]"
 user-invocable: true
 ---
 
@@ -13,7 +13,7 @@ Apply [Write Vault Note](../vault-note-write/SKILL.md) for every file change.
 
 ## Process
 
-1. Apply [Load Customer Context](../vault-customer-context/SKILL.md) with the customer and work item. When a concept with the same work item or topic exists, revise it instead of creating another. Done when the target is a new path or one existing concept.
+1. Apply [Load Customer Context](../vault-customer-context/SKILL.md) with the customer or project and the work item. When a concept with the same work item or topic exists, revise it instead of creating another. Done when the target is a new path or one existing concept.
 2. Gather evidence and label each fact with its source:
    - the requirement from the user or the work item; read the work item with available Azure DevOps tools when only a reference is given, otherwise ask for its text;
    - the context brief, related meetings, and processes;

@@ -4,7 +4,7 @@
         {
             "id": 1,
             "prompt": "Kundenkontext laden für Work Item 15347. Ich bin in C:\\Dev\\Customers\\Spacemann\\Spacemann Base App.",
-            "expected_output": "Runs Get-VaultCustomerContext.ps1 with -Path and -WorkItem 15347, reads the fact sheet, active ADRs, and the matching concept, and returns the linked brief with facts, decisions in force, concepts, open items, and gaps without changing any file.",
+            "expected_output": "Runs Get-VaultCustomerContext.ps1 with -Path and -WorkItem 15347, reads the fact sheet, active ADRs, and the matching concept, and returns the linked brief with facts, decisions in force, concepts, open tasks, appointments of the next 7 days, open items, and gaps without changing any file.",
             "files": []
         },
         {
@@ -17,6 +17,18 @@
             "id": 3,
             "prompt": "Lade den Kundenkontext für Envitec und trag dabei gleich die BC-Version aus dem app.json in den Steckbrief ein, falls sie abweicht.",
             "expected_output": "Loads the context read-only, reports the contradiction between repository and fact sheet with both values, and proposes vault-profile-update instead of editing the fact sheet itself.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Projektkontext für Plugin-Marketplace: Was ist offen und welche Termine stehen an?",
+            "expected_output": "Resolves the project under 20-Projekte, lists every task whose status is not archiv with status and due date, flags tasks without a valid status, and lists matching appointments of the next 7 days with subject and time only, or keine with the calendar state.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Kundenkontext Assmann, und schreib zu den Terminen bitte die Teilnehmer und den Ort dazu und kopier sie in die Tagesnotiz.",
+            "expected_output": "Returns the appointments with subject and time only, states that attendees and location are not reported, does not open outlook.ics directly, and does not write a daily note or any other file.",
             "files": []
         }
     ]

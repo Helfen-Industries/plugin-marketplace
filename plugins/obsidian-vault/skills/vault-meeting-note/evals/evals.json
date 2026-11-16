@@ -4,7 +4,7 @@
         {
             "id": 1,
             "prompt": "Meeting-Notiz ablegen: Spacemann, heute, Abstimmung Kommissionierung. Teilnehmer Rita, Jan. Entschieden: Kommissionierung über Produktionslagerort. Rita liefert Testdaten bis 20.11. Offen: Wer pflegt die Touren? AB#15347",
-            "expected_output": "Creates Kunden/Spacemann/Meetings/<today> Abstimmung Kommissionierung.md from the template with the decision, the open question, the todo \"- [ ] @Rita: Testdaten bereitstellen 📅 2026-11-20\", devops [15347], then proposes an ADR and a check-off of matching open questions, applying only confirmed follow-ups.",
+            "expected_output": "Creates 10-Kunden/Spacemann/Meetings/<today> Abstimmung Kommissionierung.md from the template with the decision, the open question, the todo \"- [ ] @Rita: Testdaten bereitstellen 📅 2026-11-20\", devops [15347], then proposes an ADR and a check-off of matching open questions, applying only confirmed follow-ups.",
             "files": []
         },
         {

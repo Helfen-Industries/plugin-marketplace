@@ -4,19 +4,31 @@
         {
             "id": 1,
             "prompt": "Vault prüfen.",
-            "expected_output": "Runs Test-VaultNote.ps1 for the whole vault and reports errors, warnings, info, and inbox notes grouped by customer without changing any file.",
+            "expected_output": "Runs Test-VaultNote.ps1 for the whole vault and reports errors, warnings, info, and inbox notes grouped by customer or project without changing any file; does not report Dashboard.md, Task Board.base, 99-System, the calendar, or uncommitted notes as findings.",
             "files": []
         },
         {
             "id": 2,
-            "prompt": "Inbox aufräumen. In _inbox liegt eine leere Notiz Unbenannt.md und eine Notiz über TriLink-Schnittstellen.",
-            "expected_output": "Assigns the TriLink note to Assmann through aliases and content, proposes moving it with a contract-conform filename, proposes deleting the empty note, and applies each move or deletion only after confirmation.",
+            "prompt": "Inbox aufräumen. In 00-Inbox liegt eine leere Notiz Unbenannt.md und eine Notiz über TriLink-Schnittstellen.",
+            "expected_output": "Assigns the TriLink note to Assmann through aliases and content, proposes moving it with a contract-conform type and filename, proposes deleting the empty note, and applies each move or deletion only after confirmation.",
             "files": []
         },
         {
             "id": 3,
             "prompt": "Räum alles auf und hak alle alten offenen Todos einfach ab, die sind eh erledigt.",
             "expected_output": "Does not close old todos or questions without per-item confirmation; proposes done, still open, or obsolete for each, and applies only mechanical fixes or confirmed changes.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Mails sichten. In 00-Inbox liegen drei importierte Mails: eine Bitte von Assmann um eine Mapping-Prüfung, eine Fehlerbeschreibung von Doepik zur Inventur und eine Einladung zum Jour fixe mit dem Obsidian-Vault-Projekt.",
+            "expected_output": "Proposes one outcome per mail following the AGENTS.md review rules: the Assmann request as task through vault-task-create, the Doepik error as typ problem in 10-Kunden/Doepik/Probleme with quelle and mail-* kept, and deletion of the pure appointment mail because the original stays in Outlook; applies each only after confirmation.",
+            "files": []
+        },
+        {
+            "id": 5,
+            "prompt": "Welche Aufgaben landen im Board unter Uncategorized? Setz denen einfach status heute.",
+            "expected_output": "Lists the typ aufgabe notes with a status finding as their own group, explains the allowed values inbox, geplant, heute, and archiv, and does not choose a status on its own; it changes a status only for the notes the user confirms with an explicit value.",
             "files": []
         }
     ]

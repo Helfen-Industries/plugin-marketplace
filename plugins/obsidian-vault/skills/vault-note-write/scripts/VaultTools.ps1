@@ -5,6 +5,12 @@ Set-StrictMode -Version Latest
 
 $script:DefaultVaultRoot = 'C:\Dev\Knowledge'
 
+# Customer and project areas from AGENTS.md "Struktur"; <Ort> is <Folder>/<Name>.
+$script:VaultAreas = @(
+    [pscustomobject]@{ Folder = '10-Kunden'; Field = 'kunde' }
+    [pscustomobject]@{ Folder = '20-Projekte'; Field = 'projekt' }
+)
+
 function Set-VaultUtf8Output {
     try {
         [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -23,7 +29,7 @@ function Get-VaultRoot {
 
     $fullPath = [System.IO.Path]::GetFullPath($VaultRoot)
     $hasContract = Test-Path -LiteralPath (Join-Path $fullPath 'AGENTS.md') -PathType Leaf
-    $hasCustomers = Test-Path -LiteralPath (Join-Path $fullPath 'Kunden') -PathType Container
+    $hasCustomers = Test-Path -LiteralPath (Join-Path $fullPath '10-Kunden') -PathType Container
     if ($hasContract -and $hasCustomers) {
         return $fullPath
     }
@@ -215,6 +221,31 @@ function ConvertTo-VaultDate {
     }
 
     return $null
+}
+
+function ConvertTo-VaultDateTime {
+    # Time block or mail timestamp in AGENTS.md format YYYY-MM-DDTHH:mm (local time).
+    param([string] $Value)
+
+    $parsed = [datetime]::MinValue
+    if ($Value -match '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$' -and [datetime]::TryParseExact($Value, 'yyyy-MM-ddTHH:mm', [System.Globalization.CultureInfo]::InvariantCulture, [System.Globalization.DateTimeStyles]::None, [ref] $parsed)) {
+        return $parsed
+    }
+
+    return $null
+}
+
+function Get-VaultTermMatches {
+    # Returns the terms (at least 3 characters) that occur as whole words in the text, case-insensitive.
+    param([string[]] $Terms, [string] $Text)
+
+    if ([string]::IsNullOrWhiteSpace($Text)) {
+        return [string[]] @()
+    }
+
+    return [string[]] @($Terms | Where-Object { $_ -and $_.Length -ge 3 } | Where-Object {
+            [regex]::IsMatch($Text, '(?<![\p{L}\p{N}])' + [regex]::Escape($_) + '(?![\p{L}\p{N}])', 'IgnoreCase')
+        } | Select-Object -Unique)
 }
 
 function Get-VaultRelativePath {

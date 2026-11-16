@@ -1,7 +1,7 @@
 ---
 name: vault-decision-record
-description: Record, supersede, accept, or reject an architecture or business decision as an ADR in a customer's Entscheidungen folder of the Obsidian vault, with context, decision, rejected alternatives, consequences, and sources. Use when the user says "Entscheidung festhalten" or "ADR anlegen", records an agreed solution, when a meeting or concept produces a lasting decision, or when an existing decision is replaced or withdrawn.
-argument-hint: "<customer> <decision> [source such as meeting or work item]"
+description: Record, supersede, accept, or reject an architecture or business decision as an ADR in the Entscheidungen folder of a customer or internal project in the Obsidian vault, with context, decision, rejected alternatives, consequences, and sources. Use when the user says "Entscheidung festhalten" or "ADR anlegen", records an agreed solution, when a meeting or concept produces a lasting decision, or when an existing decision is replaced or withdrawn.
+argument-hint: "<customer or project> <decision> [source such as meeting or work item]"
 user-invocable: true
 ---
 
@@ -11,10 +11,10 @@ Apply [Write Vault Note](../vault-note-write/SKILL.md) for every file change.
 
 ## Process
 
-1. Classify the operation as new, supersede, or status change, and resolve the customer. Done when both are known.
-2. Search the customer's `Entscheidungen/` for ADRs on the same topic by title, decision text, and `devops`. When one exists, propose a supersede or status change instead of a duplicate. Done when no duplicate would be created.
+1. Classify the operation as new, supersede, or status change, and resolve the customer or project. Done when both are known.
+2. Search the `<Ort>/Entscheidungen/` folder for ADRs on the same topic by title, decision text, and `devops`. When one exists, propose a supersede or status change instead of a duplicate. Done when no duplicate would be created.
 3. Number a new ADR as the highest `ADR-NNNN` in the folder plus one, counting every status; never reuse a number. Done when the number is unused.
-4. Fill the template `_templates/Entscheidung.md` from sources only:
+4. Fill the template `90-Templates/Entscheidung.md` from sources only:
    - **Kontext:** problem, forces, and constraints.
    - **Entscheidung:** one present-tense sentence starting with „Wir …“.
    - **Betrachtete Alternativen:** at least one rejected alternative with its reason. Ask once when none is known; if the user confirms there was none, record „Keine Alternative betrachtet (Angabe <Name>, YYYY-MM-DD)“.

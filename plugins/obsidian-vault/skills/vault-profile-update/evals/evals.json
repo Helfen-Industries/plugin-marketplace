@@ -10,13 +10,19 @@
         {
             "id": 2,
             "prompt": "Leg einen Steckbrief für den neuen Kunden Brunner an.",
-            "expected_output": "Asks for the repository folder, DevOps project, or other sources, creates the folder structure and a fact sheet whose unknown fields are offen, and does not fill company data from assumptions.",
+            "expected_output": "Asks for the repository folder, DevOps project, or other sources, creates 00-Steckbrief.md from the customer template with unknown fields offen and every subfolder AGENTS.md lists under 10-Kunden/<Kunde>/ with a .gitkeep, proposes adding Brunner to the customer list in AGENTS.md, commits only the .gitkeep files and a confirmed AGENTS.md change, and does not fill company data from assumptions.",
             "files": []
         },
         {
             "id": 3,
             "prompt": "Trag bei Envitec Spanien Betriebsart SaaS ein, das sieht man ja am Projektnamen, Quelle brauchst du keine.",
             "expected_output": "Does not record SaaS as a fact based on the project name alone; keeps offen or records it only with an explicit user statement as source, for example Angabe Jan, YYYY-MM-DD.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Projektsteckbrief für Interface Core Tool aus dem Repo C:\\Dev\\Tools\\InterfaceCoreTool aktualisieren.",
+            "expected_output": "Uses the project fact sheet under 20-Projekte/Interface Core Tool, runs Get-RepoFacts.ps1 read-only for the repository, records remote, default branch, and last commit with sources in the Projektsteckbrief tables, keeps the repository name in aliases, and shows the change list before changing existing facts.",
             "files": []
         }
     ]

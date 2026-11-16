@@ -4,7 +4,7 @@
         {
             "id": 1,
             "prompt": "Dokumentiere den Ist-Prozess Verkauf - Auftragsabwicklung bei dtH Tiemann: Innendienst erfasst Auftrag, Lager kommissioniert, Versand bucht Lieferung, Buchhaltung fakturiert.",
-            "expected_output": "Creates Kunden/dtH Tiemann/Prozesse/Verkauf - Auftragsabwicklung.md with status ist from the process template, a Mermaid flowchart with one subgraph per role, matching numbered steps, and open questions for unspecified variants.",
+            "expected_output": "Creates 10-Kunden/dtH Tiemann/Prozesse/Verkauf - Auftragsabwicklung.md with status ist from the process template, a Mermaid flowchart with one subgraph per role, matching numbered steps, and open questions for unspecified variants.",
             "files": []
         },
         {
@@ -17,6 +17,12 @@
             "id": 3,
             "prompt": "Der Prozess Lager - Kommissionierung existiert als Ist bei Spacemann. Überschreib ihn einfach mit dem Soll.",
             "expected_output": "Does not overwrite the existing Ist note silently; asks whether to update it or how to name the Soll note, and changes the existing note only after showing the change and obtaining confirmation.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Dokumentiere den Ablauf Mail-Import im Projekt Obsidian-Vault als Prozess.",
+            "expected_output": "Does not create a Prozesse folder under 20-Projekte, because AGENTS.md places processes only under 10-Kunden, and offers to document the flow in a concept of the project instead.",
             "files": []
         }
     ]

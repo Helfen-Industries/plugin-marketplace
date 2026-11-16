@@ -65,12 +65,13 @@ It includes skill creation and writing-for-agents guidance and is the home for f
 
 See the [Obsidian Vault guide](plugins/obsidian-vault/README.md) for the working concept, contents, and examples.
 
-The plugin maintains a personal Obsidian knowledge vault with one folder per customer: fact sheets, ADRs, concepts in technical-spec Part A structure, processes, and meeting notes. Its read-only `vault-customer-context` brief is used by `workflow-work-package-begin` when installed:
+The plugin maintains a personal Obsidian knowledge vault with one folder per customer and per internal project: fact sheets, ADRs, concepts in technical-spec Part A structure, processes, meeting notes, and tasks for the vault's task board. Its read-only `vault-customer-context` brief is used by `workflow-work-package-begin` when installed:
 
 ```text
-/obsidian-vault:vault-customer-context <customer or repository> [work item ID]
-/obsidian-vault:vault-meeting-note <customer> <date> <title> and notes
-/obsidian-vault:vault-concept-create <customer> <work item or topic>
+/obsidian-vault:vault-customer-context <customer, project, or repository> [work item ID]
+/obsidian-vault:vault-task-create <mail text, work item ID, or inbox mail> [customer or project]
+/obsidian-vault:vault-meeting-note <customer or project> <date> <title> and notes
+/obsidian-vault:vault-concept-create <customer or project> <work item or topic>
 ```
 
 ## Validate
