@@ -11,7 +11,7 @@ Apply [Write Vault Note](../vault-note-write/SKILL.md) for every file change.
 
 ## Process
 
-1. Classify the operation as new, supersede, or status change, and resolve the customer or project. Done when both are known.
+1. Classify the operation as new, supersede, or status change, and resolve the customer or project and the Teilprojekt when the decision belongs to one. A new ADR takes `teilprojekt` from the decision's topic, from the concept or meeting it came from, or from the user, and stays `[]` otherwise; the ADR number still runs per customer or project, never per Teilprojekt. Done when the operation and the customer or project are known.
 2. Search the `<Ort>/Entscheidungen/` folder for ADRs on the same topic by title, decision text, and `devops`. When one exists, propose a supersede or status change instead of a duplicate. Done when no duplicate would be created.
 3. Number a new ADR as the highest `ADR-NNNN` in the folder plus one, counting every status; never reuse a number. Done when the number is unused.
 4. Fill the template `90-Templates/Entscheidung.md` from sources only:

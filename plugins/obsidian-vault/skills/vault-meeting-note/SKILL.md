@@ -11,7 +11,7 @@ Apply [Write Vault Note](../vault-note-write/SKILL.md) for every file change.
 
 ## Process
 
-1. Establish customer or project, meeting date, and title from the input; the date may appear in the notes. When the date is missing, ask once, unless the user states the meeting was today. Derive a short title from the agenda when none is given. Take participants only from the input. Done when customer or project, date, and title are known.
+1. Establish customer or project, Teilprojekt, meeting date, and title from the input; the date may appear in the notes. Set `teilprojekt` only when the input or the customer's Teilprojekte (from the context brief) name one; a meeting about several lists them all. When the date is missing, ask once, unless the user states the meeting was today. Derive a short title from the agenda when none is given. Take participants only from the input. Done when customer or project, date, and title are known.
 2. Apply [Load Customer Context](../vault-customer-context/SKILL.md) for the customer or project, with the work item when the notes mention one. Done when the brief is available or `Kein Kundenkontext` is reported, in which case the note goes to `00-Inbox/` per the write discipline.
 3. Place every input statement in exactly one template section, or drop it as small talk or duplicate:
    - **Entscheidungen** only when the input states that something was decided or agreed; otherwise the statement is an open question.

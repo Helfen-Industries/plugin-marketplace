@@ -30,6 +30,12 @@
             "prompt": "Kundenkontext Assmann, und schreib zu den Terminen bitte die Teilnehmer und den Ort dazu und kopier sie in die Tagesnotiz.",
             "expected_output": "Returns the appointments with subject and time only, states that attendees and location are not reported, does not open outlook.ics directly, and does not write a daily note or any other file.",
             "files": []
+        },
+        {
+            "id": 6,
+            "prompt": "Kontext für das Teilprojekt FLS bei Assmann laden.",
+            "expected_output": "Runs the resolver with -Teilprojekt FLS (or resolves FLS as a Teilprojekt name), reads the FLS start page completely, lists the notes tagged with FLS together with the customer-wide notes that have no teilprojekt, omits notes of other Teilprojekte, links every statement, and changes nothing in the vault.",
+            "files": []
         }
     ]
 }

@@ -2,6 +2,20 @@
 
 All notable changes to this plugin are documented here.
 
+## [0.3.0] - Unreleased
+
+### Added
+
+- Scaffold workflow (`vault-scaffold-create`) with the script `New-VaultScaffold.ps1`: creates a new customer (`10-Kunden/<Name>/`), internal project (`20-Projekte/<Name>/`), or Teilprojekt (`<Ort>/Teilprojekte/<Name>.md`) with every subfolder and its `.gitkeep`, the fact sheet or start page from the vault's template, the `Kunden:` or `Projekte:` list check for `AGENTS.md`, and, on request, the `teilprojekt` tag on existing notes. Existing folders and files are never overwritten.
+- Teilprojekte: the optional frontmatter list `teilprojekt` and the note type `teilprojekt` for a delimited part of a customer or project with its own contacts or repository. A start page embeds the vault's shared view `99-System/Bases/Teilprojekt.base`, which lists all notes that name the Teilprojekt.
+
+### Changed
+
+- `Test-VaultNote.ps1` knows the type `teilprojekt` (folder `Teilprojekte/`, status `aktiv`, `ruhend`, `abgeschlossen`, no comma in the name) and checks that every `teilprojekt` value matches a start page of the same customer or project exactly; unknown values are errors under `10-Kunden/` and `20-Projekte/` and warnings in `00-Inbox/`.
+- `Get-VaultCustomerContext.ps1` lists the Teilprojekte, returns each note's `teilprojekt`, resolves a Teilprojekt by `-Teilprojekt`, by name or alias as `-Customer`, or by a repository path in its start page, and then returns that Teilprojekt's notes plus the notes without `teilprojekt`. `vault-customer-context` adds a Teilprojekte section to the brief.
+- Task, meeting, concept, decision, process, and maintenance workflows set or propose `teilprojekt` only on evidence and never guess it. `vault-profile-update` delegates the creation of new customers and projects to `vault-scaffold-create`.
+- System files include `99-System/Bases/`.
+
 ## [0.2.0] - Unreleased
 
 ### Added

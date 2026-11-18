@@ -15,9 +15,7 @@ Apply [Write Vault Note](../vault-note-write/SKILL.md) for every file change.
 
 1. Establish the area, the folder, and the mode. The area is customer (`10-Kunden/`) or project (`20-Projekte/`); `AGENTS.md` defines projects as own undertakings without customer assignment, so ask when the request does not make it clear. The mode is new, refresh, or record supplied facts and answers. For a new entry:
    - take the folder name from the user;
-   - create `<Ort>/00-Steckbrief.md` from `90-Templates/Steckbrief.md` for a customer or `90-Templates/Projektsteckbrief.md` for a project, with `kunde` or `projekt` set to the folder name;
-   - create every subfolder that `AGENTS.md` lists under `10-Kunden/<Kunde>/` or `20-Projekte/<Projekt>/`, each with an empty `.gitkeep`;
-   - propose adding the name to the customer or project list in `AGENTS.md` and change that file only after confirmation.
+   - create the structure with [Create Vault Scaffold](../vault-scaffold-create/SKILL.md): the folder, every subfolder that `AGENTS.md` lists under `10-Kunden/<Kunde>/` or `20-Projekte/<Projekt>/` (including `Teilprojekte/`) with an empty `.gitkeep`, and `<Ort>/00-Steckbrief.md` from `90-Templates/Steckbrief.md` for a customer or `90-Templates/Projektsteckbrief.md` for a project, with `kunde` or `projekt` set to the folder name; that skill also proposes the entry in the customer or project list of `AGENTS.md` and changes that file only after confirmation.
    - Done when the folder, area, and mode are known and a new entry has its fact sheet and subfolders.
 2. Collect evidence without changing any source:
    - **Repositories:** run [Get-RepoFacts.ps1](scripts/Get-RepoFacts.ps1) with `-Path` set to the repository paths in the fact sheet or the folder the user names; separate several paths with `;`. It reads the local state of the remote default branch without fetching; say so in the source. Its app and build facts apply to Business Central repositories; for other projects use its remote, default branch, and last commit, and read further files from the same ref read-only.

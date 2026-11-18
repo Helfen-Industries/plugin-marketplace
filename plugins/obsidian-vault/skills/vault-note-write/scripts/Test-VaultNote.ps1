@@ -4,7 +4,7 @@
 
 .DESCRIPTION
     Read-only. Implements the AGENTS.md sections "Struktur", "Dateinamen", "Frontmatter", "Todos und offene Fragen",
-    "Aufgaben", and "Verknüpfungen". When AGENTS.md changes, update this script; AGENTS.md wins on any disagreement.
+    "Teilprojekte", "Aufgaben", and "Verknüpfungen". When AGENTS.md changes, update this script; AGENTS.md wins on any disagreement.
     Without -Path, checks every note under 00-Inbox/, 10-Kunden/, 20-Projekte/, 30-Agents/, and 80-Daily/.
     System files are never checked and are listed under "skipped" when passed explicitly: the root files
     AGENTS.md, Dashboard.md, and Task Board.base, every non-Markdown file, Excalidraw drawings, and everything under
@@ -48,16 +48,17 @@ $hiddenRoots = @('.git', '.obsidian', '.trash')
 $systemRoots = @('90-Templates', '99-System', 'Excalidraw')
 $rootSystemFiles = @('AGENTS.md', 'Dashboard.md', 'Task Board.base')
 
-$allowedTypes = @('steckbrief', 'meeting', 'konzept', 'entscheidung', 'prozess', 'aufgabe', 'problem', 'session', 'katalog', 'anweisung', 'learning', 'daily', 'notiz')
+$allowedTypes = @('steckbrief', 'teilprojekt', 'meeting', 'konzept', 'entscheidung', 'prozess', 'aufgabe', 'problem', 'session', 'katalog', 'anweisung', 'learning', 'daily', 'notiz')
 $allowedStatus = @{
     steckbrief   = @('aktiv', 'ruhend', 'abgeschlossen')
+    teilprojekt  = @('aktiv', 'ruhend', 'abgeschlossen')
     konzept      = @('entwurf', 'abgestimmt', 'umgesetzt', 'verworfen')
     entscheidung = @('vorgeschlagen', 'akzeptiert', 'abgelöst', 'verworfen')
     prozess      = @('ist', 'soll')
     problem      = @('offen', 'in-analyse', 'zurückgestellt', 'gelöst')
     aufgabe      = @('inbox', 'geplant', 'heute', 'archiv')
 }
-$placeFolderTypes = @{ Meetings = 'meeting'; Konzepte = 'konzept'; Entscheidungen = 'entscheidung'; Aufgaben = 'aufgabe'; Probleme = 'problem'; Sessions = 'session' }
+$placeFolderTypes = @{ Teilprojekte = 'teilprojekt'; Meetings = 'meeting'; Konzepte = 'konzept'; Entscheidungen = 'entscheidung'; Aufgaben = 'aufgabe'; Probleme = 'problem'; Sessions = 'session' }
 $customerOnlyFolderTypes = @{ Prozesse = 'prozess' }
 $agentFolderTypes = @{ Anweisungen = 'anweisung'; Learnings = 'learning'; Sessions = 'session' }
 $datedFileTypes = @('meeting', 'aufgabe', 'problem', 'session')
@@ -65,6 +66,20 @@ $taskSources = @('mail', 'devops', 'meeting', 'manuell')
 $mailFields = @('mail-von', 'mail-datum', 'mail-betreff', 'mail-id')
 $unknownValue = 'offen'
 $today = (Get-Date).Date
+$noTeilprojektTypes = @('steckbrief', 'teilprojekt', 'katalog', 'anweisung', 'learning', 'daily')
+$teilprojektNames = @{}
+
+function Get-TeilprojektNames {
+    # File names (without .md) of the start pages under <Ort>/Teilprojekte/; the value of 'teilprojekt' must match one exactly.
+    param([string] $Place)
+
+    if (-not $teilprojektNames.ContainsKey($Place)) {
+        $folder = Join-Path $vault ($Place -replace '/', '\')
+        $teilprojektNames[$Place] = [string[]] @(Get-ChildItem -LiteralPath (Join-Path $folder 'Teilprojekte') -Filter '*.md' -File -ErrorAction SilentlyContinue | ForEach-Object { $_.BaseName })
+    }
+
+    return $teilprojektNames[$Place]
+}
 
 function Test-SystemFile {
     param([string] $Relative, [string] $Extension, [string] $Name)
@@ -241,6 +256,30 @@ foreach ($file in $targets) {
         }
     }
 
+    $teilprojekte = @(Get-VaultList $frontmatter 'teilprojekt')
+    if ($teilprojekte.Count -gt 0) {
+        $ownerPlace = $location.Place
+        if ($null -eq $ownerPlace -and $customer -ne '') { $ownerPlace = "10-Kunden/$customer" }
+        elseif ($null -eq $ownerPlace -and $project -ne '') { $ownerPlace = "20-Projekte/$project" }
+
+        if ($effectiveType -in $noTeilprojektTypes) {
+            Add-Finding $warnings $file.FullName 'teilprojekt' "teilprojekt ist bei typ '$effectiveType' nicht vorgesehen."
+        }
+        elseif ($null -eq $ownerPlace) {
+            Add-Finding $warnings $file.FullName 'teilprojekt' 'teilprojekt gesetzt, aber weder kunde noch projekt; die Startseite ist nicht prüfbar.'
+        }
+        else {
+            $known = @(Get-TeilprojektNames $ownerPlace)
+            $level = $warnings
+            if ($null -ne $location.Place) { $level = $errors }
+            foreach ($tpName in $teilprojekte) {
+                if ($known -cnotcontains $tpName) {
+                    Add-Finding $level $file.FullName 'teilprojekt' "teilprojekt '$tpName' hat keine Startseite unter $ownerPlace/Teilprojekte/ (Name exakt wie die Datei, ohne .md)."
+                }
+            }
+        }
+    }
+
     $datum = Get-VaultText $frontmatter 'datum'
     $date = ConvertTo-VaultDate $datum
     if ($effectiveType -ne 'steckbrief' -and $null -eq $date) {
@@ -349,6 +388,9 @@ foreach ($file in $targets) {
     }
 
     switch ($location.Type) {
+        'teilprojekt' {
+            if ($base -match ',') { Add-Finding $errors $file.FullName 'filename' 'Der Name eines Teilprojekts darf kein Komma enthalten (YAML-Liste in teilprojekt).' }
+        }
         'daily' {
             if ($name -notmatch '^(\d{4}-\d{2}-\d{2})\.md$') { Add-Finding $errors $file.FullName 'filename' 'Muster: YYYY-MM-DD.md' }
             elseif ($Matches[1] -ne $datum) { Add-Finding $warnings $file.FullName 'filename-date' "Datum im Dateinamen ($($Matches[1])) weicht von datum ($datum) ab." }

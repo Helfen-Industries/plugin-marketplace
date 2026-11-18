@@ -1,0 +1,29 @@
+{
+    "skill_name": "vault-scaffold-create",
+    "evals": [
+        {
+            "id": 1,
+            "prompt": "Leg bei Assmann das Teilprojekt FLS an. Repo ist Assmann FLS, Ansprechpartner ist Christan Schimmer.",
+            "expected_output": "Resolves Assmann, runs New-VaultScaffold.ps1 with -Type Teilprojekt -Name FLS -Owner Assmann and aliases for the short name and the repository, creates 10-Kunden/Assmann/Teilprojekte/FLS.md from the template with kunde: Assmann and no projekt field, adds the section Teilprojekte to the fact sheet only when it is missing, fills contact and repository only from the fact sheet and the user statement with sources, writes offen for the rest, offers to tag existing notes with teilprojekt: [FLS] without guessing, and runs the vault check.",
+            "files": []
+        },
+        {
+            "id": 2,
+            "prompt": "Leg den neuen Kunden Brunner an.",
+            "expected_output": "Runs New-VaultScaffold.ps1 with -Type Kunde -Name Brunner, creates 10-Kunden/Brunner with every subfolder including Teilprojekte and Prozesse, each with an empty .gitkeep, and 00-Steckbrief.md from the customer template with unknown fields offen, proposes adding Brunner to the Kunden list in AGENTS.md and changes it only after confirmation, offers vault-profile-update for repositories and contacts instead of inventing company data, and commits only the .gitkeep files and a confirmed AGENTS.md change.",
+            "files": []
+        },
+        {
+            "id": 3,
+            "prompt": "Ich brauche ein neues Projekt für die Assmann-Schnittstelle zu WANKO unter 20-Projekte.",
+            "expected_output": "Does not create a project under 20-Projekte because AGENTS.md keeps work for a customer under the customer; explains that a delimited part of the customer undertaking is a Teilprojekt and proposes Teilprojekt WANKO under 10-Kunden/Assmann, creating it only after the user agrees.",
+            "files": []
+        },
+        {
+            "id": 4,
+            "prompt": "Leg das Teilprojekt FLS bei Assmann nochmal an, ich hab es nicht gefunden.",
+            "expected_output": "The resolver or the script reports that the Teilprojekt exists; nothing is overwritten, and the answer links the existing 10-Kunden/Assmann/Teilprojekte/FLS.md and offers to edit it instead.",
+            "files": []
+        }
+    ]
+}
