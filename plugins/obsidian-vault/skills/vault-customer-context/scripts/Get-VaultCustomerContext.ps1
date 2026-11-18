@@ -4,13 +4,18 @@
 
 .DESCRIPTION
     Read-only. Searches the fact sheets under 10-Kunden/ and 20-Projekte/. Resolution order: -Customer (folder,
-    kunde or projekt, aliases; exact before partial), otherwise -Path (local repository path listed in a fact
-    sheet, then Git remote URL, then DevOps project or repository name listed in aliases). Writes one JSON object
+    kunde or projekt, aliases; exact before partial; then the exact name or alias of a Teilprojekt start page under
+    <Ort>/Teilprojekte/), otherwise -Path (local repository path listed in a fact sheet, then Git remote URL, then
+    DevOps project or repository name listed in aliases). Writes one JSON object
     to stdout: status = resolved | ambiguous | unresolved | vault-not-found.
-    For a resolved customer or project it lists decisions, concepts, processes, recent meetings, open tasks
-    (typ: aufgabe, status not archiv), and the appointments of the next -AppointmentDays days from the generated
-    Outlook calendar 99-System/Kalender/outlook/outlook.ics whose subject or location names the folder or an alias.
-    Appointments carry only subject and time; attendees, organizer, location, and description are never emitted.
+    For a resolved customer or project it lists the Teilprojekt start pages, decisions, concepts, processes, recent
+    meetings, open tasks (typ: aufgabe, status not archiv), and the appointments of the next -AppointmentDays days
+    from the generated Outlook calendar 99-System/Kalender/outlook/outlook.ics whose subject or location names the
+    folder or an alias. Appointments carry only subject and time; attendees, organizer, location, and description
+    are never emitted.
+    Every note carries its teilprojekt list. A Teilprojekt focus (-Teilprojekt, a Teilprojekt name or alias given as
+    -Customer, or a local repository path listed in a start page) keeps the notes of that Teilprojekt and the notes
+    without teilprojekt (they apply to the whole customer or project) and drops notes of other Teilprojekte.
 
 .EXAMPLE
     powershell -NoProfile -File Get-VaultCustomerContext.ps1 -Path "C:\Dev\Customers\Spacemann\Spacemann Base App" -WorkItem 15347
@@ -21,6 +26,7 @@ param(
     [string] $Customer,
     [string] $Path,
     [string] $WorkItem,
+    [string] $Teilprojekt,
     [int] $Days = 30,
     [int] $AppointmentDays = 7,
     [switch] $ResolveOnly
@@ -46,6 +52,13 @@ function ConvertTo-NormalizedPath {
     }
 
     return $Value.Replace('/', '\').TrimEnd('\').ToLowerInvariant()
+}
+
+function Test-PathListMatch {
+    # True when the normalized path equals a listed path or lies below or above it.
+    param([string] $NormalizedPath, [string[]] $ListedPaths)
+
+    return @($ListedPaths | Where-Object { $NormalizedPath -eq $_ -or $NormalizedPath.StartsWith("$_\") -or $_.StartsWith("$NormalizedPath\") }).Count -gt 0
 }
 
 function ConvertTo-NormalizedUrl {
@@ -89,10 +102,12 @@ function New-Result {
     return [ordered]@{
         status     = $Status
         vaultRoot  = $vault
-        query      = [ordered]@{ customer = $Customer; path = $Path; gitTopLevel = $null; remote = $null; workItem = $WorkItem }
+        query      = [ordered]@{ customer = $Customer; path = $Path; gitTopLevel = $null; remote = $null; workItem = $WorkItem; teilprojekt = $Teilprojekt }
         matchedBy  = $null
         candidates = @()
         customer   = $null
+        teilprojekte = @()
+        teilprojekt  = $null
         decisions  = @()
         concepts   = @()
         processes  = @()
@@ -142,14 +157,40 @@ $profiles = foreach ($area in $script:VaultAreas) {
             $localPaths = @([regex]::Matches($note.Text, '`([A-Za-z]:\\[^`]+)`') | ForEach-Object { ConvertTo-NormalizedPath $_.Groups[1].Value } | Select-Object -Unique)
         }
 
-        [pscustomobject]@{ Folder = $folder.Name; Field = $area.Field; Place = "$($area.Folder)/$($folder.Name)"; FullName = $folder.FullName; Note = $note; Names = [string[]] $names; Urls = [string[]] $urls; LocalPaths = [string[]] $localPaths }
+        $teilprojekte = @()
+        $teilprojektFolder = Join-Path $folder.FullName 'Teilprojekte'
+        if (Test-Path -LiteralPath $teilprojektFolder -PathType Container) {
+            $teilprojekte = @(Get-ChildItem -LiteralPath $teilprojektFolder -Filter '*.md' -File | Sort-Object Name | ForEach-Object {
+                    $startPage = Read-VaultNote $_.FullName
+                    [pscustomobject]@{
+                        Name       = $_.BaseName
+                        Path       = $_.FullName
+                        Note       = $startPage
+                        Names      = [string[]] @(@($_.BaseName) + @(Get-VaultList $startPage.Frontmatter 'aliases') | Where-Object { $_ -ne '' } | Select-Object -Unique)
+                        LocalPaths = [string[]] @([regex]::Matches($startPage.Text, '`([A-Za-z]:\\[^`]+)`') | ForEach-Object { ConvertTo-NormalizedPath $_.Groups[1].Value } | Select-Object -Unique)
+                    }
+                })
+        }
+
+        [pscustomobject]@{ Folder = $folder.Name; Field = $area.Field; Place = "$($area.Folder)/$($folder.Name)"; FullName = $folder.FullName; Note = $note; Names = [string[]] $names; Urls = [string[]] $urls; LocalPaths = [string[]] $localPaths; Teilprojekte = $teilprojekte }
     }
 }
 
 $candidates = @()
+$focusEntry = $null
+$focusMatchedBy = $null
+$normalizedTop = $null
 if (-not [string]::IsNullOrWhiteSpace($Customer)) {
     $query = $Customer.Trim()
     $candidates = @($profiles | Where-Object { $_.Names | Where-Object { $_ -ieq $query } } | ForEach-Object { [pscustomobject]@{ Profile = $_; MatchedBy = 'name' } })
+    if ($candidates.Count -eq 0) {
+        $candidates = @($profiles | Where-Object { @($_.Teilprojekte | Where-Object { $_.Names -icontains $query }).Count -gt 0 } | ForEach-Object { [pscustomobject]@{ Profile = $_; MatchedBy = 'teilprojekt' } })
+        if ($candidates.Count -eq 1) {
+            $focusEntry = @($candidates[0].Profile.Teilprojekte | Where-Object { $_.Names -icontains $query })[0]
+            $focusMatchedBy = 'name'
+        }
+    }
+
     if ($candidates.Count -eq 0) {
         $candidates = @($profiles | Where-Object { $_.Names | Where-Object { $_.IndexOf($query, [System.StringComparison]::OrdinalIgnoreCase) -ge 0 } } | ForEach-Object { [pscustomobject]@{ Profile = $_; MatchedBy = 'name-partial' } })
     }
@@ -169,6 +210,12 @@ elseif (-not [string]::IsNullOrWhiteSpace($Path)) {
             $entry = $_
             @($entry.LocalPaths | Where-Object { $normalizedTop -eq $_ -or $normalizedTop.StartsWith("$_\") -or $_.StartsWith("$normalizedTop\") }).Count -gt 0
         } | ForEach-Object { [pscustomobject]@{ Profile = $_; MatchedBy = 'repo-path' } })
+
+    if ($candidates.Count -eq 0) {
+        $candidates = @($profiles | Where-Object {
+                @($_.Teilprojekte | Where-Object { Test-PathListMatch $normalizedTop $_.LocalPaths }).Count -gt 0
+            } | ForEach-Object { [pscustomobject]@{ Profile = $_; MatchedBy = 'teilprojekt-path' } })
+    }
 
     if ($candidates.Count -eq 0 -and $null -ne $result.query.gitTopLevel) {
         $remote = Invoke-VaultGit -RepositoryPath $topLevel -Arguments @('remote', 'get-url', 'origin')
@@ -217,6 +264,56 @@ if ($selected.Note) {
 }
 
 $result.customer = $profileInfo
+
+if (-not [string]::IsNullOrWhiteSpace($Teilprojekt)) {
+    $focusEntry = @($selected.Teilprojekte | Where-Object { $_.Names -icontains $Teilprojekt.Trim() }) | Select-Object -First 1
+    $focusMatchedBy = 'parameter'
+}
+elseif ($null -eq $focusEntry -and $null -ne $normalizedTop) {
+    $pathHits = @($selected.Teilprojekte | Where-Object { Test-PathListMatch $normalizedTop $_.LocalPaths })
+    if ($pathHits.Count -eq 1) {
+        $focusEntry = $pathHits[0]
+        $focusMatchedBy = 'repo-path'
+    }
+}
+
+function ConvertTo-TeilprojektInfo {
+    param($Entry)
+
+    return [ordered]@{
+        name          = $Entry.Name
+        path          = $Entry.Path
+        status        = Get-VaultText $Entry.Note.Frontmatter 'status'
+        aliases       = @(Get-VaultList $Entry.Note.Frontmatter 'aliases')
+        openQuestions = @(Get-VaultOpenItems $Entry.Note 'Offene Fragen')
+    }
+}
+
+$result.teilprojekte = @($selected.Teilprojekte | ForEach-Object { ConvertTo-TeilprojektInfo $_ })
+$focus = $null
+if ($null -ne $focusEntry) {
+    $focus = $focusEntry.Name
+    $focusInfo = ConvertTo-TeilprojektInfo $focusEntry
+    $focusInfo.matchedBy = $focusMatchedBy
+    $focusInfo.found = $true
+    $result.teilprojekt = $focusInfo
+}
+elseif (-not [string]::IsNullOrWhiteSpace($Teilprojekt)) {
+    $result.teilprojekt = [ordered]@{ name = $Teilprojekt.Trim(); found = $false }
+}
+
+function Test-InFocus {
+    # Without focus every note counts; with focus the notes of that Teilprojekt and the notes without teilprojekt count.
+    param($Note)
+
+    if ($null -eq $focus) {
+        return $true
+    }
+
+    $assigned = @(Get-VaultList $Note.Frontmatter 'teilprojekt')
+    return $assigned.Count -eq 0 -or $assigned -icontains $focus
+}
+
 if ($ResolveOnly) {
     $result | ConvertTo-Json -Depth 8
     exit 0
@@ -235,9 +332,14 @@ function Get-FolderNotes {
 
 $result.decisions = @(foreach ($file in Get-FolderNotes 'Entscheidungen') {
         $note = Read-VaultNote $file.FullName
+        if (-not (Test-InFocus $note)) {
+            continue
+        }
+
         $status = Get-VaultText $note.Frontmatter 'status'
         [ordered]@{
             path           = $file.FullName
+            teilprojekt    = @(Get-VaultList $note.Frontmatter 'teilprojekt')
             adr            = Get-VaultText $note.Frontmatter 'adr'
             title          = ($file.BaseName -replace '^ADR-\d{4}\s+', '')
             status         = $status
@@ -250,8 +352,13 @@ $result.decisions = @(foreach ($file in Get-FolderNotes 'Entscheidungen') {
 
 $result.concepts = @(foreach ($file in Get-FolderNotes 'Konzepte') {
         $note = Read-VaultNote $file.FullName
+        if (-not (Test-InFocus $note)) {
+            continue
+        }
+
         [ordered]@{
             path            = $file.FullName
+            teilprojekt     = @(Get-VaultList $note.Frontmatter 'teilprojekt')
             title           = $file.BaseName
             status          = Get-VaultText $note.Frontmatter 'status'
             datum           = Get-VaultText $note.Frontmatter 'datum'
@@ -264,8 +371,13 @@ $result.concepts = @(foreach ($file in Get-FolderNotes 'Konzepte') {
 
 $result.processes = @(foreach ($file in Get-FolderNotes 'Prozesse') {
         $note = Read-VaultNote $file.FullName
+        if (-not (Test-InFocus $note)) {
+            continue
+        }
+
         [ordered]@{
             path            = $file.FullName
+            teilprojekt     = @(Get-VaultList $note.Frontmatter 'teilprojekt')
             title           = $file.BaseName
             status          = Get-VaultText $note.Frontmatter 'status'
             datum           = Get-VaultText $note.Frontmatter 'datum'
@@ -276,6 +388,10 @@ $result.processes = @(foreach ($file in Get-FolderNotes 'Prozesse') {
 $cutoff = $today.AddDays(-$Days)
 $meetings = @(foreach ($file in Get-FolderNotes 'Meetings') {
         $note = Read-VaultNote $file.FullName
+        if (-not (Test-InFocus $note)) {
+            continue
+        }
+
         $datum = Get-VaultText $note.Frontmatter 'datum'
         $date = ConvertTo-VaultDate $datum
         if ($null -eq $date) {
@@ -289,6 +405,7 @@ $meetings = @(foreach ($file in Get-FolderNotes 'Meetings') {
 
         [ordered]@{
             path            = $file.FullName
+            teilprojekt     = @(Get-VaultList $note.Frontmatter 'teilprojekt')
             title           = ($file.BaseName -replace '^\d{4}-\d{2}-\d{2}\s+', '')
             datum           = $date.ToString('yyyy-MM-dd')
             matchesWorkItem = $matchesWorkItem
@@ -301,7 +418,7 @@ $result.meetings = @($meetings | Sort-Object { $_.datum } -Descending)
 $taskStatus = @('inbox', 'geplant', 'heute', 'archiv')
 $tasks = @(foreach ($file in Get-FolderNotes 'Aufgaben') {
         $note = Read-VaultNote $file.FullName
-        if ((Get-VaultText $note.Frontmatter 'typ') -ne 'aufgabe') {
+        if ((Get-VaultText $note.Frontmatter 'typ') -ne 'aufgabe' -or -not (Test-InFocus $note)) {
             continue
         }
 
@@ -312,6 +429,7 @@ $tasks = @(foreach ($file in Get-FolderNotes 'Aufgaben') {
 
         [ordered]@{
             path            = $file.FullName
+            teilprojekt     = @(Get-VaultList $note.Frontmatter 'teilprojekt')
             title           = ($file.BaseName -replace '^\d{4}-\d{2}-\d{2}\s+', '')
             status          = $status
             statusValid     = $taskStatus -ccontains $status

@@ -39,7 +39,7 @@ The vault links to repository artifacts and never copies them. A concept stores 
 
 ### Vault contract
 
-The vault's `AGENTS.md` is the single source of truth for folders, filenames, frontmatter, task fields, todo syntax, diagram formats, and links. Skills read it at run time and contain only procedures and gates, so convention changes happen in one place. `Test-VaultNote.ps1` is the executable check of that contract; when both disagree, `AGENTS.md` wins and the script is updated. System files are never checked: `AGENTS.md`, `Dashboard.md`, `Task Board.base`, `90-Templates/`, `99-System/` with the generated calendar, and `Excalidraw/`.
+The vault's `AGENTS.md` is the single source of truth for folders, filenames, frontmatter, task fields, todo syntax, diagram formats, and links. Skills read it at run time and contain only procedures and gates, so convention changes happen in one place. `Test-VaultNote.ps1` is the executable check of that contract; when both disagree, `AGENTS.md` wins and the script is updated. System files are never checked: `AGENTS.md`, `Dashboard.md`, `Task Board.base`, `90-Templates/`, `99-System/` with the shared views in `99-System/Bases/` and the generated calendar, and `Excalidraw/`.
 
 ### Customer and project resolution
 
@@ -51,6 +51,15 @@ The vault's `AGENTS.md` is the single source of truth for folders, filenames, fr
 4. DevOps project or repository name listed in `aliases`.
 
 Ambiguous results are asked, unresolved notes go to `00-Inbox/` with the open question „Kunde oder Projekt zuordnen“. A note carries `kunde` or `projekt`, never both. The fact sheet's `aliases` and repositories table therefore drive resolution and are kept current by `vault-profile-update`.
+
+### Teilprojekte
+
+A customer or project can be split into Teilprojekte, for example an interface with its own contacts and repository. The folder structure stays flat: notes remain in their type folders and ADR numbers run per customer or project. Two things carry the split:
+
+- the optional frontmatter list `teilprojekt` on tasks, meetings, concepts, decisions, processes, problems, and sessions, for example `teilprojekt: [FLS]`; several entries mark topics that span Teilprojekte, no entry means the whole customer or project;
+- a start page `<Ort>/Teilprojekte/<Name>.md` (`typ: teilprojekt`) with purpose, delimitation, contacts, and repositories, which embeds the vault's shared view `99-System/Bases/Teilprojekt.base`. The view lists every note of that customer or project whose `teilprojekt` names the page, so no list is maintained by hand. The fact sheet embeds `Teilprojekte.base` for the overview.
+
+`Test-VaultNote.ps1` requires every `teilprojekt` value to match a start page of the same customer or project exactly. `Get-VaultCustomerContext.ps1` resolves a Teilprojekt by `-Teilprojekt`, by its name or alias as `-Customer`, or by a local repository path listed in its start page, and then returns that Teilprojekt's notes together with the notes that have no `teilprojekt`. `vault-scaffold-create` creates the start page and, on request, tags existing notes.
 
 ### Tasks and calendar
 
@@ -89,7 +98,8 @@ The concept is the agreed business view; the specification adds the technical de
 
 | Skill | Role | Purpose |
 | --- | --- | --- |
-| `vault-customer-context` | Public, read-only | Resolve the customer or project and return a linked brief of facts, decisions in force, concepts, processes, open tasks, appointments of the next 7 days, and open items |
+| `vault-customer-context` | Public, read-only | Resolve the customer or project and return a linked brief of facts, Teilprojekte, decisions in force, concepts, processes, open tasks, appointments of the next 7 days, and open items, optionally focused on one Teilprojekt |
+| `vault-scaffold-create` | Public driver | Create the scaffold for a new customer, project, or Teilprojekt: folders with `.gitkeep`, fact sheet or start page from the template, the `AGENTS.md` list entry, and on request the `teilprojekt` tag on existing notes |
 | `vault-task-create` | Public driver | Create a task with status `inbox` from a mail in chat or an Azure DevOps work item, or convert an imported inbox mail into a task |
 | `vault-appointment-create` | Public driver | Create an Outlook appointment from a note or request through the vault's Power Automate flow, with preview, confirmed invitations, status check, and a `## Termine` line in the note |
 | `vault-meeting-note` | Public driver | Turn raw notes or transcripts into a meeting note with decisions, questions, and todos, then propose follow-ups |
@@ -102,13 +112,17 @@ The concept is the agreed business view; the specification adds the technical de
 
 | Script | Purpose |
 | --- | --- |
-| `vault-customer-context/scripts/Get-VaultCustomerContext.ps1` | Customer and project resolution and context manifest with open tasks and matching appointments as JSON |
-| `vault-note-write/scripts/Test-VaultNote.ps1` | Contract check for folders, types, frontmatter, task fields, filenames, ADR numbers, checkboxes, template remnants, and links |
+| `vault-customer-context/scripts/Get-VaultCustomerContext.ps1` | Customer, project, and Teilprojekt resolution and context manifest with open tasks and matching appointments as JSON |
+| `vault-note-write/scripts/Test-VaultNote.ps1` | Contract check for folders, types, frontmatter, `teilprojekt` references, task fields, filenames, ADR numbers, checkboxes, template remnants, and links |
+| `vault-scaffold-create/scripts/New-VaultScaffold.ps1` | Create the folders, `.gitkeep` files, and fact sheet or Teilprojekt start page for a new customer, project, or Teilprojekt; never overwrites |
 | `vault-profile-update/scripts/Get-RepoFacts.ps1` | Read-only scan of app.json, build artifacts, remotes, and plans folders |
 
 ## Usage
 
 ```text
+/obsidian-vault:vault-scaffold-create Teilprojekt FLS bei Assmann
+/obsidian-vault:vault-scaffold-create Kunde Brunner
+/obsidian-vault:vault-customer-context Kontext für das Teilprojekt FLS bei Assmann
 /obsidian-vault:vault-task-create Aufgabe für Assmann aus dieser Mail: <Mailtext>
 /obsidian-vault:vault-task-create AB#15347 für Spacemann
 /obsidian-vault:vault-task-create Inbox-Mail "2026-11-13 Assmann Artikelstamm von BC an FLS" als Aufgabe

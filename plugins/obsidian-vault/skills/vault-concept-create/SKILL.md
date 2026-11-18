@@ -13,7 +13,7 @@ Apply [Write Vault Note](../vault-note-write/SKILL.md) for every file change.
 
 ## Process
 
-1. Apply [Load Customer Context](../vault-customer-context/SKILL.md) with the customer or project and the work item. When a concept with the same work item or topic exists, revise it instead of creating another. Done when the target is a new path or one existing concept.
+1. Apply [Load Customer Context](../vault-customer-context/SKILL.md) with the customer or project, the work item, and the Teilprojekt when the requirement belongs to one. When a concept with the same work item or topic exists, revise it instead of creating another. Set `teilprojekt` in the concept from the requirement; a concept that spans several Teilprojekte lists them all. Done when the target is a new path or one existing concept.
 2. Gather evidence and label each fact with its source:
    - the requirement from the user or the work item; read the work item with available Azure DevOps tools when only a reference is given, otherwise ask for its text;
    - the context brief, related meetings, and processes;

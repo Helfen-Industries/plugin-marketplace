@@ -26,6 +26,7 @@ Apply [Write Vault Note](../vault-note-write/SKILL.md) for every file change. Th
 2. Resolve `<Ort>` and rule out duplicates:
    - Resolve the customer or project through the write discipline from the name the user gives, a prefilled `kunde` or `projekt`, or names and aliases in subject, sender, or work item project. When nothing resolves uniquely, the note goes to `00-Inbox/` with an empty `kunde:` and „Kunde oder Projekt zuordnen“ under `## Offene Fragen`.
    - Search the whole vault: a note with the same `mail-id` (unless `offen`), a `typ: aufgabe` note with the same ID in `devops`, or a task with the same `mail-betreff` and `mail-von`. When one exists, report its link and create nothing.
+   - **Teilprojekt:** when the user or the source names a Teilprojekt of the selected customer or project (`<Ort>/Teilprojekte/<Name>.md`), or the work item's repository or title names it unambiguously, set `teilprojekt: [<Name>]`; otherwise leave `teilprojekt: []`. Never guess it. For the vault's `Import-DevOpsAufgabe.ps1` pass `-Teilprojekt <Name>`.
    - Done when one target folder is selected and no duplicate exists, or the existing note is reported.
 3. Collect the source fields:
    - **Mail text:** `mail-von` (address), `mail-datum` as `YYYY-MM-DDTHH:mm`, `mail-betreff`, and `mail-id` from the pasted headers; `## Auftrag` is the newest message; attachment names go to `## Anhänge`.

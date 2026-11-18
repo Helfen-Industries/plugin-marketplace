@@ -13,7 +13,7 @@ Apply [Write Vault Note](../vault-note-write/SKILL.md) for every file change.
 
 ## Process
 
-1. Establish customer, area, process, and state `ist` or `soll`; the file name is `<Bereich> - <Prozess>.md`. When that note exists with another state, ask whether to update it or how to name the second note, because the contract has one name per process. Done when the target path and state are known.
+1. Establish customer, area, process, state `ist` or `soll`, and the Teilprojekt when the process belongs to one (`teilprojekt` as list; a process across several Teilprojekte lists them all); the file name is `<Bereich> - <Prozess>.md`. When that note exists with another state, ask whether to update it or how to name the second note, because the contract has one name per process. Done when the target path and state are known.
 2. Gather the user's description and related meetings, concepts, and processes through [Load Customer Context](../vault-customer-context/SKILL.md). Ask at most one question, and only when trigger, roles, or result are missing so that the flow cannot be drawn; record every other gap as an open question. Done when trigger, roles, steps, and result each have a source or an open question.
 3. Fill `90-Templates/Prozess.md`:
    - **Ablauf:** Mermaid `flowchart LR` with one `subgraph` per role as swimlane and at most about 15 nodes; split larger processes into linked sub-processes.

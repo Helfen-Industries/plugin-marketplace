@@ -49,8 +49,8 @@
         {
             "name": "obsidian-vault",
             "source": "plugins/obsidian-vault",
-            "description": "Workflows for a personal Obsidian knowledge vault with customer and project fact sheets, decisions, concepts, processes, meeting notes, and tasks",
-            "version": "0.2.0",
+            "description": "Workflows for a personal Obsidian knowledge vault with customer and project fact sheets, Teilprojekte, decisions, concepts, processes, meeting notes, and tasks",
+            "version": "0.3.0",
             "author": {
                 "name": "DerHelfen",
                 "url": "https://github.com/DerHelfen"
