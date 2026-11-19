@@ -12,7 +12,7 @@
             "name": "al-development-workflow",
             "source": "plugins/al-development-workflow",
             "description": "Structured Business Central AL development workflows for GitHub Copilot",
-            "version": "0.9.0",
+            "version": "0.10.0",
             "author": {
                 "name": "DerHelfen",
                 "url": "https://github.com/DerHelfen"
