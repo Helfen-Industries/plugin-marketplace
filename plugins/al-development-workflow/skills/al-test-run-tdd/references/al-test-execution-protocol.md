@@ -21,7 +21,7 @@ The test cannot establish red when:
 - the test is absent from the Testing panel
 - setup fails before the intended behavior is exercised
 
-Repair the minimum scaffolding required to execute the behavioral assertion, then rerun.
+Repair the minimum scaffolding required to execute the behavioral assertion, then rerun. Build, publish, and runner problems follow [AL Container Publish](al-container-publish.md).
 
 ### Valid red
 

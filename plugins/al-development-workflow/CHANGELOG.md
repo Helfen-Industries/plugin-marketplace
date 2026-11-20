@@ -2,6 +2,18 @@
 
 All notable changes to this plugin are documented here.
 
+## [0.10.0] - Unreleased
+
+### Added
+
+- `al-test-browser-walkthrough` hidden primitive: plays a documented scenario through the signed-in BC web client on a test container, compares observed with expected results as text evidence, saves planned screenshots as files, never enters credentials, and reverts walkthrough-only changes. Web client tool quirks and the image-budget rules live in a bundled reference.
+- `al-test-run-tdd` reference `al-container-publish.md`: confirmed publish target, build-publish-run tool chain, proof of a real publish (version or visible behavior, never `al_publish` output), runner support check, stale build errors, and known failure causes.
+
+### Changed
+
+- `workflow-spec-implement` plays manual-validation criteria through the browser walkthrough when a signed-in test container is available and otherwise lists them as residual manual checks.
+- `workflow-customer-document-create` can embed screenshots captured by the browser walkthrough on request, stored beside the document without placeholders.
+
 ## [0.9.0] - Unreleased
 
 ### Added
