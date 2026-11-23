@@ -2,6 +2,14 @@
 
 All notable changes to this plugin are documented here.
 
+## [0.11.0] - Unreleased
+
+### Removed
+
+- `al-test-browser-walkthrough` primitive and its web client reference.
+- Browser walkthrough of manual-validation criteria in `workflow-spec-implement`; they are listed as residual manual checks again.
+- Screenshot capture through the browser walkthrough in `workflow-customer-document-create`; customer documents are text-only again.
+
 ## [0.10.0] - Unreleased
 
 ### Added

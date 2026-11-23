@@ -30,7 +30,7 @@ If the container holds a higher or pipeline-built version, the local build is no
 
 ## Runner support
 
-Before the first run on a target, check that Test Hub and TestRunnerHub connect. A target without VS Code test-runner support is an infrastructure blocker; report it instead of retrying. Published extensions end open web client sessions, so a following browser step must sign in again.
+Before the first run on a target, check that Test Hub and TestRunnerHub connect. A target without VS Code test-runner support is an infrastructure blocker; report it instead of retrying.
 
 ## Stale build errors
 
