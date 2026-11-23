@@ -30,12 +30,6 @@
             "prompt": "Replace an existing customer feature document that contains manually maintained deployment guidance with a newly generated version.",
             "expected_output": "Preserves unrelated customer-authored content, identifies conflicting sections, and asks before replacing manual guidance.",
             "files": []
-        },
-        {
-            "id": 6,
-            "prompt": "Write the customer documentation for the delivered feature and include screenshots of each usage step; the test container web client is signed in.",
-            "expected_output": "Captures screenshots through the browser walkthrough skill into the feature's images folder, embeds them with relative links in the matching usage steps, leaves no placeholders, and checks each image shows the described verified behavior.",
-            "files": []
         }
     ]
 }

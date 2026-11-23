@@ -57,7 +57,7 @@ On the first source-reference, implementation, or pull-request use, the workflow
 | `simplify-codebase`          | Audit a repository or subsystem read-only for prioritized simplification opportunities     |
 | `workflow-decisions-grill`   | Resolve user-owned implementation decisions and confirm shared understanding               |
 
-The two AL test skills are available both as slash commands and for agent-initiated use when another workflow detects missing scenarios, test drift, failures, or required validation. Container build, publish, and test-run guidance lives inside `al-test-run-tdd`. Retrieval, context setup, AL-symbol access, browser walkthroughs of the BC web client (`al-test-browser-walkthrough`), specification generation, customer documentation, and provider-specific PR writes are hidden primitives invoked by the public workflows.
+The two AL test skills are available both as slash commands and for agent-initiated use when another workflow detects missing scenarios, test drift, failures, or required validation. Container build, publish, and test-run guidance lives inside `al-test-run-tdd`. Retrieval, context setup, AL-symbol access, specification generation, customer documentation, and provider-specific PR writes are hidden primitives invoked by the public workflows.
 
 ## Usage
 
